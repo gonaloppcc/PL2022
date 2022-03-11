@@ -5,13 +5,13 @@ p = re.compile(r'^(?P<id>\w{24}),(?P<index>\d+),(?P<date>\d{4}-\d{2}-\d{2}),(?P<
 
 sys.stdin.readline()
 
-db = {}
+db = []
 
 for line in sys.stdin:
     mo = p.match(line)
     dict = mo.groupdict()
 
-    db[dict["index"]] = dict
+    db.append(dict)
 
-for athlete in db.values():
+for athlete in db:
     print(f'{athlete["fname"]} {athlete["lname"]}')
