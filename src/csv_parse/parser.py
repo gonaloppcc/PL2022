@@ -5,12 +5,9 @@ import re
 # Default data path
 PATH = 'files/emd.csv'
 
-# Does not run with pytest
-"""
-if not argv[1]:
+if len(argv) >= 2:
     PATH = argv[1]
     print(argv[1])
-"""
 
 
 # List where our database will be stored
