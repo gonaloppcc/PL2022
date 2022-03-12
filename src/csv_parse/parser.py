@@ -2,14 +2,26 @@
 from sys import argv
 import re
 
+# Default data path
+PATH = 'files/emd.csv'
+
+# Does not run with pytest
+"""
+if not argv[1]:
+    PATH = argv[1]
+    print(argv[1])
+"""
+
+
 # List where our database will be stored
 db = []
+
 
 p = re.compile(
     r'^(?P<id>\w{24}),(?P<index>\d+),(?P<date>\d{4}-\d{2}-\d{2}),(?P<fname>[^\W\d]+),(?P<lname>[^\W\d]+),(?P<age>\d+),(?P<gender>(M|F)),(?P<location>[^\W\d]+),(?P<sport>\w+),(?P<club>\w+),(?P<email>(\w+((\.|-)\w+)?)+@(\w+((\.|-)\w+)?)+),(?P<federated>(true|false)),(?P<result>(true|false))$'
     )
 
-with open(argv[1], mode='r', encoding='utf-8') as file:
+with open(PATH, mode='r', encoding='utf-8') as file:
     file.readline() # Skip first line
 
     for line in file:
@@ -24,6 +36,9 @@ with open(argv[1], mode='r', encoding='utf-8') as file:
 
         # Add to database
         db.append(exam)
+
+    # Test number of items
+    assert len(db) == 300
 
     # Temporary code to check if the parsing works
     for athlete in db:
