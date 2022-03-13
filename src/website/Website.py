@@ -5,12 +5,10 @@ def boilerplate_html(title: str, header_h1: str = "Header h1"):
      <meta charset="UTF-8">
      <title>{title}</title>
    </head>
-   
    <body>
        <header><h1>{header_h1}</h1></header>
    </body>
-</html>
-    """
+</html>"""
 
 
 index = open("index.html", "w", encoding='utf-8')
