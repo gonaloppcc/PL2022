@@ -11,6 +11,6 @@ def boilerplate_html(title: str, header_h1: str = "Header h1"):
 </html>"""
 
 
-index = open("index.html", "w", encoding='utf-8')
+index = open("../html/index.html", "w", encoding='utf-8')
 
 index.write(boilerplate_html("Website"))

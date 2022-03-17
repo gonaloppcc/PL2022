@@ -12,7 +12,7 @@ class Replacer:
         return self.replaces.get(variable_name)
 
     def get_replace(self, m: re.Match):
-        if m.group(1):
+        if m.group(1): # TODO: Simplify this
             return self.find_variable(m.group(1))
 
     def use_template(self, template_path: str, replaced_path: str):
@@ -40,7 +40,7 @@ class Replacer:
 
         End of example.
         """
-        return re.sub(r'{([a-zA-Z]\w*)}', self.get_replace, line)
+        return re.sub(r'{([a-zA-Z]\w*?)}', self.get_replace, line)
 
 
 repl = Replacer({
@@ -48,6 +48,6 @@ repl = Replacer({
     "Heading": "Replaced heading"
 })
 
-example_template_path = 'template.tpl'
-example_replaced_path = 'replaced.html'
+example_template_path = '../html/template.tpl'
+example_replaced_path = '../html/replaced.html'
 repl.use_template(example_template_path, example_replaced_path)
