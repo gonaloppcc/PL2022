@@ -12,7 +12,7 @@ class Replacer:
         return self.replaces.get(variable_name)
 
     def get_replace(self, m: re.Match):
-        if m.group(1): # TODO: Simplify this
+        if m.group(1):  # TODO: Simplify this
             return self.find_variable(m.group(1))
 
     def use_template(self, template_path: str, replaced_path: str):

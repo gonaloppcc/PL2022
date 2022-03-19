@@ -1,4 +1,5 @@
 """ System module used to get the arguments passed."""
+from datetime import datetime
 import re
 
 
@@ -18,6 +19,7 @@ def parse_emd(path: str):
             exam = mo.groupdict()
 
             # Change field types
+            exam['date'] = datetime.strptime(exam['date'], '%Y-%M-%d')
             exam['index'] = int(exam['index'])
             exam['age'] = int(exam['age'])
             exam['federated'] = bool(exam['federated'])
