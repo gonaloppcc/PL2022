@@ -1,7 +1,7 @@
 import stats.stats as stats
 
 
-def boilerplate_html(title: str, header_h1: str = "Header h1"):
+def boilerplate_html(title: str):
     return f"""<!DOCTYPE html>
 <html lang="en">
    <head>
@@ -9,9 +9,11 @@ def boilerplate_html(title: str, header_h1: str = "Header h1"):
      <title>{title}</title>
    </head>
    <body>
-       <header><h1>{header_h1}</h1></header>
+       <header><h1>{title}</h1></header>
        <section>
-       """ + '\n'.join([f"<p>Year: {year}, Genders: {genders}" for year, genders in stats.get_stats('../../files/emd.csv').items()]) + """
+       """ + '\n'.join(
+        [f"<p>Year: {year}, Genders: {genders}" for year, genders in stats.get_stats('../../files/emd.csv').items()]) + """
+       <a href='#'>Check This Year Distributions!</a>
        </section>
    </body>
 </html>"""
@@ -19,4 +21,4 @@ def boilerplate_html(title: str, header_h1: str = "Header h1"):
 
 index = open("../html/index2.html", "w", encoding='utf-8')
 
-index.write(boilerplate_html("Website"))
+index.write(boilerplate_html("Registos de Exames Médicos Desportivos"))
