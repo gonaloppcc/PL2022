@@ -1,15 +1,13 @@
+from sys import argv
+
+from stats.stats import get_stats
+
 """
 Main function
 """
-
-
-def main():
-    """Main function"""
-    print('PL2022')
-
 
 # pylint: disable=unused-argument
 
 
 if __name__ == '__main__':
-    main()
+    get_stats(argv[1])

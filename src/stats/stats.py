@@ -39,11 +39,45 @@ from csv_parser.parser import parse_emd
 '''
 
 
+age_gender_distrib = {
+    "< 35":{
+        "M": [],
+        "F": []
+    },
+    ">= 35": {
+        "M": [],
+        "F": []
+    }
+}
+
+location_distrib = {}
+
+# Adds an exam to age_gender_distrib
+def add_age_gender_distrib(exam):
+    if exam['age'] < 35:
+        if exam['gender'] == 'M':
+            age_gender_distrib["< 35"]['M'].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
+        else:
+            age_gender_distrib["< 35"]['F'].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
+    else:
+        if exam['gender'] == 'M':
+            age_gender_distrib[">= 35"]['M'].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
+        else:
+            age_gender_distrib[">= 35"]['F'].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
+
+# Adds an exam to location_distrib
+def add_location_distrib(exam):
+    if exam['location'] not in location_distrib.keys():
+        location_distrib[exam['location']] = [(exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport'])]
+    else:
+        location_distrib[exam['location']].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
+
+
 def get_stats(path: str):
     exams = parse_emd(path)
 
     # Temporary code to check if the parsing works
-    # for athlete in athletes:
+    # for exam in exams:
     # print(f'{exam["fname"]} {exam["lname"]}: {exam["email"]}')
 
     print('Data loaded!')
@@ -52,6 +86,10 @@ def get_stats(path: str):
 
     # (b)
     b_stats = gender_per_year(exams)
+
+    for exam in exams:
+        add_age_gender_distrib(exam)
+        add_location_distrib(exam)
 
     return b_stats
 
