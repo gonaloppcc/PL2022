@@ -1,5 +1,7 @@
 import statistics
 
+from typing import List
+
 from csv_parser.parser import parse_emd
 
 '''
@@ -13,27 +15,57 @@ from csv_parser.parser import parse_emd
 (g) Percentagem de aptos e não aptos por ano
 '''
 
+'''
+# Defined variables from the dataset:
+# exams -> List with all exams (a exam is a dictionary)
+# exams[1] -> Index 1 exam
+# exams[1][attribute] -> Gets the attribute from the index 1 exam
+
+# Attributes:
+# id
+# index
+# date
+# fname (first name)
+# lname (lastname)
+# age
+# gender
+# location
+# sport
+# club
+# email
+# federated
+# result
+
+'''
+
 
 def get_stats(path: str):
-    athletes = parse_emd(path)
+    exams = parse_emd(path)
 
     # Temporary code to check if the parsing works
     # for athlete in athletes:
-    # print(f'{athlete["fname"]} {athlete["lname"]}: {athlete["email"]}')
+    # print(f'{exam["fname"]} {exam["lname"]}: {exam["email"]}')
 
     print('Data loaded!')
 
     # (a)
 
     # (b)
+    b_stats = gender_per_year(exams)
+
+    return b_stats
+
+
+def gender_per_year(exams: List[dict]):
     gender_distrib_year = {}  # Ano -> genero -> [M, F]
-    for athlete in athletes:
-        year = athlete['date'].year
+
+    for exam in exams:
+        year = exam['date'].year
         if year not in gender_distrib_year.keys():
             gender_distrib_year[year] = [0, 0]
 
         else:
-            if athlete['gender'] == 'M':
+            if exam['gender'] == 'M':
                 gender_distrib_year[year][0] += 1
             else:
                 gender_distrib_year[year][1] += 1
@@ -42,6 +74,5 @@ def get_stats(path: str):
         total = genders[0] + genders[1]
         genders[0] /= total
         genders[1] /= total
-
 
     return gender_distrib_year

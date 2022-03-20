@@ -1,4 +1,5 @@
 import sys
+import csv_parser.parser as parser
 
 import ply.lex as lex
 
@@ -21,6 +22,9 @@ def t_SC(t):
 
 def t_CODE_CONTENT(t):
     r'\w+'
+    variables = {}
+    exec("var = " + t.value, globals(), variables)
+    t.lexer.html += str(variables['var'])
     print('Found variable with name:', t.value)
 
 
@@ -55,6 +59,11 @@ def t_error(t):
 # Analisador léxico
 lexer = lex.lex()
 lexer.html = ""
+
+# Load the data from the dataset
+exams = parser.parse_emd('../../files/emd.csv')
+
+# Converting the html template into html
 
 for line in sys.stdin:
     lexer.input(line)
