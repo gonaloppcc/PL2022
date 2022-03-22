@@ -38,9 +38,8 @@ from csv_parser.parser import parse_emd
 
 '''
 
-
 age_gender_distrib = {
-    "< 35":{
+    "< 35": {
         "M": [],
         "F": []
     },
@@ -51,6 +50,7 @@ age_gender_distrib = {
 }
 
 location_distrib = {}
+
 
 # Adds an exam to age_gender_distrib
 def add_age_gender_distrib(exam):
@@ -64,6 +64,7 @@ def add_age_gender_distrib(exam):
             age_gender_distrib[">= 35"]['M'].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
         else:
             age_gender_distrib[">= 35"]['F'].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
+
 
 # Adds an exam to location_distrib
 def add_location_distrib(exam):
