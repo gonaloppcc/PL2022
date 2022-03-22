@@ -25,11 +25,11 @@ def t_CODE_CONTENT(t):
     r'[^}]+'
     variables = {}
     exec("var = " + t.value, globals(), variables)
-    
+
     # Check the variable type and process the string acordingly
     if type(variables['var']) is dict:
         t.lexer.html += "<ul>"
-        for key,val in variables['var'].items():
+        for key, val in variables['var'].items():
             t.lexer.html += "<li>" + t.lexer.dict_format.format(key=key, val=val) + "</li>\n"
         t.lexer.html += "</ul>"
     elif type(variables['var']) is list:
@@ -74,11 +74,11 @@ def t_error(t):
 # path -> html template path
 # list_form -> how each element (elem) of the lists should be formatted
 # dict_form -> how each element (key,value) of the dicts should be formatted
-def parse_html(path, list_form, dict_form): 
+def parse_html(path, list_form, dict_form):
     # Analisador léxico
     lexer = lex.lex()
     lexer.html = ""
-    
+
     # Save the formats into the lexer to be accessible to the token functions
     lexer.list_format = list_form
     lexer.dict_format = dict_form
