@@ -70,52 +70,69 @@ sport_distrib_year = {
 
 # Adds an exam to age_gender_distrib
 def add_age_gender_distrib(exam):
+    identifier = exam['id']
+    name = f'{exam["fname"]} {exam["lname"]}'
+    sport = exam['sport']
+
     if exam['age'] < 35:
         if exam['gender'] == 'M':
-            age_gender_distrib['distrib']["< 35"]['M'].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
+            age_gender_distrib['distrib']["< 35"]['M'].append((identifier, name, sport))
         else:
-            age_gender_distrib['distrib']["< 35"]['F'].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
+            age_gender_distrib['distrib']["< 35"]['F'].append((identifier, name, sport))
     else:
         if exam['gender'] == 'M':
-            age_gender_distrib['distrib'][">= 35"]['M'].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
+            age_gender_distrib['distrib'][">= 35"]['M'].append((identifier, name, sport))
         else:
-            age_gender_distrib['distrib'][">= 35"]['F'].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
+            age_gender_distrib['distrib'][">= 35"]['F'].append((identifier, name, sport))
 
 
 # Adds an exam to location_distrib
 def add_location_distrib(exam):
-    if exam['location'] not in location_distrib.keys():
-        location_distrib['distrib'][exam['location']] = [(exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport'])]
+    identifier = exam['id']
+    name = f'{exam["fname"]} {exam["lname"]}'
+    sport = exam['sport']
+    location = exam['location']
+
+    if location not in location_distrib.keys():
+        location_distrib['distrib'][location] = [(identifier, name, sport)]
     else:
-        location_distrib['distrib'][exam['location']].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
+        location_distrib['distrib'][location].append((identifier, name, sport))
 
 
 def add_gender_per_year(exam):
+    identifier = exam['id']
+    name = f'{exam["fname"]} {exam["lname"]}'
+    sport = exam['sport']
+    gender = exam['gender']
     year = exam['date'].year
+
     if year not in gender_distrib_year['distrib'].keys():
         gender_distrib_year['distrib'][year] = {
             'M': [],
             'F': []
         }
-    if exam['gender'] == 'M':
-        gender_distrib_year['distrib'][year]['M'].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
+
+    if gender == 'M':
+        gender_distrib_year['distrib'][year]['M'].append((identifier, name, sport))
     else:
-        gender_distrib_year['distrib'][year]['F'].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
+        gender_distrib_year['distrib'][year]['F'].append((identifier, name, sport))
 
 
 def add_sport_distrib_year(exam):
     year = exam['date'].year
+    identifier = exam['id']
+    name = f'{exam["fname"]} {exam["lname"]}'
     sport = exam['sport']
 
     if year not in sport_distrib_year['distrib'].keys():
         sport_distrib_year['distrib'][year] = {
-            exam['sport']: [(exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport'])]
+            sport: [(identifier, name, sport)]
         }
     else:
         if sport not in sport_distrib_year['distrib'][year].keys():
-            sport_distrib_year['distrib'][year][sport] = [(exam['id'], f"{exam['fname']} {exam['lname']}", sport)]
+            sport_distrib_year['distrib'][year][sport] = [(identifier, name, sport)]
         else:
-            sport_distrib_year['distrib'][year][sport].append((exam['id'], f"{exam['fname']} {exam['lname']}", sport))
+            sport_distrib_year['distrib'][year][sport].append((identifier, name, sport))
 
 
 def get_stats(path: str):
