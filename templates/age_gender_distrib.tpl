@@ -9,13 +9,13 @@
     <body>
         <h1>< 35</h1>
         <h2>M</h2>
-            {{stats.age_gender_distrib['< 35']['M']}}
+            {{stats.age_gender_distrib['distrib']['< 35']['M']}}
         <h2>F</h2>
-            {{stats.age_gender_distrib['< 35']['F']}}
+            {{stats.age_gender_distrib['distrib']['< 35']['F']}}
         <h1>>= 35</h1>
         <h2>M</h2>
-            {{stats.age_gender_distrib['>= 35']['M']}}
+            {{stats.age_gender_distrib['distrib']['>= 35']['M']}}
         <h2>F</h2>
-            {{stats.age_gender_distrib['>= 35']['F']}}
+            {{stats.age_gender_distrib['distrib']['>= 35']['F']}}
     </body>
 </html>

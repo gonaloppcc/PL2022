@@ -39,39 +39,63 @@ from csv_parser.parser import parse_emd
 '''
 
 age_gender_distrib = {
-    "< 35": {
-        "M": [],
-        "F": []
-    },
-    ">= 35": {
-        "M": [],
-        "F": []
+    'name': 'Gender Distribution by age',
+    'distrib': {
+        '< 35': {
+            'M': [],
+            'F': []
+        },
+        '>= 35': {
+            'M': [],
+            'F': []
+        }
     }
 }
 
-location_distrib = {}
+location_distrib = {
+    'name': 'Location distribution',
+    'distrib': {}
+}
+
+gender_distrib_year = {
+    'name': 'Gender distribuition by year',
+    'distrib': {}
+} # Ano -> genero -> [M, F]
 
 
 # Adds an exam to age_gender_distrib
 def add_age_gender_distrib(exam):
     if exam['age'] < 35:
         if exam['gender'] == 'M':
-            age_gender_distrib["< 35"]['M'].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
+            age_gender_distrib['distrib']["< 35"]['M'].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
         else:
-            age_gender_distrib["< 35"]['F'].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
+            age_gender_distrib['distrib']["< 35"]['F'].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
     else:
         if exam['gender'] == 'M':
-            age_gender_distrib[">= 35"]['M'].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
+            age_gender_distrib['distrib'][">= 35"]['M'].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
         else:
-            age_gender_distrib[">= 35"]['F'].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
+            age_gender_distrib['distrib'][">= 35"]['F'].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
 
 
 # Adds an exam to location_distrib
 def add_location_distrib(exam):
     if exam['location'] not in location_distrib.keys():
-        location_distrib[exam['location']] = [(exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport'])]
+        location_distrib['distrib'][exam['location']] = [(exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport'])]
     else:
-        location_distrib[exam['location']].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
+        location_distrib['distrib'][exam['location']].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
+
+
+def add_gender_per_year(exam):
+    year = exam['date'].year
+    if year not in gender_distrib_year['distrib'].keys():
+        gender_distrib_year['distrib'][year] = {
+            'M': [],
+            'F': []
+        }
+    if exam['gender'] is 'M':
+        gender_distrib_year['distrib'][year]['M'].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
+    else:
+        gender_distrib_year['distrib'][year]['F'].append((exam['id'], f"{exam['fname']} {exam['lname']}", exam['sport']))
 
 
 def get_stats(path: str):
@@ -86,32 +110,8 @@ def get_stats(path: str):
     # (a)
 
     # (b)
-    b_stats = gender_per_year(exams)
 
     for exam in exams:
         add_age_gender_distrib(exam)
         add_location_distrib(exam)
-
-    return b_stats
-
-
-def gender_per_year(exams: List[dict]):
-    gender_distrib_year = {}  # Ano -> genero -> [M, F]
-
-    for exam in exams:
-        year = exam['date'].year
-        if year not in gender_distrib_year.keys():
-            gender_distrib_year[year] = [0, 0]
-
-        else:
-            if exam['gender'] == 'M':
-                gender_distrib_year[year][0] += 1
-            else:
-                gender_distrib_year[year][1] += 1
-
-    for genders in gender_distrib_year.values():
-        total = genders[0] + genders[1]
-        genders[0] /= total
-        genders[1] /= total
-
-    return gender_distrib_year
+        add_gender_per_year(exam)
