@@ -1,7 +1,3 @@
-import statistics
-
-from typing import List
-
 from csv_parser.parser import parse_emd
 
 '''
