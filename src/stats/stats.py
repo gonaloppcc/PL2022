@@ -63,6 +63,11 @@ sport_distrib_year = {
     'distrib': {}
 }
 
+federated_by_year = {
+    'name': 'Federated by year',
+    'distrib': {}
+}
+
 
 # Adds an exam to age_gender_distrib
 def add_age_gender_distrib(exam):
@@ -131,6 +136,22 @@ def add_sport_distrib_year(exam):
             sport_distrib_year['distrib'][year][sport].append((identifier, name, sport))
 
 
+def add_federated_by_year(exam):
+    identifier = exam['id']
+    name = f'{exam["fname"]} {exam["lname"]}'
+    sport = exam['sport']
+    year = exam['date'].year
+    federated = exam['federated']
+
+    if year not in federated_by_year['distrib'].keys():
+        federated_by_year['distrib'][year] = {
+            True: [],
+            False: []
+        }
+
+    federated_by_year['distrib'][year][federated].append((identifier, name, sport))
+
+
 def get_stats(path: str):
     exams = parse_emd(path)
 
@@ -149,3 +170,4 @@ def get_stats(path: str):
         add_location_distrib(exam)
         add_gender_per_year(exam)
         add_sport_distrib_year(exam)
+        add_federated_by_year(exam)

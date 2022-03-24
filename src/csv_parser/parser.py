@@ -22,8 +22,8 @@ def parse_emd(path: str):
             exam['date'] = datetime.strptime(exam['date'], '%Y-%M-%d')
             exam['index'] = int(exam['index'])
             exam['age'] = int(exam['age'])
-            exam['federated'] = bool(exam['federated'])
-            exam['result'] = bool(exam['result'])
+            exam['federated'] = exam['federated'] == 'true'
+            exam['result'] = exam['result'] == 'true'
 
             # Add to database
             athletes.append(exam)
