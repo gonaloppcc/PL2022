@@ -39,4 +39,4 @@ if __name__ == '__main__':
         template = argv[2]
 
         stats.get_stats(csv)
-        parse_html(template, write_list, write_dict)
+        parse_html(template, stats)

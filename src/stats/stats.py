@@ -1,4 +1,10 @@
 from csv_parser.parser import parse_emd
+from stats.ResultByYear import ResultByYear
+from stats.GenderByYear import GenderByYear
+from stats.LocationDistrib import LocationDistrib
+from stats.FederatedByYear import FederatedByYear
+from stats.AgeGenderDistrib import AgeGenderDistrib
+from stats.SportByYear import SportByYear
 
 '''
 1. Página principal: de nome "index.html", contendo os seguintes indicadores estatísticos:
@@ -34,143 +40,14 @@ from csv_parser.parser import parse_emd
 
 '''
 
-age_gender_distrib = {
-    'name': 'Gender Distribution by age',
-    'distrib': {
-        '< 35': {
-            'M': [],
-            'F': []
-        },
-        '>= 35': {
-            'M': [],
-            'F': []
-        }
-    }
+statistics = {
+    'age_gender_distrib': AgeGenderDistrib(),
+    'federated_by_year': FederatedByYear(),
+    'sport_by_year': SportByYear(),
+    'location_distrib': LocationDistrib(),
+    'gender_by_year': GenderByYear(),
+    'result_by_year': ResultByYear()
 }
-
-location_distrib = {
-    'name': 'Location distribution',
-    'distrib': {}
-}
-
-gender_distrib_year = {
-    'name': 'Gender distribution by year',
-    'distrib': {}
-} # Ano -> genero -> [M, F]
-
-sport_distrib_year = {
-    'name': 'Sport distribution by year and total',
-    'distrib': {}
-}
-
-federated_by_year = {
-    'name': 'Federated by year',
-    'distrib': {}
-}
-
-result_by_year = {
-    'name': 'Results by year',
-    'distrib': {}
-}
-
-
-# Adds an exam to age_gender_distrib
-def add_age_gender_distrib(exam):
-    identifier = exam['id']
-    name = f'{exam["fname"]} {exam["lname"]}'
-    sport = exam['sport']
-
-    if exam['age'] < 35:
-        if exam['gender'] == 'M':
-            age_gender_distrib['distrib']["< 35"]['M'].append((identifier, name, sport))
-        else:
-            age_gender_distrib['distrib']["< 35"]['F'].append((identifier, name, sport))
-    else:
-        if exam['gender'] == 'M':
-            age_gender_distrib['distrib'][">= 35"]['M'].append((identifier, name, sport))
-        else:
-            age_gender_distrib['distrib'][">= 35"]['F'].append((identifier, name, sport))
-
-
-# Adds an exam to location_distrib
-def add_location_distrib(exam):
-    identifier = exam['id']
-    name = f'{exam["fname"]} {exam["lname"]}'
-    sport = exam['sport']
-    location = exam['location']
-
-    if location not in location_distrib.keys():
-        location_distrib['distrib'][location] = [(identifier, name, sport)]
-    else:
-        location_distrib['distrib'][location].append((identifier, name, sport))
-
-
-def add_gender_per_year(exam):
-    identifier = exam['id']
-    name = f'{exam["fname"]} {exam["lname"]}'
-    sport = exam['sport']
-    gender = exam['gender']
-    year = exam['date'].year
-
-    if year not in gender_distrib_year['distrib'].keys():
-        gender_distrib_year['distrib'][year] = {
-            'M': [],
-            'F': []
-        }
-
-    if gender == 'M':
-        gender_distrib_year['distrib'][year]['M'].append((identifier, name, sport))
-    else:
-        gender_distrib_year['distrib'][year]['F'].append((identifier, name, sport))
-
-
-def add_sport_distrib_year(exam):
-    year = exam['date'].year
-    identifier = exam['id']
-    name = f'{exam["fname"]} {exam["lname"]}'
-    sport = exam['sport']
-
-    if year not in sport_distrib_year['distrib'].keys():
-        sport_distrib_year['distrib'][year] = {
-            sport: [(identifier, name, sport)]
-        }
-    else:
-        if sport not in sport_distrib_year['distrib'][year].keys():
-            sport_distrib_year['distrib'][year][sport] = [(identifier, name, sport)]
-        else:
-            sport_distrib_year['distrib'][year][sport].append((identifier, name, sport))
-
-
-def add_federated_by_year(exam):
-    identifier = exam['id']
-    name = f'{exam["fname"]} {exam["lname"]}'
-    sport = exam['sport']
-    year = exam['date'].year
-    federated = exam['federated']
-
-    if year not in federated_by_year['distrib'].keys():
-        federated_by_year['distrib'][year] = {
-            True: [],
-            False: []
-        }
-
-    federated_by_year['distrib'][year][federated].append((identifier, name, sport))
-
-
-def add_result_by_year(exam):
-    identifier = exam['id']
-    name = f'{exam["fname"]} {exam["lname"]}'
-    sport = exam['sport']
-    year = exam['date'].year
-    result = exam['result']
-
-    if year not in result_by_year['distrib'].keys():
-        result_by_year['distrib'][year] = {
-            True: [],
-            False: []
-        }
-
-    result_by_year['distrib'][year][result].append((identifier, name, sport))
 
 
 def get_stats(path: str):
@@ -187,9 +64,9 @@ def get_stats(path: str):
     # (b)
 
     for exam in exams:
-        add_age_gender_distrib(exam)
-        add_location_distrib(exam)
-        add_gender_per_year(exam)
-        add_sport_distrib_year(exam)
-        add_federated_by_year(exam)
-        add_result_by_year(exam)
+        statistics['age_gender_distrib'].add_elem(exam)
+        statistics['federated_by_year'].add_elem(exam)
+        statistics['sport_by_year'].add_elem(exam)
+        statistics['location_distrib'].add_elem(exam)
+        statistics['gender_by_year'].add_elem(exam)
+        statistics['result_by_year'].add_elem(exam)

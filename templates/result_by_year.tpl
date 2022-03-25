@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{{stats.result_by_year['name']}}</title>
+        <title>{{name[result_by_year]}}</title>
     </head>
 
     <body>
-        {{stats.result_by_year['distrib']}}
+        <h1>{{name[result_by_year]}}</h1>
+        <h2>Athletes</h2>
+        {{data[result_by_year]}}
     </body>
 </html>

@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{{stats.federated_by_year['name']}}</title>
+        <title>{{name[federated_by_year]}}</title>
     </head>
 
     <body>
-        {{stats.federated_by_year['distrib']}}
+        <h1>{{name[federated_by_year]}}</h1>
+        <h2>Athletes</h2>
+        {{data[federated_by_year]}}
     </body>
 </html>

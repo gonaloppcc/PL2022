@@ -5,52 +5,93 @@ import stats.stats as stats
 import ply.lex as lex
 
 tokens = [
-    'SC',  # START CODE
+    'SC', # START CODE
+    'EC', # END CODE
+    'SNAME',  # START NAME
+    'ENAME', # END NAME
+    'SSTATS', # START STATS
+    'ESTATS', # END STATS
+    'SDATA', # START DATA
+    'EDATA', # END DATA
     'CONTENT',  # CONTENT
-    'EC',  # END CODE
     'NEW_LINE',  # NEW LINE
 ]
 
 states = (
-    ('CODE', 'exclusive'),
+    ('CODE', 'exclusive'), # Code to be parsed
+    ('NAME', 'exclusive'), # Print name
+    ('STATS', 'exclusive'), # Print stats
+    ('DATA', 'exclusive') # Print data
 )
 
 
+# Start code state
 def t_SC(t):
     r'{{'
     t.lexer.begin('CODE')
 
-
-def t_CODE_CONTENT(t):
-    r'[^}]+'
-    variables = {}
-    exec("var = " + t.value, globals(), variables)
-
-    var = variables['var']
-    if type(var) is dict:
-        t.lexer.html += t.lexer.dict_func(var, 1)
-    elif type(var) is list:
-        t.lexer.html += t.lexer.list_func(var, 1)
-    else:
-        t.lexer.html += str(var)
-
-    print('Found variable with name:', t.value)
-
-
+# End code state
 def t_CODE_EC(t):
     r'}}'
     t.lexer.begin('INITIAL')
 
 
+# Start name state
+def t_CODE_SNAME(t):
+    r'name\['
+    t.lexer.begin('NAME')
+
+# Print name
+def t_NAME_CONTENT(t):
+    r'[a-zA-Z]\w+'
+    t.lexer.html += t.lexer.module.statistics[t.value].get_name()
+
+# End name state
+def t_NAME_ENAME(t):
+    r'\]'
+    t.lexer.begin('CODE')
+
+
+# Start stats state
+def t_CODE_SSTATS(t):
+    r'stats\['
+    t.lexer.begin('STATS')
+
+# Print the stats
+def t_STATS_CONTENT(t):
+    r'[a-zA-Z]\w+'
+    t.lexer.html += t.lexer.module.statistics[t.value].print_stats()
+
+# End stats state
+def t_STATS_ESTATS(t):
+    r'\]'
+    t.lexer.begin('CODE')
+
+
+# Start data state
+def t_CODE_SDATA(t):
+    r'data\['
+    t.lexer.begin('DATA')
+
+# Print the data
+def t_DATA_CONTENT(t):
+    r'[a-zA-Z]\w+'
+    t.lexer.html += t.lexer.module.statistics[t.value].print_data()
+
+# End data state
+def t_DATA_EDATA(t):
+    r'\]'
+    t.lexer.begin('CODE')
+
+# Any text outside the {{ }} will just get copied to the html
+def t_CONTENT(t):
+    r'.'
+    t.lexer.html += t.value
+
+
 def t_CODE_error(t):
     print(f"Illegal character '{t.value[0]}' in line {t.lineno} in collumn {t.lexpos + 1}")
     sys.exit(2)
-
-
-def t_EC(t):
-    r'(.)'
-    t.lexer.html += t.value
-    # return t
 
 
 def t_NEW_LINE(t):
@@ -66,19 +107,16 @@ def t_error(t):
 
 
 # path -> html template path
-# list_func -> Function that turns a list into string
-# dict_form -> Function that turns a dict into string
-def parse_html(path, list_func, dict_func):
+# module -> Module containing the statistics
+def parse_html(path, module):
     # Analisador léxico
     lexer = lex.lex()
     lexer.html = ""
 
-    # Save the formats into the lexer to be accessible to the token functions
-    lexer.list_func = list_func
-    lexer.dict_func = dict_func
+    # Module where the stats are stored
+    lexer.module = module
 
     # Converting the html template into html
-
     with open(path, mode='r') as template:
         for line in template:
             lexer.input(line)
