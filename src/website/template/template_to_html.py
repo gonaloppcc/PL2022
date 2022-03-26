@@ -112,7 +112,7 @@ def t_LINKLINK_ELINK(t):
     template = t.lexer.templates[-1]
     link = t.lexer.templates[-1]['link'].split('.')[0] + '.html'
     text = t.lexer.templates[-1]['text']
-    t.lexer.html += f'<a href="{link}">{text}</a>\n'
+    t.lexer.html += f'<a href="{link}">{text}</a>'
     t.lexer.begin('CODE')
 
 

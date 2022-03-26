@@ -1,4 +1,5 @@
 from csv_parser.parser import parse_emd
+from stats.ExtremeDates import ExtremeDates
 from stats.ResultByYear import ResultByYear
 from stats.GenderByYear import GenderByYear
 from stats.LocationDistrib import LocationDistrib
@@ -46,7 +47,8 @@ statistics = {
     'sport_by_year': SportByYear(),
     'location_distrib': LocationDistrib(),
     'gender_by_year': GenderByYear(),
-    'result_by_year': ResultByYear()
+    'result_by_year': ResultByYear(),
+    'extreme_dates': ExtremeDates()
 }
 
 
@@ -70,3 +72,4 @@ def get_stats(path: str):
         statistics['location_distrib'].add_elem(exam)
         statistics['gender_by_year'].add_elem(exam)
         statistics['result_by_year'].add_elem(exam)
+        statistics['extreme_dates'].add_elem(exam)

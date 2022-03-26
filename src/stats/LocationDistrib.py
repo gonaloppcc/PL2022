@@ -30,15 +30,15 @@ class LocationDistrib(Statistic):
             s += f'<h1>{location}</h1>\n'
             s += '<ul>\n'
             for athlete in athletes:
-                s += f'<li>{athlete["id"]} - {athlete["name"]} - {athlete["sport"]}</li>'
+                s += f'<li>{athlete["id"]} - {athlete["name"]} - {athlete["sport"]}</li>\n'
             s += '</ul>\n'
         
         return s
     
     def print_stats(self):
-        s = ''
-        s += '<ul>\n'
+        s = '<ul>\n'
         for location, num in self.get_stats().items():
-            s += f'<li>{location} -> {num}</li>'
+            s += f'<li>{location} -> {num}</li>\n'
         
+        s += '</ul>\n'
         return s
