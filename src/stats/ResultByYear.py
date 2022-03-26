@@ -56,8 +56,8 @@ class ResultByYear(Statistic):
         for year, results in self.get_stats().items():
             s += f'<h3>{year}</h3>\n'
             s += '<ul>\n'
-            s += f'<li>True -> {results[True]}</li>\n'
-            s += f'<li>False -> {results[False]}</li>\n'
+            s += f'<li>Positive -> {results[True]}</li>\n'
+            s += f'<li>Negative -> {results[False]}</li>\n'
             s += '</ul>\n'
 
         return s

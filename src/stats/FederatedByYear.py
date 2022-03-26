@@ -57,7 +57,7 @@ class FederatedByYear(Statistic):
         for year, results in self.get_stats().items():
             s += f'<h2>{year}</h2>\n'
             s += '<ul>\n'
-            s += f'<li>True -> {results[True]}</li>\n'
-            s += f'<li>False -> {results[False]}</li>\n'
+            s += f'<li>Federated -> {results[True]}</li>\n'
+            s += f'<li>Not federated -> {results[False]}</li>\n'
             s += '</ul>\n'
         return s

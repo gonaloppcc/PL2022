@@ -69,9 +69,9 @@ class AgeGenderDistrib(Statistic):
     def print_stats(self):
         s = ''
         for age, val in self.get_stats().items():
-            s += f'<h3>{age} -> {val[0]}</h3>\n'
+            s += f'<h3>{age} years -> {val[0]} athletes</h3>\n'
             s += '<ul>\n'
-            s += f'<li>M -> {val[1][0]}</li>\n'
-            s += f'<li>F -> {val[1][1]}</li>\n'
+            s += f'<li>Number of male athletes: {val[1][0]}</li>\n'
+            s += f'<li>Number of female athletes: {val[1][1]}</li>\n'
             s += '</ul>\n'
         return s

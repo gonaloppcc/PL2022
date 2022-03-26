@@ -56,8 +56,8 @@ class GenderByYear(Statistic):
         for year, genders in self.get_stats().items():
             s += f'<h3>{year}</h3>\n'
             s += '<ul>\n'
-            s += f'<li>M -> {genders["M"]}</li>\n'
-            s += f'<li>F -> {genders["F"]}</li>\n'
+            s += f'<li>Number of male athletes: {genders["M"]}</li>\n'
+            s += f'<li>Number of male athletes: {genders["F"]}</li>\n'
             s += '</ul>\n'
 
         return s
