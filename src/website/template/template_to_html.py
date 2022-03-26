@@ -5,14 +5,15 @@ import ply.lex as lex
 tokens = [
     'SC',  # START CODE
     'EC',  # END CODE
+    'END',  # Generic end
     'SNAME',  # START NAME
-    'ENAME',  # END NAME
+    # 'ENAME',  # END NAME
     'SSTATS',  # START STATS
-    'ESTATS',  # END STATS
+    #  'ESTATS',  # END STATS
     'SDATA',  # START DATA
-    'EDATA',  # END DATA
+    # 'EDATA',  # END DATA
     'SLINK',  # START LINK
-    'ELINK',  # END LINK
+    #  'ELINK',  # END LINK
     'COMMA',  # COMMA
     'CONTENT',  # CONTENT
     'NEW_LINE',  # NEW LINE
@@ -53,7 +54,7 @@ def t_NAME_CONTENT(t):
 
 
 # End name state
-def t_NAME_ENAME(t):
+def t_NAME_END(t):
     r'\)'
     t.lexer.begin('CODE')
 
@@ -71,7 +72,7 @@ def t_STATS_CONTENT(t):
 
 
 # End stats state
-def t_STATS_ESTATS(t):
+def t_STATS_END(t):
     r'\)'
     t.lexer.begin('CODE')
 
@@ -89,7 +90,7 @@ def t_DATA_CONTENT(t):
 
 
 # End data state
-def t_DATA_EDATA(t):
+def t_DATA_END(t):
     r'\)'
     t.lexer.begin('CODE')
 
@@ -116,7 +117,7 @@ def t_LINKLINK_CONTENT(t):
     t.lexer.templates[-1]['link'] = t.value
 
 
-def t_LINKLINK_ELINK(t):
+def t_LINKLINK_END(t):
     r'\)'
     template = t.lexer.templates[-1]
     link = t.lexer.templates[-1]['link'].split('.')[0] + '.html'

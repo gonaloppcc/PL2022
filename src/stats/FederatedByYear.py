@@ -36,13 +36,15 @@ class FederatedByYear(Statistic):
         for year, results in self.get_data().items():
             s += f'<h2>{year}</h2>\n'
 
-            s += '<h3>True</h3>\n'
+            s += '<h3>Federated</h3>\n'
             s += '<ul>\n'
+
             for athlete in results[True]:
                 s += f'<li>{athlete["id"]} - {athlete["name"]}</li>\n'
+
             s += '</ul>\n'
 
-            s += '<h3>False</h3>\n'
+            s += '<h3>Not federated</h3>\n'
             s += '<ul>\n'
             for athlete in results[False]:
                 s += f'<li>{athlete["id"]} - {athlete["name"]}</li>\n'

@@ -35,7 +35,7 @@ class GenderByYear(Statistic):
     def print_data(self):
         s = ''
         for year, genders in self.get_data().items():
-            s += f'<h1>{year}<h1>\n'
+            s += f'<h1>{year}</h1>\n'
 
             s += '<h2>M</h2>\n'
             s += '<ul>\n'
