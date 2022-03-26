@@ -1,10 +1,10 @@
 from csv_parser.parser import parse_emd
+from stats.AgeGenderDistrib import AgeGenderDistrib
 from stats.ExtremeDates import ExtremeDates
-from stats.ResultByYear import ResultByYear
+from stats.FederatedByYear import FederatedByYear
 from stats.GenderByYear import GenderByYear
 from stats.LocationDistrib import LocationDistrib
-from stats.FederatedByYear import FederatedByYear
-from stats.AgeGenderDistrib import AgeGenderDistrib
+from stats.ResultByYear import ResultByYear
 from stats.SportByYear import SportByYear
 
 '''

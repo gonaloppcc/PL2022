@@ -1,5 +1,7 @@
 import datetime
+
 from stats.Statistic import Statistic
+
 
 class ExtremeDates(Statistic):
     def __init__(self):
@@ -21,13 +23,12 @@ class ExtremeDates(Statistic):
         }
         self.set_data(data)
 
-
     def add_elem(self, exam):
         identifier = exam['id']
         name = f'{exam["fname"]} {exam["lname"]}'
         date = exam['date']
         sport = exam['sport']
-        
+
         athlete = {
             'id': identifier,
             'name': name,
@@ -59,4 +60,3 @@ class ExtremeDates(Statistic):
         s += '</ul>\n'
 
         return s
-

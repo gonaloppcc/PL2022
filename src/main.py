@@ -1,7 +1,9 @@
+import os
 from sys import argv
 
 import stats.stats as stats
 from website.template.template_to_html import parse_html
+
 
 def write_list(var, depth):
     s = '<ul>'
@@ -18,7 +20,7 @@ def write_list(var, depth):
 
 def write_dict(var, depth):
     s = ''
-    for key,value in var.items():        
+    for key, value in var.items():
         s += '<h' + str(depth) + '>' + f'{key}' + '</h' + str(depth) + '>\n'
         if type(value) is dict:
             s += write_dict(value, depth + 1)
@@ -29,15 +31,33 @@ def write_dict(var, depth):
 
     return s
 
-if __name__ == '__main__':
-    if len(argv) != 4:
-        print('Invalid number of arguments!', 'Please specify the emd file path and the template file path!', sep='\n')
-        exit(2)
 
-    else:
-        csv = argv[1]
-        template = argv[2]
+if __name__ == '__main__':
+    out_path = 'out'  # Default output folder
+    if len(argv) == 4:
         out_path = argv[3]
 
-        stats.get_stats(csv)
-        parse_html(template, out_path, stats)
+    elif len(argv) == 3:  # No optional argument provided
+        pass
+
+    else:
+        print('Invalid number of arguments!', 'Please specify the emd file path and the template file path!',
+              'Optionaly you can provide the name of output path.', sep='\n')
+        exit(2)
+
+    csv_path = argv[1]
+    template_path = argv[2]
+
+    if not os.path.isfile(csv_path):
+        print('Invalid csv file path!')
+        exit(2)
+
+    if not os.path.isfile(template_path):
+        print('Invalid template file path!')
+        exit(2)
+
+    if not os.path.exists(out_path):  # Creates the output folder if it does not exist
+        os.mkdir(out_path)
+
+    stats.get_stats(csv_path)
+    parse_html(template_path, out_path, stats)

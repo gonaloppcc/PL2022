@@ -1,32 +1,30 @@
 import sys
-import csv_parser.parser as parser
-import stats.stats as stats
 
 import ply.lex as lex
 
 tokens = [
-    'SC', # START CODE
-    'EC', # END CODE
+    'SC',  # START CODE
+    'EC',  # END CODE
     'SNAME',  # START NAME
-    'ENAME', # END NAME
-    'SSTATS', # START STATS
-    'ESTATS', # END STATS
-    'SDATA', # START DATA
-    'EDATA', # END DATA
-    'SLINK', # START LINK
-    'ELINK', # END LINK
-    'COMMA', # COMMA
+    'ENAME',  # END NAME
+    'SSTATS',  # START STATS
+    'ESTATS',  # END STATS
+    'SDATA',  # START DATA
+    'EDATA',  # END DATA
+    'SLINK',  # START LINK
+    'ELINK',  # END LINK
+    'COMMA',  # COMMA
     'CONTENT',  # CONTENT
     'NEW_LINE',  # NEW LINE
 ]
 
 states = (
-    ('CODE', 'exclusive'), # Code to be parsed
-    ('NAME', 'exclusive'), # Print name
-    ('STATS', 'exclusive'), # Print stats
-    ('DATA', 'exclusive'), # Print data
-    ('LINKTEXT', 'exclusive'), # Link text
-    ('LINKLINK', 'exclusive') # Link
+    ('CODE', 'exclusive'),  # Code to be parsed
+    ('NAME', 'exclusive'),  # Print name
+    ('STATS', 'exclusive'),  # Print stats
+    ('DATA', 'exclusive'),  # Print data
+    ('LINKTEXT', 'exclusive'),  # Link text
+    ('LINKLINK', 'exclusive')  # Link
 )
 
 
@@ -34,6 +32,7 @@ states = (
 def t_SC(t):
     r'{{'
     t.lexer.begin('CODE')
+
 
 # End code state
 def t_CODE_EC(t):
@@ -46,10 +45,12 @@ def t_CODE_SNAME(t):
     r'name\('
     t.lexer.begin('NAME')
 
+
 # Print name
 def t_NAME_CONTENT(t):
     r'[a-zA-Z]\w+'
     t.lexer.html += t.lexer.module.statistics[t.value].get_name()
+
 
 # End name state
 def t_NAME_ENAME(t):
@@ -62,10 +63,12 @@ def t_CODE_SSTATS(t):
     r'stats\('
     t.lexer.begin('STATS')
 
+
 # Print the stats
 def t_STATS_CONTENT(t):
     r'[a-zA-Z]\w+'
     t.lexer.html += t.lexer.module.statistics[t.value].print_stats()
+
 
 # End stats state
 def t_STATS_ESTATS(t):
@@ -78,10 +81,12 @@ def t_CODE_SDATA(t):
     r'data\('
     t.lexer.begin('DATA')
 
+
 # Print the data
 def t_DATA_CONTENT(t):
     r'[a-zA-Z]\w+'
     t.lexer.html += t.lexer.module.statistics[t.value].print_data()
+
 
 # End data state
 def t_DATA_EDATA(t):
@@ -93,19 +98,23 @@ def t_CODE_SLINK(t):
     r'link\('
     t.lexer.begin('LINKTEXT')
 
+
 def t_LINKTEXT_CONTENT(t):
     r'[^,)]+'
     t.lexer.templates.append({
         'text': t.value
     })
 
+
 def t_LINKTEXT_COMMA(t):
     r','
     t.lexer.begin('LINKLINK')
 
+
 def t_LINKLINK_CONTENT(t):
     r'[^,)]+'
     t.lexer.templates[-1]['link'] = t.value
+
 
 def t_LINKLINK_ELINK(t):
     r'\)'
@@ -129,7 +138,7 @@ def t_CONTENT(t):
     t.lexer.html += t.value
 
 
-def t_CODE_error(t):
+def t_ANY_error(t):
     print(f"Illegal character '{t.value[0]}' in line {t.lineno} in collumn {t.lexpos + 1}")
     sys.exit(2)
 
@@ -138,12 +147,6 @@ def t_NEW_LINE(t):
     r'\n'
     t.lexer.html += t.value
     t.lexer.lineno += 1
-
-
-# Função de erro
-def t_error(t):
-    print(f"ERROR")
-    t.lexer.skip(1)  # Para continuar a analisar a string
 
 
 # path -> html template path
@@ -165,13 +168,12 @@ def parse_html(path, out_path, module):
                 pass
 
     toks = path.split('/')
-    file = toks[-1].split('.')[0] + '.html' 
+    file = toks[-1].split('.')[0] + '.html'
     folder = '/'.join(toks[0:-1])
 
-
-    with open(out_path + '/' + file, mode='w') as out:
+    with open(out_path + '/' + file, mode='w', encoding='utf-8') as out:
         out.write(lexer.html)
-    
+
     for template in lexer.templates:
         new_out_path = out_path + '/' + '/'.join(template['link'].split('/')[0:-1])
 

@@ -2,23 +2,23 @@ from stats.Statistic import Statistic
 
 
 class AgeGenderDistrib(Statistic):
-    
+
     def __init__(self):
         super().__init__()
         self.set_name('Gender distribution by age')
         data = {
             '< 35': {
-                    'M': [],
-                    'F': []
+                'M': [],
+                'F': []
             },
             '>= 35': {
-                    'M': [],
-                    'F': []
+                'M': [],
+                'F': []
             }
         }
         stats = {
-            '< 35': (0,(0,0)),
-            '>= 35': (0,(0,0))
+            '< 35': (0, (0, 0)),
+            '>= 35': (0, (0, 0))
         }
         self.set_data(data)
         self.set_stats(stats)
@@ -32,7 +32,7 @@ class AgeGenderDistrib(Statistic):
         athlete = {
             'id': identifier,
             'name': name,
-            'age': age 
+            'age': age
         }
 
         if age < 35:
@@ -56,7 +56,7 @@ class AgeGenderDistrib(Statistic):
 
     def print_data(self):
         s = ''
-        for age,distrib in self.get_data().items():
+        for age, distrib in self.get_data().items():
             s += '<h1>' + age + '</h1>\n'
             for gender, athletes in distrib.items():
                 s += '<h2>' + gender + '</h2>\n'
@@ -68,7 +68,7 @@ class AgeGenderDistrib(Statistic):
 
     def print_stats(self):
         s = ''
-        for age,val in self.get_stats().items():
+        for age, val in self.get_stats().items():
             s += f'<h3>{age} -> {val[0]}</h3>\n'
             s += '<ul>\n'
             s += f'<li>M -> {val[1][0]}</li>\n'

@@ -3,9 +3,9 @@ from abc import abstractmethod
 
 class Statistic:
     def __init__(self):
-        self._name = 'Stat' # Name of the statistic
-        self._stats = {}    # Statistics
-        self._data = {}     # Elements
+        self._name = 'Stat'  # Name of the statistic
+        self._stats = {}  # Statistics
+        self._data = {}  # Elements
 
     def set_name(self, name):
         self._name = name

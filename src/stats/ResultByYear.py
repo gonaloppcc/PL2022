@@ -1,5 +1,5 @@
-from unittest import result
 from stats.Statistic import Statistic
+
 
 class ResultByYear(Statistic):
     def __init__(self):
@@ -36,7 +36,7 @@ class ResultByYear(Statistic):
         s = ''
         for year, results in self.get_data().items():
             s += f'<h1>{year}</h1>\n'
-            
+
             s += '<h2>True</h2>\n'
             s += '<ul>\n'
             for athlete in results[True]:
@@ -59,5 +59,5 @@ class ResultByYear(Statistic):
             s += f'<li>True -> {results[True]}</li>\n'
             s += f'<li>False -> {results[False]}</li>\n'
             s += '</ul>\n'
-        
+
         return s

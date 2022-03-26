@@ -1,6 +1,6 @@
 """ System module used to get the arguments passed."""
-from datetime import datetime
 import re
+from datetime import datetime
 
 
 def parse_emd(path: str):

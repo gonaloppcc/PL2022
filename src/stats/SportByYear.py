@@ -5,7 +5,7 @@ class SportByYear(Statistic):
     def __init__(self):
         super().__init__()
         self.set_name('Sport distribution by year')
-    
+
     def add_elem(self, exam):
         identifier = exam['id']
         name = f'{exam["fname"]} {exam["lname"]}'
@@ -42,17 +42,16 @@ class SportByYear(Statistic):
                 for athlete in athletes:
                     s += f'<li>{athlete["id"]} - {athlete["name"]}</li>\n'
                 s += '</ul>\n'
-        
+
         return s
 
     def print_stats(self):
         s = ''
-        for year,sports in self.get_stats().items():
+        for year, sports in self.get_stats().items():
             s += f'<h3>{year}</h3>\n'
             s += '<ul>\n'
-            for sport,num in sports.items():
+            for sport, num in sports.items():
                 s += f'<li>{sport} -> {num}</li>\n'
             s += '</ul>'
 
         return s
-        

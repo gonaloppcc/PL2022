@@ -31,9 +31,9 @@ class FederatedByYear(Statistic):
         self._stats[year][federated] += 1
 
     def print_data(self):
-        s = ''        
+        s = ''
 
-        for year,results in self.get_data().items():
+        for year, results in self.get_data().items():
             s += f'<h2>{year}</h2>\n'
 
             s += '<h3>True</h3>\n'
