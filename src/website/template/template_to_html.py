@@ -13,6 +13,9 @@ tokens = [
     'ESTATS', # END STATS
     'SDATA', # START DATA
     'EDATA', # END DATA
+    'SLINK', # START LINK
+    'ELINK', # END LINK
+    'COMMA', # COMMA
     'CONTENT',  # CONTENT
     'NEW_LINE',  # NEW LINE
 ]
@@ -21,7 +24,9 @@ states = (
     ('CODE', 'exclusive'), # Code to be parsed
     ('NAME', 'exclusive'), # Print name
     ('STATS', 'exclusive'), # Print stats
-    ('DATA', 'exclusive') # Print data
+    ('DATA', 'exclusive'), # Print data
+    ('LINKTEXT', 'exclusive'), # Link text
+    ('LINKLINK', 'exclusive') # Link
 )
 
 
@@ -38,7 +43,7 @@ def t_CODE_EC(t):
 
 # Start name state
 def t_CODE_SNAME(t):
-    r'name\['
+    r'name\('
     t.lexer.begin('NAME')
 
 # Print name
@@ -48,13 +53,13 @@ def t_NAME_CONTENT(t):
 
 # End name state
 def t_NAME_ENAME(t):
-    r'\]'
+    r'\)'
     t.lexer.begin('CODE')
 
 
 # Start stats state
 def t_CODE_SSTATS(t):
-    r'stats\['
+    r'stats\('
     t.lexer.begin('STATS')
 
 # Print the stats
@@ -64,13 +69,13 @@ def t_STATS_CONTENT(t):
 
 # End stats state
 def t_STATS_ESTATS(t):
-    r'\]'
+    r'\)'
     t.lexer.begin('CODE')
 
 
 # Start data state
 def t_CODE_SDATA(t):
-    r'data\['
+    r'data\('
     t.lexer.begin('DATA')
 
 # Print the data
@@ -80,8 +85,43 @@ def t_DATA_CONTENT(t):
 
 # End data state
 def t_DATA_EDATA(t):
-    r'\]'
+    r'\)'
     t.lexer.begin('CODE')
+
+
+def t_CODE_SLINK(t):
+    r'link\('
+    t.lexer.begin('LINKTEXT')
+
+def t_LINKTEXT_CONTENT(t):
+    r'[^,)]+'
+    t.lexer.templates.append({
+        'text': t.value
+    })
+
+def t_LINKTEXT_COMMA(t):
+    r','
+    t.lexer.begin('LINKLINK')
+
+def t_LINKLINK_CONTENT(t):
+    r'[^,)]+'
+    t.lexer.templates[-1]['link'] = t.value
+
+def t_LINKLINK_ELINK(t):
+    r'\)'
+    template = t.lexer.templates[-1]
+    link = t.lexer.templates[-1]['link'].split('.')[0] + '.html'
+    text = t.lexer.templates[-1]['text']
+    t.lexer.html += f'<a href="{link}">{text}</a>\n'
+    t.lexer.begin('CODE')
+
+
+t_CODE_ignore = '\t \n'
+t_NAME_ignore = '\t \n'
+t_STATS_ignore = '\t \n'
+t_DATA_ignore = '\t \n'
+t_LINKLINK_ignore = '\t \n'
+
 
 # Any text outside the {{ }} will just get copied to the html
 def t_CONTENT(t):
@@ -108,13 +148,14 @@ def t_error(t):
 
 # path -> html template path
 # module -> Module containing the statistics
-def parse_html(path, module):
+def parse_html(path, out_path, module):
     # Analisador léxico
     lexer = lex.lex()
     lexer.html = ""
 
     # Module where the stats are stored
     lexer.module = module
+    lexer.templates = []
 
     # Converting the html template into html
     with open(path, mode='r') as template:
@@ -123,5 +164,15 @@ def parse_html(path, module):
             for tok in lexer:
                 pass
 
-    with open("out.html", mode='w') as out:
+    toks = path.split('/')
+    file = toks[-1].split('.')[0] + '.html' 
+    folder = '/'.join(toks[0:-1])
+
+
+    with open(out_path + '/' + file, mode='w') as out:
         out.write(lexer.html)
+    
+    for template in lexer.templates:
+        new_out_path = out_path + '/' + '/'.join(template['link'].split('/')[0:-1])
+
+        parse_html(folder + '/' + template['link'], new_out_path, module)

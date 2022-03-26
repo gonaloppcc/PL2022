@@ -30,13 +30,14 @@ def write_dict(var, depth):
     return s
 
 if __name__ == '__main__':
-    if len(argv) != 3:
+    if len(argv) != 4:
         print('Invalid number of arguments!', 'Please specify the emd file path and the template file path!', sep='\n')
         exit(2)
 
     else:
         csv = argv[1]
         template = argv[2]
+        out_path = argv[3]
 
         stats.get_stats(csv)
-        parse_html(template, stats)
+        parse_html(template, out_path, stats)
