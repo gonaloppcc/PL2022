@@ -1,5 +1,5 @@
 import sys
-
+import os
 import ply.lex as lex
 
 tokens = [
@@ -160,6 +160,13 @@ def parse_html(path, out_path, statistics):
     # Module where the stats are stored
     lexer.statistics = statistics
     lexer.templates = []
+    
+    if not os.path.isfile(path):
+        print('Invalid template file path!')
+        exit(2)
+
+    if not os.path.exists(out_path):  # Creates the output folder if it does not exist
+        os.makedirs(out_path, exist_ok=True)
 
     # Converting the html template into html
     with open(path, mode='r') as template:

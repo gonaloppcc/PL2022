@@ -25,13 +25,6 @@ if __name__ == '__main__':
         print('Invalid csv file path!')
         exit(2)
 
-    if not os.path.isfile(template_path):
-        print('Invalid template file path!')
-        exit(2)
-
-    if not os.path.exists(out_path):  # Creates the output folder if it does not exist
-        os.mkdir(out_path)
-
     csv = parse_emd(csv_path)
     print('Data loaded!')
 
