@@ -66,10 +66,8 @@ def get_stats(path: str):
     # (b)
 
     for exam in exams:
-        statistics['age_gender_distrib'].add_elem(exam)
-        statistics['federated_by_year'].add_elem(exam)
-        statistics['sport_by_year'].add_elem(exam)
-        statistics['location_distrib'].add_elem(exam)
-        statistics['gender_by_year'].add_elem(exam)
-        statistics['result_by_year'].add_elem(exam)
-        statistics['extreme_dates'].add_elem(exam)
+        for stat in statistics.values():
+            stat.add_elem(exam)
+    
+    for stat in statistics.values():
+        stat.sort()

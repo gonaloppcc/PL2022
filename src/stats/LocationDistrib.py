@@ -43,3 +43,12 @@ class LocationDistrib(Statistic):
 
         s += '</ul>\n'
         return s
+
+    def sort(self):
+        data = self.get_data()
+        for location, athletes in data.items():
+            data[location] = sorted(athletes, key=lambda athlete: athlete['name']) # Sort athletes in each location
+        data = dict(sorted(data.items())) # Sort locations in data
+        self.set_data(data)
+
+        self.set_stats(dict(sorted(self.get_stats().items()))) # Sort locations in stats

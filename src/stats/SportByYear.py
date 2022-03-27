@@ -55,3 +55,18 @@ class SportByYear(Statistic):
             s += '</ul>'
 
         return s
+    
+    def sort(self):
+        data = self.get_data()
+        for year, sports in data.items():
+            for sport in sports.keys():
+                data[year][sport] = sorted(data[year][sport], key=lambda athlete: athlete['name']) # Sort athletes in each sport
+            data[year] = dict(sorted(data[year].items())) # Sort sports in each year
+        data = dict(sorted(data.items())) # Sort years in data
+        self.set_data(data)
+
+        stats = self.get_stats()
+        for year in stats.keys():
+            stats[year] = dict(sorted(stats[year].items())) # Sort sports in each year
+        stats = dict(sorted(stats.items())) # Sort years in stats
+        self.set_stats(stats)

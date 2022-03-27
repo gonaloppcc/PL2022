@@ -60,3 +60,7 @@ class ExtremeDates(Statistic):
         s += '</ul>\n'
 
         return s
+
+    # We don't need to sort anything
+    def sort(self):
+        pass

@@ -57,7 +57,17 @@ class GenderByYear(Statistic):
             s += f'<h3>{year}</h3>\n'
             s += '<ul>\n'
             s += f'<li>Number of male athletes: {genders["M"]}</li>\n'
-            s += f'<li>Number of male athletes: {genders["F"]}</li>\n'
+            s += f'<li>Number of female athletes: {genders["F"]}</li>\n'
             s += '</ul>\n'
 
         return s
+
+    def sort(self):
+        data = self.get_data()
+        for year in data.keys():
+            data[year]['M'] = sorted(data[year]['M'], key=lambda athlete: athlete['name']) # Sort athletes in M
+            data[year]['F'] = sorted(data[year]['F'], key=lambda athlete: athlete['name']) # Sort athletes in F
+        data = dict(sorted(data.items())) # Sort years in data
+        self.set_data(data)
+
+        self.set_stats(dict(sorted(self.get_stats().items()))) # Sort years in stats

@@ -39,3 +39,8 @@ class Statistic:
     @abstractmethod
     def print_stats(self):
         pass
+    
+    # Sort the statistics
+    @abstractmethod
+    def sort(self):
+        pass

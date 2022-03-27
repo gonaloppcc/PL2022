@@ -75,3 +75,14 @@ class AgeGenderDistrib(Statistic):
             s += f'<li>Number of female athletes: {val[1][1]}</li>\n'
             s += '</ul>\n'
         return s
+
+    def sort(self):
+        data = self.get_data()
+        for age, genders in data.items():
+            for gender, athletes in genders.items():
+                data[age][gender] = sorted(athletes, key=lambda athlete: athlete['age']) # Sort athletes in gender
+            # We don't need to sort genders in age
+        # We don't need to sort age, as there are only 2 values
+        self.set_data(data)
+        
+        # We don't need to sort stats 

@@ -61,3 +61,13 @@ class ResultByYear(Statistic):
             s += '</ul>\n'
 
         return s
+
+    def sort(self):
+        data = self.get_data()
+        for year in data.keys():
+            data[year][True] = sorted(data[year][True], key=lambda athlete: athlete['name']) # Sort athletes in True
+            data[year][False] = sorted(data[year][False], key=lambda athlete: athlete['name']) # Sort athletes in False
+        data = dict(sorted(data.items())) # Sort years in data
+        self.set_data(data)
+
+        self.set_stats(dict(sorted(self.get_stats().items()))) # Sort years in stats
