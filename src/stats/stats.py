@@ -55,15 +55,7 @@ statistics = {
 def get_stats(path: str):
     exams = parse_emd(path)
 
-    # Temporary code to check if the parsing works
-    # for exam in exams:
-    # print(f'{exam["fname"]} {exam["lname"]}: {exam["email"]}')
-
     print('Data loaded!')
-
-    # (a)
-
-    # (b)
 
     for exam in exams:
         for stat in statistics.values():
