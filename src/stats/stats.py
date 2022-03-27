@@ -52,14 +52,12 @@ statistics = {
 }
 
 
-def get_stats(path: str):
-    exams = parse_emd(path)
-
-    print('Data loaded!')
-
+def get_stats(exams):
     for exam in exams:
         for stat in statistics.values():
             stat.add_elem(exam)
     
     for stat in statistics.values():
         stat.sort()
+
+    return statistics

@@ -50,7 +50,7 @@ def t_CODE_SNAME(t):
 # Print name
 def t_NAME_CONTENT(t):
     r'[a-zA-Z]\w+'
-    t.lexer.html += t.lexer.module.statistics[t.value].get_name()
+    t.lexer.html += t.lexer.statistics[t.value].get_name()
 
 
 # End name state
@@ -68,7 +68,7 @@ def t_CODE_SSTATS(t):
 # Print the stats
 def t_STATS_CONTENT(t):
     r'[a-zA-Z]\w+'
-    t.lexer.html += t.lexer.module.statistics[t.value].print_stats()
+    t.lexer.html += t.lexer.statistics[t.value].print_stats()
 
 
 # End stats state
@@ -86,7 +86,7 @@ def t_CODE_SDATA(t):
 # Print the data
 def t_DATA_CONTENT(t):
     r'[a-zA-Z]\w+'
-    t.lexer.html += t.lexer.module.statistics[t.value].print_data()
+    t.lexer.html += t.lexer.statistics[t.value].print_data()
 
 
 # End data state
@@ -151,14 +151,14 @@ def t_NEW_LINE(t):
 
 
 # path -> html template path
-# module -> Module containing the statistics
-def parse_html(path, out_path, module):
+# statistics -> Dictionary with statistic objects
+def parse_html(path, out_path, statistics):
     # Analisador léxico
     lexer = lex.lex()
     lexer.html = ""
 
     # Module where the stats are stored
-    lexer.module = module
+    lexer.statistics = statistics
     lexer.templates = []
 
     # Converting the html template into html
@@ -178,4 +178,4 @@ def parse_html(path, out_path, module):
     for template in lexer.templates:
         new_out_path = out_path + '/' + '/'.join(template['link'].split('/')[0:-1])
 
-        parse_html(folder + '/' + template['link'], new_out_path, module)
+        parse_html(folder + '/' + template['link'], new_out_path, statistics)

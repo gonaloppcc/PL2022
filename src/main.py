@@ -2,6 +2,7 @@ import os
 from sys import argv
 
 import stats.stats as stats
+from csv_parser.parser import parse_emd
 from website.template.template_to_html import parse_html
 
 if __name__ == '__main__':
@@ -31,5 +32,8 @@ if __name__ == '__main__':
     if not os.path.exists(out_path):  # Creates the output folder if it does not exist
         os.mkdir(out_path)
 
-    stats.get_stats(csv_path)
-    parse_html(template_path, out_path, stats)
+    csv = parse_emd(csv_path)
+    print('Data loaded!')
+
+    statistics = stats.get_stats(csv)
+    parse_html(template_path, out_path, statistics)
