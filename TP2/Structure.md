@@ -50,3 +50,14 @@ id
 ## Exemplo
 
 - key : S, Value: `[abc, A]`
+
+# Talvez, funções
+Criar funções a partir das regras definidas. Temos de criar palavras reservadas, tipo print e '+' e '-'.
+Do género:
+
+Exp: num + id
+-> p[0] = p[1] + p[3]
+
+Ou 
+Exp: !! id
+print(p[2])
