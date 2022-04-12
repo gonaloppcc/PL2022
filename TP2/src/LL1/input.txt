@@ -1,0 +1,14 @@
+Tokens:
+num \d+
+id [a-zA-Z_]\w*
+
+Z:
+Exp '$'
+
+Exp:
+Exp '+' Termo
+Termo
+
+Termo:
+'(' Exp ')'
+id
