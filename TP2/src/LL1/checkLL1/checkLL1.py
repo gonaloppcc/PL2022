@@ -1,14 +1,21 @@
+from checkLL1.follow import follow
+from checkLL1.look_ahead import look_ahead_main
+#from checkLL1.common import terminal_dic, nterminal_dic, is_terminal
+import checkLL1.common as common
 
-terminal_dic = {}
-nterminal_dic = {}
+'''
+Notas para testes
+Meter palavras que não existem.
+Meter nomes de símbolos terminais que não são descritos a seguir
+Meter S: A \n A: S
+Com o mesmo símbolo terminal
 
-# Verifica se a expressão é terminal.
-# Para isso, verifica se tem o símbolo ' ou é uma palavra associada a um símbolo terminal.
-def is_terminal(expression):
-    if "'" in expression or expression in terminal_dic.keys():
-        print("É terminal: ", expression)
-    else: 
-        print("Não é terminal: ", expression)
+Notas:
+Quando à frente de uma expressão tem um espaço, ele não lê, do tipo:
+"Termo2: "
+Também não lê a última linha?
+'''
+
 
 # Aqui verificamos se uma entrada do dicionário de símbolos não terminais é válida ou não. 
 # Para começar, se só tiver uma entrada não é necessário verificar.
@@ -23,9 +30,12 @@ def check_rule(rule_name, rules_list):
 # No segundo estão associados nomes de regras com as respetivas especificações.
 # Por exemplo, "Exp -> Termo '+' num" é decrito como (Exp, [ [Termo, '+', num] ]).
 def main_check_LL1(terminal_dic_rec, nterminal_dic_rec):
-    global terminal_dic 
-    terminal_dic = terminal_dic_rec
-    global nterminal_dic 
-    nterminal_dic = nterminal_dic_rec
-    for rule_name, rules_list in nterminal_dic.items():
-        check_rule(rule_name, rules_list)
+    common.terminal_dic = terminal_dic_rec
+    common.nterminal_dic = nterminal_dic_rec
+    
+    #for rule_name, rules_list in nterminal_dic.items():
+    #    check_rule(rule_name, rules_list)
+    # follow('Exp', True )
+    expressao = 'Termo2'
+    lista = look_ahead_main(expressao)
+    print(f"Resultado de LA de {expressao} : {lista} ")
