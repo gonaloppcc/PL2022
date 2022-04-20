@@ -1,14 +1,48 @@
 Tokens:
 num \d+
 id [a-zA-Z_]\w*
+fIM s
+empty s
 
-Z:
-Exp '$'
+Programa:
+Comandos fIM                   
+
+Comandos:
+empty                        
+Comando Comandos             
+
+Comando:
+Atrib
+Print
+Read
+
+Atrib:
+id '=' Exp                   
+
+Print:
+'!' Exp   
+
+Read:
+'?' id                       
 
 Exp:
-Exp '+' Termo
-Termo
+Termo Exp2                          
+
+Exp2:
+empty                               
+'+' Exp                
+'-' Exp                          
 
 Termo:
-'(' Exp ')'
+Fator Termo2
+
+Termo2:
+empty
+'*' Termo                      
+'/' Termo                      
+
+Fator:
+num
 id
+'(' Exp ')'
+

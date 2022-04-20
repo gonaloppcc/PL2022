@@ -33,9 +33,12 @@ def main_check_LL1(terminal_dic_rec, nterminal_dic_rec):
     common.terminal_dic = terminal_dic_rec
     common.nterminal_dic = nterminal_dic_rec
     
-    #for rule_name, rules_list in nterminal_dic.items():
+    for expressao, rules_list in nterminal_dic_rec.items():
     #    check_rule(rule_name, rules_list)
     # follow('Exp', True )
-    expressao = 'Termo2'
-    lista = look_ahead_main(expressao)
-    print(f"Resultado de LA de {expressao} : {lista} ")
+    # expressao = 'Exp2'
+        lista = look_ahead_main(expressao, [])
+        print(f"Resultado de LA de {expressao} : {lista} ")
+        if lista is None:
+            print("Not LL(1), goodbye...")
+            exit(1)

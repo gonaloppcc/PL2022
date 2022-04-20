@@ -10,9 +10,9 @@ class Not_LL1(Error):
     """Raised when the input value is too small"""
     pass
 
- 
 # Não sei como é o follow de A em: C -> A b A d
 def analise_rule(expression, rule_name, rule, follows_done): 
+    '''Structure.md'''
     res = []
     positions = indices = [index for index, element in enumerate(rule) if element == expression]
     if len(positions) > 0:
@@ -20,7 +20,7 @@ def analise_rule(expression, rule_name, rule, follows_done):
             print(f"Expression |{expression}| found in rule |{rule}|  ")
             if expression_position+1 == len(rule):
                 if rule_name not in (follows_done, expression):
-                    print(f"1Faz follow de | {rule_name}|")
+                    print(f"1Faz follow de |{rule_name}|")
                     recursivo = follow(rule_name, [expression] + follows_done)
                     if recursivo or len(recursivo) == 0:  
                         res = res + recursivo
@@ -31,7 +31,7 @@ def analise_rule(expression, rule_name, rule, follows_done):
                 res.append(rule[expression_position+1])
             else:
                 print(f"2Faz LA de | {expression_position+1}|")
-                recursivo = look_ahead.look_ahead_main(rule[expression_position+1])
+                recursivo = look_ahead.look_ahead_main(rule[expression_position+1], [])
                 if recursivo:
                     res = res + recursivo
                 else:
