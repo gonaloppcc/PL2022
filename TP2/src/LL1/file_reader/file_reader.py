@@ -2,7 +2,7 @@
 import ply.lex as lex
 import re
 import sys
-
+from checkLL1.rule import Rule
 
 states = [
             ('T', 'exclusive'), # Terminal, like num or id's simbols.
@@ -45,9 +45,10 @@ def t_NT_NEW_N_TERMINAL(t):
     r'^.*[^:](?=\n)' # Catch everything not ending in ':'
     elements = t.value.split()
     if lexer.last_nterminal_rule in lexer.nterminals :
-        lexer.nterminals[lexer.last_nterminal_rule].append(elements)
+        #lexer.nterminals[lexer.last_nterminal_rule].append(elements)
+        lexer.nterminals[lexer.last_nterminal_rule].addElement(elements)
     else: 
-        lexer.nterminals[lexer.last_nterminal_rule] = [elements]
+        lexer.nterminals[lexer.last_nterminal_rule] = Rule([elements],None) # [elements]
 
 # Read a new rule name, and stores it in the variable "lexer.last_nterminal_rule".
 def t_NT_NEW_N_TERMINAL_RULE(t):

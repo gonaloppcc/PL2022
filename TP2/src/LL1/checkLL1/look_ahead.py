@@ -57,7 +57,7 @@ def look_ahead_main(expression : str, la_visited : [str]):
             raise Not_LL1()
         
         # List of rules associated with the current expression
-        list_rules = common.nterminal_dic[expression]
+        list_rules = common.nterminal_dic[expression].getRule()
         for rule in list_rules:
             tsimbols_rule = analise_rule(expression, rule, la_visited)
             if not tsimbols_rule:

@@ -53,8 +53,8 @@ def follow(expression, follows_done):
             return []
         tsimbols_seen = []
         print(f"\n##### FOLLOW |{expression}| - START ####### \n")
-        for rule_name, rules_list in common.nterminal_dic.items():
-            res =  analise_list_rules(expression, rule_name, rules_list, follows_done)
+        for rule_name, rules_objects in common.nterminal_dic.items():
+            res =  analise_list_rules(expression, rule_name, rules_objects.getRule(), follows_done)
             if len(res) > 0:
                 tsimbols_seen = tsimbols_seen + res
         print(f"\n---------- Follow |{expression}| - END -------- ")

@@ -5,7 +5,7 @@ import file_reader.file_reader as file_reader
 import checkLL1.checkLL1 as checkLL1
 
 if __name__ == '__main__':
-    input = "inputRecursivoInfinito.txt"
+    input = "input.txt"
     if len(argv) == 2:
         input = argv[1]
         print("Path to file: ", input)
@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
     print("Não Terminais:")
     for key, value in nterminals.items():
-        for rule in value:
+        for rule in value.getRule():
             print(f"Key: {key} | One rule: {rule}")
     
     # Check if the file describes correctly an LL(1) language.
