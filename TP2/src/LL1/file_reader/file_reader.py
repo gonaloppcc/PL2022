@@ -3,6 +3,7 @@ import ply.lex as lex
 import re
 import sys
 from checkLL1.rule import Rule
+from checkLL1.common import is_terminal
 
 states = [
             ('T', 'exclusive'), # Terminal, like num or id's simbols.
@@ -49,6 +50,9 @@ def t_NT_NEW_N_TERMINAL(t):
         lexer.nterminals[lexer.last_nterminal_rule].addElement(elements)
     else: 
         lexer.nterminals[lexer.last_nterminal_rule] = Rule([elements],None) # [elements]
+    for element in elements:
+        if is_terminal(element):
+            lexer.tokens.append(element)
 
 # Read a new rule name, and stores it in the variable "lexer.last_nterminal_rule".
 def t_NT_NEW_N_TERMINAL_RULE(t):
@@ -87,6 +91,7 @@ Exp :
 # The key is the rule name, and the values are the rules associated to the rule name.
 lexer.nterminals = {}
 lexer.last_nterminal_rule = ""
+lexer.tokens = []
 
 def file_reader(file : str):
     file1 = open(file, 'r')
@@ -96,4 +101,4 @@ def file_reader(file : str):
         lexer.input(line)
         for tok in lexer:
             print(tok)
-    return (lexer.terminals, lexer.nterminals)
+    return (lexer.terminals, lexer.nterminals, lexer.tokens )
