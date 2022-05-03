@@ -36,9 +36,6 @@ def t_T_new_token(t):
     # TODO: Add to the dictinary the new token
 
 
-def t_
-
-
 def t_error(t):
     print("Caracter ilegal, ", t.value[0])
     t.lexer.skip(1)

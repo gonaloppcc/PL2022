@@ -4,6 +4,8 @@ id [a-zA-Z_]\w*
 fIM s
 empty s
 
+# Comment
+
 Programa:
 Comandos fIM                   
 
@@ -46,3 +48,4 @@ num
 id
 '(' Exp ')'
 
+/* This is a comment */
