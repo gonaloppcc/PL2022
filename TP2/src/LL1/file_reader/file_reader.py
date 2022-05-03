@@ -6,24 +6,27 @@ from checkLL1.rule import Rule
 from checkLL1.common import is_terminal
 
 states = [
-            ('T', 'exclusive'), # Terminal, like num or id's simbols.
-            ('NT', 'exclusive') # Nonterminal, like ABIN
-        ]
+    ('T', 'exclusive'),  # Terminal, like num or id's simbols.
+    ('NT', 'exclusive')  # Nonterminal, like ABIN
+]
 
 tokens = [
-    "TOKENS", # Start of the description of tokens.
-    "NEW_TOKEN", # Description of one token.
-    "NEW_N_TERMINAL", # Description of a new set of rules.
-    "NEW_N_TERMINAL_RULE" # New rule associated with a previous Nonterminal simbol.
-    ]
+    "TOKENS",  # Start of the description of tokens.
+    "NEW_TOKEN",  # Description of one token.
+    "NEW_N_TERMINAL",  # Description of a new set of rules.
+    "NEW_N_TERMINAL_RULE"  # New rule associated with a previous Nonterminal simbol.
+]
+
 
 def t_ANY_error(t):
     t.lexer.skip(1)
+
 
 # Read the beggining of the file.
 def t_TOKENS(t):
     r'Tokens\:$'
     t.lexer.begin('T')
+
 
 # Nesta situação assumimos que a expressão regex não tem espaços.
 # Se tiver, temos de fazer doutra forma, mas não é difícil.
@@ -33,6 +36,7 @@ def t_T_NEW_TOKEN(t):
     separated = t.value.split()
     lexer.terminals[separated[0]] = separated[1]
 
+
 # When the tokens part end in the original file.
 # So, it starts to read non-terminal rules, and stores this rule name in the variable "lexer.last_nterminal_rule". 
 def t_T_NEW_N_TERMINAL_RULE(t):
@@ -40,24 +44,27 @@ def t_T_NEW_N_TERMINAL_RULE(t):
     lexer.last_nterminal_rule = t.value
     t.lexer.begin('NT')
 
-# Read a new set of rules related to one non-terminal simbol. 
+
+# Read a new set of rules related to one non-terminal simbol.
 # That non-terminal simbol is stored in the variable "lexer.last_nterminal_rule".
 def t_NT_NEW_N_TERMINAL(t):
-    r'^.*[^:](?=\n)' # Catch everything not ending in ':'
+    r'^.*[^:](?=\n)'  # Catch everything not ending in ':'
     elements = t.value.split()
-    if lexer.last_nterminal_rule in lexer.nterminals :
-        #lexer.nterminals[lexer.last_nterminal_rule].append(elements)
+    if lexer.last_nterminal_rule in lexer.nterminals:
+        # lexer.nterminals[lexer.last_nterminal_rule].append(elements)
         lexer.nterminals[lexer.last_nterminal_rule].addElement(elements)
-    else: 
-        lexer.nterminals[lexer.last_nterminal_rule] = Rule([elements],None) # [elements]
+    else:
+        lexer.nterminals[lexer.last_nterminal_rule] = Rule([elements], None)  # [elements]
     for element in elements:
         if is_terminal(element):
             lexer.tokens.append(element)
+
 
 # Read a new rule name, and stores it in the variable "lexer.last_nterminal_rule".
 def t_NT_NEW_N_TERMINAL_RULE(t):
     r'^.*(?=:)'
     lexer.last_nterminal_rule = t.value
+
 
 t_ANY_ignore = " \n"
 
@@ -93,12 +100,13 @@ lexer.nterminals = {}
 lexer.last_nterminal_rule = ""
 lexer.tokens = []
 
-def file_reader(file : str):
+
+def file_reader(file: str):
     file1 = open(file, 'r')
     Lines = file1.readlines()
-    
+
     for line in Lines:
         lexer.input(line)
         for tok in lexer:
             print(tok)
-    return (lexer.terminals, lexer.nterminals, lexer.tokens )
+    return (lexer.terminals, lexer.nterminals, lexer.tokens)

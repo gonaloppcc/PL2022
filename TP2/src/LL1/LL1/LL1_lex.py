@@ -15,7 +15,6 @@ tokens = [
     'token',
     'NT',
     'literal',
-    'str'
 ]
 
 
@@ -24,11 +23,13 @@ tokens = [
 # --------------- Comments
 def t_ANY_COMMENT_MULTILINE(t):
     r'\/\*(.|\n)*\*\/'
+    print('Comment:', f'\'{t.value}\'')  # TODO: Debug purposes
     pass
 
 
 def t_ANY_COMMENT(t):
-    r'\#.*$'
+    r'\#.*'
+    print('Comment:', f'\'{t.value}\'')  # TODO: Debug purposes
     pass
 
 
@@ -95,10 +96,12 @@ lexer.lineno = 1
 
 # ----------------------- Testing
 
-import sys
+if __name__ == '__main__':
+    import sys
 
-for line in sys.stdin:
-    lexer.input(line)
+    content = sys.stdin.read()
+    lexer.input(content)
+
     for tok in lexer:
         # print(tok.value, '', end='')
         print(tok)

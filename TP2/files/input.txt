@@ -4,14 +4,12 @@ id [a-zA-Z_]\w*
 fIM s
 empty s
 
-# Comment
-
 Programa:
 Comandos fIM                   
 
 Comandos:
 empty                        
-Comando Comandos             
+Comando Comandos
 
 Comando:
 Atrib
@@ -19,7 +17,7 @@ Print
 Read
 
 Atrib:
-id '=' Exp                   
+id '=' Exp
 
 Print:
 '!' Exp   
@@ -47,5 +45,3 @@ Fator:
 num
 id
 '(' Exp ')'
-
-/* This is a comment */

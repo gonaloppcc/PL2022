@@ -1,0 +1,318 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> Grammar
+Rule 1     Grammar -> TOKENS : NEW_LINE Tokens NEW_LINE Productions
+Rule 2     Tokens -> Tokens token NEW_LINE
+Rule 3     Tokens -> empty
+Rule 4     Productions -> Productions NT_productions
+Rule 5     Productions -> <empty>
+Rule 6     NT_productions -> NT : NEW_LINE Rules NEW_LINE
+Rule 7     Rules -> Rules NEW_LINE Conj_simb
+Rule 8     Rules -> Conj_simb
+Rule 9     Conj_simb -> Conj_simb Simb
+Rule 10    Conj_simb -> Simb
+Rule 11    Simb -> EMPTY
+Rule 12    Simb -> literal
+Rule 13    Simb -> NT
+Rule 14    Simb -> token
+Rule 15    empty -> <empty>
+
+Terminals, with rules where they appear
+
+:                    : 1 6
+EMPTY                : 11
+NEW_LINE             : 1 1 2 6 6 7
+NT                   : 6 13
+TOKENS               : 1
+error                : 
+literal              : 12
+token                : 2 14
+
+Nonterminals, with rules where they appear
+
+Conj_simb            : 7 8 9
+Grammar              : 0
+NT_productions       : 4
+Productions          : 1 4
+Rules                : 6 7
+Simb                 : 9 10
+Tokens               : 1 2
+empty                : 3
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . Grammar
+    (1) Grammar -> . TOKENS : NEW_LINE Tokens NEW_LINE Productions
+
+    TOKENS          shift and go to state 2
+
+    Grammar                        shift and go to state 1
+
+state 1
+
+    (0) S' -> Grammar .
+
+
+
+state 2
+
+    (1) Grammar -> TOKENS . : NEW_LINE Tokens NEW_LINE Productions
+
+    :               shift and go to state 3
+
+
+state 3
+
+    (1) Grammar -> TOKENS : . NEW_LINE Tokens NEW_LINE Productions
+
+    NEW_LINE        shift and go to state 4
+
+
+state 4
+
+    (1) Grammar -> TOKENS : NEW_LINE . Tokens NEW_LINE Productions
+    (2) Tokens -> . Tokens token NEW_LINE
+    (3) Tokens -> . empty
+    (15) empty -> .
+
+    NEW_LINE        reduce using rule 15 (empty -> .)
+    token           reduce using rule 15 (empty -> .)
+
+    Tokens                         shift and go to state 5
+    empty                          shift and go to state 6
+
+state 5
+
+    (1) Grammar -> TOKENS : NEW_LINE Tokens . NEW_LINE Productions
+    (2) Tokens -> Tokens . token NEW_LINE
+
+    NEW_LINE        shift and go to state 7
+    token           shift and go to state 8
+
+
+state 6
+
+    (3) Tokens -> empty .
+
+    NEW_LINE        reduce using rule 3 (Tokens -> empty .)
+    token           reduce using rule 3 (Tokens -> empty .)
+
+
+state 7
+
+    (1) Grammar -> TOKENS : NEW_LINE Tokens NEW_LINE . Productions
+    (4) Productions -> . Productions NT_productions
+    (5) Productions -> .
+
+    NT              reduce using rule 5 (Productions -> .)
+    $end            reduce using rule 5 (Productions -> .)
+
+    Productions                    shift and go to state 9
+
+state 8
+
+    (2) Tokens -> Tokens token . NEW_LINE
+
+    NEW_LINE        shift and go to state 10
+
+
+state 9
+
+    (1) Grammar -> TOKENS : NEW_LINE Tokens NEW_LINE Productions .
+    (4) Productions -> Productions . NT_productions
+    (6) NT_productions -> . NT : NEW_LINE Rules NEW_LINE
+
+    $end            reduce using rule 1 (Grammar -> TOKENS : NEW_LINE Tokens NEW_LINE Productions .)
+    NT              shift and go to state 12
+
+    NT_productions                 shift and go to state 11
+
+state 10
+
+    (2) Tokens -> Tokens token NEW_LINE .
+
+    NEW_LINE        reduce using rule 2 (Tokens -> Tokens token NEW_LINE .)
+    token           reduce using rule 2 (Tokens -> Tokens token NEW_LINE .)
+
+
+state 11
+
+    (4) Productions -> Productions NT_productions .
+
+    NT              reduce using rule 4 (Productions -> Productions NT_productions .)
+    $end            reduce using rule 4 (Productions -> Productions NT_productions .)
+
+
+state 12
+
+    (6) NT_productions -> NT . : NEW_LINE Rules NEW_LINE
+
+    :               shift and go to state 13
+
+
+state 13
+
+    (6) NT_productions -> NT : . NEW_LINE Rules NEW_LINE
+
+    NEW_LINE        shift and go to state 14
+
+
+state 14
+
+    (6) NT_productions -> NT : NEW_LINE . Rules NEW_LINE
+    (7) Rules -> . Rules NEW_LINE Conj_simb
+    (8) Rules -> . Conj_simb
+    (9) Conj_simb -> . Conj_simb Simb
+    (10) Conj_simb -> . Simb
+    (11) Simb -> . EMPTY
+    (12) Simb -> . literal
+    (13) Simb -> . NT
+    (14) Simb -> . token
+
+    EMPTY           shift and go to state 19
+    literal         shift and go to state 20
+    NT              shift and go to state 15
+    token           shift and go to state 21
+
+    Rules                          shift and go to state 16
+    Conj_simb                      shift and go to state 17
+    Simb                           shift and go to state 18
+
+state 15
+
+    (13) Simb -> NT .
+
+    EMPTY           reduce using rule 13 (Simb -> NT .)
+    literal         reduce using rule 13 (Simb -> NT .)
+    NT              reduce using rule 13 (Simb -> NT .)
+    token           reduce using rule 13 (Simb -> NT .)
+    NEW_LINE        reduce using rule 13 (Simb -> NT .)
+
+
+state 16
+
+    (6) NT_productions -> NT : NEW_LINE Rules . NEW_LINE
+    (7) Rules -> Rules . NEW_LINE Conj_simb
+
+    NEW_LINE        shift and go to state 22
+
+
+state 17
+
+    (8) Rules -> Conj_simb .
+    (9) Conj_simb -> Conj_simb . Simb
+    (11) Simb -> . EMPTY
+    (12) Simb -> . literal
+    (13) Simb -> . NT
+    (14) Simb -> . token
+
+    NEW_LINE        reduce using rule 8 (Rules -> Conj_simb .)
+    EMPTY           shift and go to state 19
+    literal         shift and go to state 20
+    NT              shift and go to state 15
+    token           shift and go to state 21
+
+    Simb                           shift and go to state 23
+
+state 18
+
+    (10) Conj_simb -> Simb .
+
+    EMPTY           reduce using rule 10 (Conj_simb -> Simb .)
+    literal         reduce using rule 10 (Conj_simb -> Simb .)
+    NT              reduce using rule 10 (Conj_simb -> Simb .)
+    token           reduce using rule 10 (Conj_simb -> Simb .)
+    NEW_LINE        reduce using rule 10 (Conj_simb -> Simb .)
+
+
+state 19
+
+    (11) Simb -> EMPTY .
+
+    EMPTY           reduce using rule 11 (Simb -> EMPTY .)
+    literal         reduce using rule 11 (Simb -> EMPTY .)
+    NT              reduce using rule 11 (Simb -> EMPTY .)
+    token           reduce using rule 11 (Simb -> EMPTY .)
+    NEW_LINE        reduce using rule 11 (Simb -> EMPTY .)
+
+
+state 20
+
+    (12) Simb -> literal .
+
+    EMPTY           reduce using rule 12 (Simb -> literal .)
+    literal         reduce using rule 12 (Simb -> literal .)
+    NT              reduce using rule 12 (Simb -> literal .)
+    token           reduce using rule 12 (Simb -> literal .)
+    NEW_LINE        reduce using rule 12 (Simb -> literal .)
+
+
+state 21
+
+    (14) Simb -> token .
+
+    EMPTY           reduce using rule 14 (Simb -> token .)
+    literal         reduce using rule 14 (Simb -> token .)
+    NT              reduce using rule 14 (Simb -> token .)
+    token           reduce using rule 14 (Simb -> token .)
+    NEW_LINE        reduce using rule 14 (Simb -> token .)
+
+
+state 22
+
+    (6) NT_productions -> NT : NEW_LINE Rules NEW_LINE .
+    (7) Rules -> Rules NEW_LINE . Conj_simb
+    (9) Conj_simb -> . Conj_simb Simb
+    (10) Conj_simb -> . Simb
+    (11) Simb -> . EMPTY
+    (12) Simb -> . literal
+    (13) Simb -> . NT
+    (14) Simb -> . token
+
+  ! shift/reduce conflict for NT resolved as shift
+    $end            reduce using rule 6 (NT_productions -> NT : NEW_LINE Rules NEW_LINE .)
+    EMPTY           shift and go to state 19
+    literal         shift and go to state 20
+    NT              shift and go to state 15
+    token           shift and go to state 21
+
+  ! NT              [ reduce using rule 6 (NT_productions -> NT : NEW_LINE Rules NEW_LINE .) ]
+
+    Conj_simb                      shift and go to state 24
+    Simb                           shift and go to state 18
+
+state 23
+
+    (9) Conj_simb -> Conj_simb Simb .
+
+    EMPTY           reduce using rule 9 (Conj_simb -> Conj_simb Simb .)
+    literal         reduce using rule 9 (Conj_simb -> Conj_simb Simb .)
+    NT              reduce using rule 9 (Conj_simb -> Conj_simb Simb .)
+    token           reduce using rule 9 (Conj_simb -> Conj_simb Simb .)
+    NEW_LINE        reduce using rule 9 (Conj_simb -> Conj_simb Simb .)
+
+
+state 24
+
+    (7) Rules -> Rules NEW_LINE Conj_simb .
+    (9) Conj_simb -> Conj_simb . Simb
+    (11) Simb -> . EMPTY
+    (12) Simb -> . literal
+    (13) Simb -> . NT
+    (14) Simb -> . token
+
+    NEW_LINE        reduce using rule 7 (Rules -> Rules NEW_LINE Conj_simb .)
+    EMPTY           shift and go to state 19
+    literal         shift and go to state 20
+    NT              shift and go to state 15
+    token           shift and go to state 21
+
+    Simb                           shift and go to state 23
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for NT in state 22 resolved as shift
