@@ -6,63 +6,76 @@ from LL1_lex import tokens, literals
 
 
 def p_Grammar(p):
-    "Grammar : TOKENS ':' NEW_LINE Tokens NEW_LINE Productions"
-    x = 0
-    y = 2
-    p[0] = y
+    "Grammar : TOKENS ':' NEW_LINE Tokens NonTerminalList"
+    p[0] = (p[4], p[5])
+    parser.ast = p[0]  # Abstract Syntax tree assigment
 
 
 def p_Tokens_list(p):
     "Tokens : Tokens token NEW_LINE"
+    p[1][p[2][0]] = p[2][1]
+    p[0] = p[1]
 
 
 def p_Tokens(p):
     "Tokens : empty"
+    p[0] = {}
+
+
+def p_NonTerminalList(p):  # Change this name to be not confused with *p_Tokens_list*
+    "NonTerminalList : NonTerminalList NTerminal"
+    p[1][p[2][0]] = p[2][1]
+    p[0] = p[1]
+
+
+def p_NonTerminal(p):
+    "NonTerminalList : NTerminal"
+    p[0] = {p[1][0]: p[1][1]}  # TODO: Change this to be more efficient
+
+
+def p_NTerminal(p):
+    "NTerminal : '-' NT ':' NEW_LINE Productions NEW_LINE"
+    p[0] = (p[2], p[5])
 
 
 def p_Productions_list(p):
-    "Productions : Productions NT_productions"
+    "Productions : Productions NEW_LINE Production"
+    p[0] = p[1] + [p[3]]
 
 
 def p_Productions(p):
-    # "Productions : NT_productions"
-    "Productions :"
+    "Productions : Production"
+    p[0] = [p[1]]
 
 
-def p_NT_productions(p):
-    "NT_productions : NT ':' NEW_LINE Rules NEW_LINE"
+def p_Production_list(p):
+    "Production : Production Simb"
+    p[0] = p[1] + [p[2]]
 
 
-def p_Rules_list(p):
-    "Rules : Rules NEW_LINE Conj_simb"
-
-
-def p_Rules(p):
-    "Rules : Conj_simb"
-
-
-def p_Conj_simb_list(p):
-    "Conj_simb : Conj_simb Simb"
-
-
-def p_Conj_simb(p):
-    "Conj_simb : Simb"
+def p_Production_simb(p):
+    "Production : Simb"
+    p[0] = [p[1]]
 
 
 def p_Simb_empty(p):
     "Simb : EMPTY"
+    p[0] = p[1]
 
 
 def p_Simb_literal(p):
     "Simb : literal"
+    p[0] = p[1]
 
 
 def p_Simb_NT(p):
     "Simb : NT"
+    p[0] = p[1]
 
 
 def p_Simb_token(p):
     "Simb : token"
+    p[0] = p[1]
 
 
 # ------------------- Empty rule
@@ -77,27 +90,16 @@ def p_error(p):
 
 
 # ---------------------- Parser variables
-parser = yacc.yacc(start='Grammar')
+parser = yacc.yacc(start='Grammar', debug=False, optimize=1)
 
 parser.success = True
-
-parser.terminals = {}  # Dict of the terminal symbols of the language
-
-# TODO: Finish this
-parser.current_non_terminal = ""  # Current non-terminal from which the productions belong
-
-parser.literals = []  # List of the literals used
-
-parser.non_terminals = {}  # Dict of the non-terminal symbols and their productions
-
 # ----------------------- Analyzing the input
 
 content = sys.stdin.read()
 parser.parse(content)
 # TODO: Add arbitary new lines to the sintaxe
 if parser.success:
-    print("Correct sentence!")
-    # print("Correct sentence:", content)
+    print('Correct sentence!')
+    print('AST:', parser.ast)
 else:
-    print("Invalid sentence!")
-    # print("Invalid sentence:", content)
+    print('Invalid sentence!')

@@ -6,7 +6,7 @@ states = (
     ('tokens', 'exclusive'),
 )
 
-literals = [':']
+literals = [':', '-']
 
 tokens = [
     'NEW_LINE',
