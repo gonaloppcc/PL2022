@@ -4,44 +4,47 @@ id [a-zA-Z_]\w*
 fIM s
 empty s
 
-Programa:
-Comandos fIM                   
+- Programa:
+Comandos fIM
 
-Comandos:
-empty                        
+- Comandos:
+empty
 Comando Comandos
 
-Comando:
+- Comando:
 Atrib
 Print
 Read
 
-Atrib:
+- Atrib:
 id '=' Exp
 
-Print:
-'!' Exp   
+- Print:
+'!' Exp
 
-Read:
-'?' id                       
+- Read:
+'?' id
 
-Exp:
-Termo Exp2                          
+- Exp:
+Termo Exp2
 
-Exp2:
-empty                               
-'+' Exp                
-'-' Exp                          
-
-Termo:
-Fator Termo2
-
-Termo2:
+- Exp2:
 empty
-'*' Termo                      
-'/' Termo                      
+'+' Exp
+'-' Exp
 
-Fator:
+- Termo:
+Fator Termo2
+# Fator
+
+- Termo2:
+empty
+'*' Termo
+'/' Termo
+/*Okay*/
+
+- Fator:
 num
 id
 '(' Exp ')'
+

@@ -22,14 +22,16 @@ tokens = [
 
 # --------------- Comments
 def t_ANY_COMMENT_MULTILINE(t):
-    r'\/\*(.|\n)*\*\/'
+    r'\/\*(.|\n)*\*\/(\n*)'
     print('Comment:', f'\'{t.value}\'')  # TODO: Debug purposes
+    t.lexer.lineno += t.value.count('\n')
     pass
 
 
 def t_ANY_COMMENT(t):
-    r'\#.*'
+    r'\#.*\n*'
     print('Comment:', f'\'{t.value}\'')  # TODO: Debug purposes
+    t.lexer.lineno += t.value.count('\n')
     pass
 
 
@@ -42,7 +44,6 @@ def t_tokens_token(t):
 
 
 # ----------------- 'Production'/ 'INITIAL' state tokens
-
 def t_EMPTY(t):
     r'empty'  # TODO: Convert to case insensitive
     return t
@@ -56,6 +57,7 @@ def t_TOKENS(t: lex.Token):
 
 def t_literal(t):
     r'\'.\''
+    t.value = t.value[1]  # Removing the quotation marks
     return t
 
 
@@ -81,8 +83,7 @@ t_ANY_ignore = ' \t'
 
 
 def t_ANY_error(t):
-    print("Illegal character,", t.value[0])
-    t.lexer.skip(1)
+    print("Illegal character,", f'{t.value[0]}', f'in line {t.lineno}.')
     print('Input is invalid!!!')
     exit(1)  # Exit code of an invalid recognition
 
@@ -93,6 +94,8 @@ lexer = lex.lex()
 
 # ------------ Lexer state definition
 lexer.lineno = 1
+
+lexer.collumn = 1  # TODO: Is this need?
 
 # ----------------------- Testing
 

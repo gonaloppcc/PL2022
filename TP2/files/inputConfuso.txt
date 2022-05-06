@@ -1,24 +1,24 @@
 Tokens:
-empty 
+empty empty
 
 
-S:
+- S:
 '0' A
 '1' B
 
-A:
+- A:
 '0' S
 '1' C
 
-B:
+- B:
 '0' C
 '1' S
 empty 
 
-C:
+- C:
 '0' B
 '1' A
 
-Z:
+- Z:
 S '$'
 C '&'

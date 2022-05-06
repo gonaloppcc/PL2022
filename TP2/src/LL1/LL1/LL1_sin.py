@@ -66,6 +66,7 @@ def p_Simb_empty(p):
 def p_Simb_literal(p):
     "Simb : literal"
     p[0] = p[1]
+    p.parser.literals.add(p[1])
 
 
 def p_Simb_NT(p):
@@ -85,7 +86,10 @@ def p_empty(p):
 
 # ---------------------- Handle Error function
 def p_error(p):
-    print('Sintaxe error:', p)
+    if not p:
+        print('Unexpected end of input!')
+    else:
+        print('Syntax Error:', f'{p.value}', f'in line {p.lineno}.')
     parser.success = False
 
 
@@ -93,7 +97,16 @@ def p_error(p):
 parser = yacc.yacc(start='Grammar', debug=False, optimize=1)
 
 parser.success = True
+
+parser.literals = set()  # Set of all the literals found
+
+
 # ----------------------- Analyzing the input
+def ast_to_json(file_name: str, data):
+    import json
+    with open(file_name, 'w') as f:
+        f.write(json.dumps(data))
+
 
 content = sys.stdin.read()
 parser.parse(content)
@@ -101,5 +114,7 @@ parser.parse(content)
 if parser.success:
     print('Correct sentence!')
     print('AST:', parser.ast)
+    ast_to_json('ast.json', parser.ast)
+    print('Literals:', parser.literals)
 else:
     print('Invalid sentence!')

@@ -5,30 +5,30 @@ id [a-zA-Z_]\w*
 fIM s
 empty s
 
-Anota:
+- Anota:
 Abre texto Fecha
 
-Abre:
+- Abre:
 '<' id '>'
 '<' id  LstA '>'
 
-AnotaCorreto:
+- AnotaCorreto:
 Abre2 texto Fecha
 
-Abre2:
+- Abre2:
 '<' id Resto '>'
 
-Resto:
+- Resto:
 '>'
 LstA '>'
 
-Fecha:
+- Fecha:
 '<' '\' id '>'
 
-LstA:
+- LstA:
 Atr
 LstA Atr
 
-Atr:
+- Atr:
 id '=' str
 

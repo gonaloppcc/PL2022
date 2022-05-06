@@ -1,5 +1,5 @@
 Tokens:
-S:
+- S:
 A
-A:
+- A:
 S
