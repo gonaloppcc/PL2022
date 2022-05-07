@@ -15,6 +15,7 @@ tokens = [
     'token',
     'NT',
     'literal',
+    'import'
 ]
 
 
@@ -62,6 +63,11 @@ def t_literal(t):
 
 
 # ------------------- Common tokens
+def t_ANY_import(t):
+    r'import'
+    return t
+
+
 def t_ANY_token(t):
     r'[a-z]\w*'
     return t

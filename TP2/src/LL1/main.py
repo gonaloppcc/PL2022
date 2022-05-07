@@ -19,7 +19,7 @@ if __name__ == '__main__':
     for key, value in nterminals.items():
         for rule in value.getRule():
             print(f"Key: {key} | One rule: {rule}")
-    
+
     # Check if the file describes correctly an LL(1) language.
     checkLL1.main_check_LL1(terminals, nterminals)
     print("Literals simbols: ", literals)

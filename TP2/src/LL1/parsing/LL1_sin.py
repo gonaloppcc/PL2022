@@ -8,7 +8,7 @@ from LL1_lex import tokens, literals
 def p_Grammar(p):
     "Grammar : TOKENS ':' NEW_LINE Tokens NonTerminalList"
     p[0] = (p[4], p[5])
-    parser.ast = p[0]  # Abstract Syntax tree assigment
+    # parser.ast = p[0]  # Abstract Syntax tree assigment
 
 
 def p_Tokens_list(p):
@@ -98,7 +98,7 @@ parser = yacc.yacc(start='Grammar', debug=False, optimize=1)
 
 parser.success = True
 
-parser.literals = set()  # Set of all the literals found
+parser.literals = set()  # Set of all the literals found TODO: Change this to be in the ast
 
 
 # ----------------------- Analyzing the input
@@ -109,12 +109,12 @@ def ast_to_json(file_name: str, data):
 
 
 content = sys.stdin.read()
-parser.parse(content)
+ast = parser.parse(content)
 # TODO: Add arbitary new lines to the sintaxe
 if parser.success:
     print('Correct sentence!')
-    print('AST:', parser.ast)
-    ast_to_json('ast.json', parser.ast)
-    print('Literals:', parser.literals)
+    print('AST:', ast)
+    ast_to_json('ast.json', ast)
+    print('Literals:', parser.literals)  # Join this into the ast ?
 else:
     print('Invalid sentence!')
