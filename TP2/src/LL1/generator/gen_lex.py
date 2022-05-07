@@ -13,6 +13,13 @@ def print_tokens(terminals, file):
         file.write(f'def t_{simb[0]}(t):\n')
         file.write(f"    r'{simb[1]}'\n\n")
 
+# Prints the terminals list to the lex file
+def print_literals(literals, file):
+    file.write('literals = [')
+    for i in range(0, len(literals)-1):
+        file.write(f' {literals[i]},')
+    file.write(f' {literals[len(literals)-1]} ]\n')
+
 # Prints the t_error function. Right now it just tells lex to
 # skip to the next token.
 #
@@ -31,8 +38,9 @@ def print_lex_start(file):
     file.write('lexer = lex.lex()\n')
 
 # Main function to generate the full lex Python file
-def make_lex(terminals, file):
+def make_lex(terminals, literals, file):
     print_imports(file)
+    print_literals(literals, file)
     print_tokens(terminals, file)
     print_error(file)
     print_lex_start(file)
