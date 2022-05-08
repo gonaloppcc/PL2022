@@ -1,21 +1,28 @@
 # TODO: Define the tokens and the stuff
 import ply.lex as lex
+import logging
+
+logging.basicConfig(level=20)
 
 states = (
     # ('productions', 'exclusive') INITIAL STATE
     ('tokens', 'exclusive'),
+    ('imports', 'exclusive'),  # Import state
 )
 
 literals = [':', '-']
 
 tokens = [
+    # Import state tokens
+    'IMPORT',
+    'path',  # TODO: Maybe add a *ALIAS* option
+    #
     'NEW_LINE',
     'TOKENS',
     'EMPTY',
     'token',
     'NT',
     'literal',
-    'import'
 ]
 
 
@@ -24,14 +31,14 @@ tokens = [
 # --------------- Comments
 def t_ANY_COMMENT_MULTILINE(t):
     r'\/\*(.|\n)*\*\/(\n*)'
-    print('Comment:', f'\'{t.value}\'')  # TODO: Debug purposes
+    logging.debug('Comment:' + f'\'{t.value}\'')  # TODO: Debug purposes
     t.lexer.lineno += t.value.count('\n')
     pass
 
 
 def t_ANY_COMMENT(t):
     r'\#.*\n*'
-    print('Comment:', f'\'{t.value}\'')  # TODO: Debug purposes
+    logging.debug('Comment:' + f'\'{t.value}\'')  # TODO: Debug purposes
     t.lexer.lineno += t.value.count('\n')
     pass
 
@@ -62,10 +69,27 @@ def t_literal(t):
     return t
 
 
-# ------------------- Common tokens
-def t_ANY_import(t):
+def t_IMPORT(t):
     r'import'
+    t.lexer.begin('imports')
     return t
+
+
+# -------------------------------- Import state tokens
+def t_imports_path(t):
+    r'\'\w+\''
+    t.value = t.value[1:-1]
+    return t
+
+
+def t_imports_NEW_LINE(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)  # TODO: Fix Line number count
+    t.lexer.begin('INITIAL')
+    return t
+
+
+# ------------------- Common tokens
 
 
 def t_ANY_token(t):

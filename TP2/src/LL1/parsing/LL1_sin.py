@@ -6,9 +6,29 @@ from LL1_lex import tokens, literals
 
 
 def p_Grammar(p):
-    "Grammar : TOKENS ':' NEW_LINE Tokens NonTerminalList"
-    p[0] = (p[4], p[5])
+    "Grammar : Imports TOKENS ':' NEW_LINE Tokens NonTerminalList"
+    p[0] = {
+        'imports': p[1],
+        'tokens': p[5],
+        'non_terminals': p[6]
+    }
+    # TODO: Add semantic action to import action
     # parser.ast = p[0]  # Abstract Syntax tree assigment
+
+
+def p_Imports(p):
+    "Imports : empty"
+    p[0] = []
+
+
+def p_Imports_list(p):
+    "Imports : Imports Import NEW_LINE"
+    p[0] = p[1] + [p[2]]
+
+
+def p_Import(p):
+    "Import : IMPORT path"
+    p[0] = p[2]
 
 
 def p_Tokens_list(p):
@@ -94,7 +114,7 @@ def p_error(p):
 
 
 # ---------------------- Parser variables
-parser = yacc.yacc(start='Grammar', debug=False, optimize=1)
+parser = yacc.yacc(start='Grammar', debug=False, optimize=0)
 
 parser.success = True
 

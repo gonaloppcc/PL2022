@@ -1,3 +1,4 @@
+import '2'
 Tokens:
 num \d+
 id [a-zA-Z_]\w*
