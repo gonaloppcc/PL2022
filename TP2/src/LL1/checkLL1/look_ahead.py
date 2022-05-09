@@ -20,7 +20,8 @@ def intersection(lst1, lst2):
 # Analises one rule and returns the simbol associated with the look ahead of this rule.
 def analise_rule(expression, rule, la_visited : [str]):
     if rule[0] == expression:
-        print("Left Recursivity")
+        if common.debug:
+            print("Left Recursivity")
         raise Not_LL1()
     if common.is_empty(rule[0]):
         if common.debug:
@@ -57,15 +58,16 @@ def look_ahead_main(expression : str, la_visited : [str]):
             raise Not_LL1()
         
         # List of rules associated with the current expression
-        list_rules = common.nterminal_dic[expression].getRule()
+        list_rules = common.nterminal_dic[expression]
         for rule in list_rules:
             tsimbols_rule = analise_rule(expression, rule, la_visited)
             if not tsimbols_rule:
                 raise Not_LL1()
             if len(intersection(tsimbols_rule , tsimbols_seen)) > 0:
-                print("There is intersection of simbols.")
-                print(tsimbols_rule)
-                print(tsimbols_seen)
+                if common.debug:
+                    print("There is intersection of simbols.")
+                    print(tsimbols_rule)
+                    print(tsimbols_seen)
                 raise Not_LL1()
             else:
                 if common.debug:

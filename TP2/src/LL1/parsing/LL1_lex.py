@@ -58,7 +58,7 @@ def t_TOKENS(t: lex.Token):
 
 def t_literal(t):
     r'\'.\''
-    t.value = t.value[1]  # Removing the quotation marks
+    # t.value = t.value[1]  # Removing the quotation marks
     return t
 
 
