@@ -2,18 +2,20 @@
 
 import ply.yacc as yacc
 import sys
+
+from typing import Dict
+
 from LL1_lex import tokens, literals
 
 
 def p_Grammar(p):
-    "Grammar : Imports TOKENS ':' NEW_LINE Tokens NonTerminalList"
+    "Grammar : Imports TokensBoiler NonTerminalList"
     p[0] = {
         'imports': p[1],
-        'tokens': p[5],
-        'non_terminals': p[6]
+        'tokens': p[2],
+        'literals': parser.literals,
+        'non_terminals': p[3]
     }
-    # TODO: Add semantic action to import action
-    # parser.ast = p[0]  # Abstract Syntax tree assigment
 
 
 def p_Imports(p):
@@ -22,17 +24,36 @@ def p_Imports(p):
 
 
 def p_Imports_list(p):
-    "Imports : Imports Import NEW_LINE"
+    '''Imports : Imports Import
+               | Imports Import NEW_LINE'''
     p[0] = p[1] + [p[2]]
 
 
 def p_Import(p):
     "Import : IMPORT path"
-    p[0] = p[2]
+    with open(p[2], 'r') as f:
+        dict1 = lang_recon(f.read())
+    p[0] = {
+        'path': p[2],
+        'ast': dict1
+    }
+
+    # TODO: Add semantic action to import action
+
+
+def p_Tokens_boilerplate_empty(p):
+    "TokensBoiler : empty"
+    p[0] = {}
+
+
+def p_Tokens_boilerplate(p):
+    "TokensBoiler : TOKENS ':' NEW_LINE Tokens"
+    p[0] = p[4]
 
 
 def p_Tokens_list(p):
-    "Tokens : Tokens token NEW_LINE"
+    '''Tokens : Tokens token
+              | Tokens token NEW_LINE'''
     p[1][p[2][0]] = p[2][1]
     p[0] = p[1]
 
@@ -49,23 +70,25 @@ def p_NonTerminalList(p):  # Change this name to be not confused with *p_Tokens_
 
 
 def p_NonTerminal(p):
-    "NonTerminalList : NTerminal"
-    p[0] = {p[1][0]: p[1][1]}  # TODO: Change this to be more efficient
+    "NonTerminalList : empty"
+    p[0] = {}  # TODO: Change this to be more efficient
 
 
 def p_NTerminal(p):
-    "NTerminal : '-' NT ':' NEW_LINE Productions NEW_LINE"
+    "NTerminal : '-' NT ':' NEW_LINE Productions"
     p[0] = (p[2], p[5])
 
 
-def p_Productions_list(p):
-    "Productions : Productions NEW_LINE Production"
-    p[0] = p[1] + [p[3]]
-
-
 def p_Productions(p):
-    "Productions : Production"
+    '''Productions : Production
+                   | Production NEW_LINE'''
     p[0] = [p[1]]
+
+
+def p_Productions_list(p):
+    '''Productions : Productions Production
+                   | Productions Production NEW_LINE'''
+    p[0] = p[1] + [p[3]]
 
 
 def p_Production_list(p):
@@ -118,7 +141,7 @@ parser = yacc.yacc(start='Grammar', debug=False, optimize=0)
 
 parser.success = True
 
-parser.literals = set()  # Set of all the literals found TODO: Change this to be in the ast
+parser.literals = set()  # Set of all the literals found TODO: Change this to be in the ast?
 
 
 # ----------------------- Analyzing the input
@@ -128,13 +151,22 @@ def ast_to_json(file_name: str, data):
         f.write(json.dumps(data))
 
 
-content = sys.stdin.read()
-ast = parser.parse(content)
-# TODO: Add arbitary new lines to the sintaxe
-if parser.success:
-    print('Correct sentence!')
-    print('AST:', ast)
-    ast_to_json('ast.json', ast)
-    print('Literals:', parser.literals)  # Join this into the ast ?
-else:
-    print('Invalid sentence!')
+def lang_recon(text: str) -> dict:
+    """
+    Using the defined lang, this function recons a given text, returning the ast (Abstract Syntax Tree).
+    """
+
+    ast = parser.parse(text)
+    # TODO: Add arbitary new lines to the sintaxe
+    if parser.success:
+        from tabulate import tabulate
+        print('\t\t\t\t\tAST:\n', tabulate(ast, headers="keys"))
+        for n_term, prod in ast['non_terminals'].items():
+            print(f'{n_term}: ', prod)
+    else:
+        print('!!!Invalid input text!!!')
+
+    return ast
+
+
+lang_recon(sys.stdin.read())

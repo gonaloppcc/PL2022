@@ -53,12 +53,12 @@ def t_tokens_token(t):
 
 # ----------------- 'Production'/ 'INITIAL' state tokens
 def t_EMPTY(t):
-    r'empty'  # TODO: Convert to case insensitive
+    r'[Ee][Mm][Pp][Tt][Yy]'
     return t
 
 
 def t_TOKENS(t: lex.Token):
-    r'Tokens'  # TODO: Convert to case insensitive
+    r'[Tt][Oo][Kk][Ee][Nn][Ss]'
     t.lexer.begin('tokens')
     return t
 
@@ -70,14 +70,14 @@ def t_literal(t):
 
 
 def t_IMPORT(t):
-    r'import'
+    r'[iI][mM][pP][oO][rR][tT]'
     t.lexer.begin('imports')
     return t
 
 
 # -------------------------------- Import state tokens
 def t_imports_path(t):
-    r'\'\w+\''
+    r'\'[\w\.]+\''
     t.value = t.value[1:-1]
     return t
 

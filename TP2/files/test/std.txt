@@ -1,0 +1,6 @@
+Tokens:
+num \d+
+id [a-zA-Z_]\w*
+
+- P:
+'.'
