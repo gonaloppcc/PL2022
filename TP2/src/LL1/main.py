@@ -5,8 +5,8 @@ import parsing.LL1_sin as file_reader
 import checkLL1.checkLL1 as checkLL1
 
 if __name__ == '__main__':
-    #input = "../../files/test/input_recursivo_infinito2.txt"
-    input = "../../files/test/input.txt"
+    input = "../../files/test/input_recursivo_infinito2.txt"
+    #input = "../../files/test/input.txt"
     if len(argv) == 2:
         input = argv[1]
         print("Path to file: ", input)
