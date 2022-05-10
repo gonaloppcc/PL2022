@@ -10,8 +10,12 @@ def print_tokens(terminals, file):
     file.write(f"'{keys[len(keys)-1]}' ]\n\n")
 
     for simb in terminals.items():
-        file.write(f'def t_{simb[0]}(t):\n')
-        file.write(f"    r'{simb[1]}'\n\n")
+        if simb[0] == 'ignore':
+            file.write(f"t_ignore = '{simb[1]}'\n\n")
+        else:
+            file.write(f'def t_{simb[0]}(t):\n')
+            file.write(f"    r'{simb[1]}'\n")
+            file.write(f"    return t\n\n")
 
 # Prints the terminals list to the lex file
 def print_literals(literals, file):
