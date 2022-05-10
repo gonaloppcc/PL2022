@@ -1,77 +1,58 @@
-import ply.lex as lex
 from checkLL1.look_ahead import look_ahead_main
 from checkLL1.follow import follow
 
-# Prints the n tabs
-def print_tabs(n):
-    s = ''
-    for i in range(0, n):
-        s += '\t'
-    return s
-
 # Prints the imports required to run the top down parser
-def print_imports(lex_file):
+def print_imports(lex_file, file):
     imports = 'import ply.yacc as yacc\n'
     imports += f'from {lex_file} import tokens, literals, lexer\n\n'
 
-    return imports
+    file.write(imports)
 
 
 # Prints the function that recognizes the non terminal simbol
 # TODO: Improve code
-def print_nterm(nterminal, terminals, literals):
-    func = f'def rec_{nterminal[0]}():\n\tglobal next_simb\n'
-    tab_num = 1
+def print_nterm(nterminal, terminals, literals, file):
+    func =  f'def rec_{nterminal[0]}():\n'
+    func += f'    global next_simb\n'
+
     for prop in nterminal[1]:
         first_simb = prop[0]
         if first_simb == 'empty':
             simbs = follow(nterminal[0], [])
-            func += print_tabs(tab_num)
-            func += f'if next_simb.type in {simbs}:\n'
-            tab_num += 1
-            func += print_tabs(tab_num)
-            func += 'pass\n'
-            tab_num -= 1
+            func += f'    if next_simb.type in {simbs}:\n'
+            func += '         pass\n'
         elif first_simb in literals or first_simb in terminals.keys():
-            func += print_tabs(tab_num)
-            func += f"if next_simb.type == '{first_simb}':\n"
-            tab_num += 1
-            func += print_tabs(tab_num)
-            func += f"rec_term('{first_simb}')\n"
+            func += f"    if next_simb.type == '{first_simb}':\n"
+            func += f"        rec_term('{first_simb}')\n"
         else:
             lookaheads = look_ahead_main(first_simb, [])
-            func += print_tabs(tab_num)
-            func += f'if next_simb.type in {lookaheads}:\n'
-            tab_num += 1
-            func += print_tabs(tab_num)
-            func += f'rec_{first_simb}()\n'
+            func += f'    if next_simb.type in {lookaheads}:\n'
+            func += f'        rec_{first_simb}()\n'
 
         for i in range(1, len(prop)):
-            func += print_tabs(tab_num)
             if prop[i] in literals or prop[i] in terminals.keys():
-                func += f"rec_term('{prop[i]}')\n"
+                func += f"        rec_term('{prop[i]}')\n"
             else:
-                func += f'rec_{prop[i]}()\n' 
- 
-        tab_num = 1
-    func += print_tabs(tab_num)
-    func += 'else:\n\t\tparse_error(next_simb)\n'
-    func += '\n'
-    return func
+                func += f'        rec_{prop[i]}()\n' 
+
+    func += '    else:\n'
+    func += '        parse_error(next_simb)\n\n'
+    file.write(func)
 
 
 # Returns the function that parses errors
-def print_parse_error():
-    return '''
+def print_parse_error(file):
+    func = '''
 def parse_error(simb):
     print(f'Unknown symbol: {simb}')
 
 '''
+    file.write(func)
 
 
 # Returns the function that recognizes terminal/literal simbols
-def print_rec_term():
-    return '''
+def print_rec_term(file):
+    func = '''
 def rec_term(simb):
     global next_simb
     if next_simb.type == simb:
@@ -79,23 +60,23 @@ def rec_term(simb):
     else:
         parse_error(next_simb)
 '''
+    file.write(func)
 
 
 # Returns the initialization of the next_simb global variable
-def print_next_simb():
-    return '''
+def print_next_simb(file):
+    simb = '''
 next_simb = ('Error', '', 0, 0)
 '''
+    file.write(simb)
 
 
 # Main function of this module
 # Prints the top down Python parser to a file
 def make_top_down(nterminals, terminals, literals, lex_file, file):
-    func = print_imports(lex_file)
-    func += print_next_simb()
-    func += print_rec_term()
-    func += print_parse_error()
+    print_imports(lex_file, file)
+    print_next_simb(file)
+    print_rec_term(file)
+    print_parse_error(file)
     for nterminal in nterminals.items():
-        func += print_nterm(nterminal, terminals, literals)
-    
-    file.write(func)
+        print_nterm(nterminal, terminals, literals, file)
