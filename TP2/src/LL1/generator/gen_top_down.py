@@ -22,15 +22,9 @@ def print_imports(lex_file):
 def print_nterm(nterminal, terminals, literals):
     func = f'def rec_{nterminal[0]}():\n\tglobal next_simb\n'
     tab_num = 1
-    for prop in nterminal[1].elements:
+    for prop in nterminal[1]:
         first_simb = prop[0]
-        if first_simb in literals:
-            func += print_tabs(tab_num)
-            func += f"if next_simb.type == {first_simb}:\n"
-            tab_num += 1
-            func += print_tabs(tab_num)
-            func += f'rec_term({first_simb})\n'
-        elif first_simb == 'empty':
+        if first_simb == 'empty':
             simbs = follow(nterminal[0], [])
             func += print_tabs(tab_num)
             func += f'if next_simb.type in {simbs}:\n'
@@ -38,7 +32,7 @@ def print_nterm(nterminal, terminals, literals):
             func += print_tabs(tab_num)
             func += 'pass\n'
             tab_num -= 1
-        elif first_simb in terminals.keys():
+        elif first_simb in literals or first_simb in terminals.keys():
             func += print_tabs(tab_num)
             func += f"if next_simb.type == '{first_simb}':\n"
             tab_num += 1
@@ -54,9 +48,7 @@ def print_nterm(nterminal, terminals, literals):
 
         for i in range(1, len(prop)):
             func += print_tabs(tab_num)
-            if prop[i] in literals:
-                func += f'rec_term({prop[i]})\n'
-            elif prop[i] in terminals.keys():
+            if prop[i] in literals or prop[i] in terminals.keys():
                 func += f"rec_term('{prop[i]}')\n"
             else:
                 func += f'rec_{prop[i]}()\n' 

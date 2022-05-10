@@ -20,9 +20,10 @@ def print_tokens(terminals, file):
 # Prints the terminals list to the lex file
 def print_literals(literals, file):
     file.write('literals = [')
-    for i in range(0, len(literals)-1):
-        file.write(f' {literals[i]},')
-    file.write(f' {literals[len(literals)-1]} ]\n')
+    list_l = list(literals)
+    for i in range(0, len(list_l)-1):
+        file.write(f" '{list_l[i]}',")
+    file.write(f" '{list_l[len(list_l)-1]}' ]\n")
 
 # Prints the t_error function. Right now it just tells lex to
 # skip to the next token.
