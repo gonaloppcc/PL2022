@@ -29,8 +29,8 @@ def t_TOKENS(t):
 # Se tiver, temos de fazer doutra forma, mas não é difícil.
 # Read one terminal simbol. They are described with the name and regex expression. 
 def t_T_NEW_TOKEN(t):
-    r'^([a-z]\w*)\s+([\[\]\+\*\\a-zA-Z_-]+)$'
-    separated = t.value.split()
+    r'^([a-z]\w*)\s+(.+)$'
+    separated = t.value.split(maxsplit=1)
     lexer.terminals[separated[0]] = separated[1]
 
 # When the tokens part end in the original file.
