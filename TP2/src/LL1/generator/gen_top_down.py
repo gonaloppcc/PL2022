@@ -15,18 +15,26 @@ def print_nterm(nterminal, terminals, literals, file):
     func =  f'def rec_{nterminal[0]}():\n'
     func += f'    global next_simb\n'
 
+    first = True
     for prop in nterminal[1]:
         first_simb = prop[0]
+
+        if not first:
+            func += '    el' # If it's not the first proposition write elif
+        else:
+            func += '    '   # If it's the first proposition write if and set first to False
+            first = False
+
         if first_simb == 'empty':
             simbs = follow(nterminal[0], [])
-            func += f'    if next_simb.type in {simbs}:\n'
+            func += f'if next_simb.type in {simbs}:\n'
             func += '         pass\n'
         elif first_simb in literals or first_simb in terminals.keys():
-            func += f"    if next_simb.type == '{first_simb}':\n"
+            func += f"if next_simb.type == '{first_simb}':\n"
             func += f"        rec_term('{first_simb}')\n"
         else:
             lookaheads = look_ahead_main(first_simb, [])
-            func += f'    if next_simb.type in {lookaheads}:\n'
+            func += f'if next_simb.type in {lookaheads}:\n'
             func += f'        rec_{first_simb}()\n'
 
         for i in range(1, len(prop)):
