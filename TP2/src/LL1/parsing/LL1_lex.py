@@ -113,8 +113,8 @@ t_ANY_ignore = ' \t'
 
 
 def t_ANY_error(t):
-    print("Illegal character,", f'{t.value[0]}', f'in line {t.lineno}.')
-    print('Input is invalid!!!')
+    print("Illegal character,", f'{repr(t.value[0])}', f'in line {t.lineno}.')
+    print('!!! Input is invalid !!!')
     exit(1)  # Exit code of an invalid recognition
 
 

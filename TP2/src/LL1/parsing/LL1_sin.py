@@ -132,7 +132,7 @@ def p_error(p):
     if not p:
         print('Unexpected end of input!')
     else:
-        print('Syntax Error:', f'{p.value}', f'in line {p.lineno}.')
+        print('Syntax Error:', f'{repr(p.value)}', f'in line {p.lineno}.')
     parser.success = False
 
 
@@ -164,7 +164,7 @@ def lang_recon(text: str) -> dict:
         for n_term, prod in ast['non_terminals'].items():
             print(f'{n_term}: ', prod)
     else:
-        print('!!!Invalid input text!!!')
+        print('!!! Invalid input text !!!')
 
     return ast
 

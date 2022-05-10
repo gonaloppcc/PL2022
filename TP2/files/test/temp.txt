@@ -1,8 +1,7 @@
-import 'std.txt'
 Tokens:
 fIM s
 empty s
 
 - Programa:
 Comandos fIM
-'2'
+;
