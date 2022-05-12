@@ -13,16 +13,16 @@ tokens = [
     'NEW_LINE',
     'TOKENS',
     'EMPTY',
-    'token1',
+    'token',
     'NT',
     'literal',
     #'import',
     'state',
     'incl',
     'excl',
-    'name',
-    'tokenState',
-    'expRegex'
+    'name'
+    #'tokenState',
+    #'expRegex'
 ]
 # ------------------- State tokens
 
@@ -80,7 +80,7 @@ def t_tokens_tokenState (t):
         t.lexer.regex = True
     return t
 
-def t_tokens_token1(t):
+def t_tokens_token(t):
     r'[a-z]\w*'
     print("Leu token: ", t.value)
     return t
@@ -143,10 +143,12 @@ def t_ANY_error(t):
     exit(1)  # Exit code of an invalid recognition
 
     # A expressão regex não pode ter ' '?
+'''   
 def t_tokens_expRegex(t):
     r'[^\-@\n]+'
     print("Leu expRegex: ", t.value)
     return t
+'''
 
 
 

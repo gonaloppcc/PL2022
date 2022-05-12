@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = "GrammarEMPTY NEW_LINE NT TOKENS excl expRegex incl literal name state token1 tokenStateGrammar : States TOKENS ':' NEW_LINE TokensList NonTerminalListStates : state ':' NEW_LINE StatesListStates : StatesList : StatesList name Type NEW_LINE StatesList : name Type NEW_LINE Type : inclType : exclTokensList : TokensList Token TokensList : emptyToken : tokenState expRegex NEW_LINEToken : token1 expRegex NEW_LINENonTerminalList : NonTerminalList NTerminalNonTerminalList : NTerminalNTerminal : '-' NT ':' NEW_LINE Productions NEW_LINEProductions : Productions NEW_LINE ProductionProductions : ProductionProduction : Production SimbProduction : SimbSimb : EMPTYSimb : literalSimb : NTSimb : nameempty :"
+_lr_signature = "GrammarEMPTY NEW_LINE NT TOKENS excl incl literal name state tokenGrammar : States TokensBoiler NonTerminalListStates : state ':' NEW_LINE StatesListStatesList : StatesList : StatesList State NEW_LINEState : name TypeType : inclType : exclTokensBoiler : emptyTokensBoiler : TOKENS ':' NEW_LINE TokensTokens : Tokens token\n                  | Tokens token NEW_LINETokens : emptyNonTerminalList : NonTerminalList NTerminalNonTerminalList : emptyNTerminal : '-' NT ':' NEW_LINE ProductionsProductions : Production\n                       | Production NEW_LINEProductions : Productions Production\n                       | Productions Production NEW_LINEProduction : Production SimbProduction : SimbSimb : EMPTYSimb : literalSimb : NTSimb : tokenempty : "
     
-_lr_action_items = {'state':([0,],[3,]),'TOKENS':([0,2,9,24,29,],[-3,4,-2,-5,-4,]),'$end':([1,17,19,25,41,],[0,-1,-13,-12,-14,]),':':([3,4,28,],[5,6,32,]),'NEW_LINE':([5,6,14,15,16,23,26,27,32,34,35,36,37,38,39,40,42,43,],[7,8,24,-6,-7,29,30,31,33,-21,41,-16,-18,-19,-20,-22,-17,-15,]),'name':([7,9,24,29,33,34,36,37,38,39,40,41,42,43,],[10,13,-5,-4,40,-21,40,-18,-19,-20,-22,40,-17,40,]),'tokenState':([8,11,12,18,30,31,],[-23,20,-9,-8,-10,-11,]),'token1':([8,11,12,18,30,31,],[-23,21,-9,-8,-10,-11,]),'-':([8,11,12,17,18,19,25,30,31,41,],[-23,22,-9,22,-8,-13,-12,-10,-11,-14,]),'incl':([10,13,],[15,15,]),'excl':([10,13,],[16,16,]),'expRegex':([20,21,],[26,27,]),'NT':([22,33,34,36,37,38,39,40,41,42,43,],[28,34,-21,34,-18,-19,-20,-22,34,-17,34,]),'EMPTY':([33,34,36,37,38,39,40,41,42,43,],[38,-21,38,-18,-19,-20,-22,38,-17,38,]),'literal':([33,34,36,37,38,39,40,41,42,43,],[39,-21,39,-18,-19,-20,-22,39,-17,39,]),}
+_lr_action_items = {'state':([0,],[3,]),'$end':([1,2,4,5,8,9,11,12,14,15,17,18,22,23,28,29,30,31,32,33,34,35,36,37,38,39,],[0,-26,-26,-8,-1,-14,-3,-13,-26,-2,-9,-12,-10,-4,-11,-24,-15,-16,-21,-22,-23,-25,-18,-17,-20,-19,]),'TOKENS':([2,11,15,23,],[6,-3,-2,-4,]),'-':([2,4,5,8,9,11,12,14,15,17,18,22,23,28,29,30,31,32,33,34,35,36,37,38,39,],[-26,-26,-8,13,-14,-3,-13,-26,-2,-9,-12,-10,-4,-11,-24,-15,-16,-21,-22,-23,-25,-18,-17,-20,-19,]),':':([3,6,16,],[7,10,21,]),'NEW_LINE':([7,10,19,21,22,24,25,26,29,31,32,33,34,35,36,38,],[11,14,23,27,28,-5,-6,-7,-24,37,-21,-22,-23,-25,39,-20,]),'name':([11,15,23,],[-3,20,-4,]),'NT':([13,27,29,30,31,32,33,34,35,36,37,38,39,],[16,29,-24,29,29,-21,-22,-23,-25,29,-17,-20,-19,]),'token':([14,17,18,22,27,28,29,30,31,32,33,34,35,36,37,38,39,],[-26,22,-12,-10,35,-11,-24,35,35,-21,-22,-23,-25,35,-17,-20,-19,]),'incl':([20,],[25,]),'excl':([20,],[26,]),'EMPTY':([27,29,30,31,32,33,34,35,36,37,38,39,],[33,-24,33,33,-21,-22,-23,-25,33,-17,-20,-19,]),'literal':([27,29,30,31,32,33,34,35,36,37,38,39,],[34,-24,34,34,-21,-22,-23,-25,34,-17,-20,-19,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'Grammar':([0,],[1,]),'States':([0,],[2,]),'StatesList':([7,],[9,]),'TokensList':([8,],[11,]),'empty':([8,],[12,]),'Type':([10,13,],[14,23,]),'NonTerminalList':([11,],[17,]),'Token':([11,],[18,]),'NTerminal':([11,17,],[19,25,]),'Productions':([33,],[35,]),'Production':([33,41,],[36,43,]),'Simb':([33,36,41,43,],[37,42,37,42,]),}
+_lr_goto_items = {'Grammar':([0,],[1,]),'States':([0,],[2,]),'TokensBoiler':([2,],[4,]),'empty':([2,4,14,],[5,9,18,]),'NonTerminalList':([4,],[8,]),'NTerminal':([8,],[12,]),'StatesList':([11,],[15,]),'Tokens':([14,],[17,]),'State':([15,],[19,]),'Type':([20,],[24,]),'Productions':([27,],[30,]),'Production':([27,30,],[31,36,]),'Simb':([27,30,31,36,],[32,32,38,38,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,27 +27,30 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> Grammar","S'",1,None,None,None),
-  ('Grammar -> States TOKENS : NEW_LINE TokensList NonTerminalList','Grammar',6,'p_Grammar','LL1_sin.py',10),
-  ('States -> state : NEW_LINE StatesList','States',4,'p_States_exist','LL1_sin.py',19),
-  ('States -> <empty>','States',0,'p_States_empty','LL1_sin.py',24),
-  ('StatesList -> StatesList name Type NEW_LINE','StatesList',4,'p_StatesList_Rec','LL1_sin.py',28),
-  ('StatesList -> name Type NEW_LINE','StatesList',3,'p_StatesList_Single','LL1_sin.py',32),
-  ('Type -> incl','Type',1,'p_Type_incl','LL1_sin.py',36),
-  ('Type -> excl','Type',1,'p_Type_excl','LL1_sin.py',40),
-  ('TokensList -> TokensList Token','TokensList',2,'p_TokensList_list','LL1_sin.py',49),
-  ('TokensList -> empty','TokensList',1,'p_TokensList_empty','LL1_sin.py',59),
-  ('Token -> tokenState expRegex NEW_LINE','Token',3,'p_Token_WithState','LL1_sin.py',63),
-  ('Token -> token1 expRegex NEW_LINE','Token',3,'p_Token_NoState','LL1_sin.py',66),
-  ('NonTerminalList -> NonTerminalList NTerminal','NonTerminalList',2,'p_NonTerminalList','LL1_sin.py',79),
-  ('NonTerminalList -> NTerminal','NonTerminalList',1,'p_NonTerminal','LL1_sin.py',85),
-  ('NTerminal -> - NT : NEW_LINE Productions NEW_LINE','NTerminal',6,'p_NTerminal','LL1_sin.py',90),
-  ('Productions -> Productions NEW_LINE Production','Productions',3,'p_Productions_list','LL1_sin.py',95),
-  ('Productions -> Production','Productions',1,'p_Productions','LL1_sin.py',100),
-  ('Production -> Production Simb','Production',2,'p_Production_list','LL1_sin.py',105),
-  ('Production -> Simb','Production',1,'p_Production_simb','LL1_sin.py',110),
-  ('Simb -> EMPTY','Simb',1,'p_Simb_empty','LL1_sin.py',115),
-  ('Simb -> literal','Simb',1,'p_Simb_literal','LL1_sin.py',120),
-  ('Simb -> NT','Simb',1,'p_Simb_NT','LL1_sin.py',126),
-  ('Simb -> name','Simb',1,'p_Simb_token','LL1_sin.py',131),
-  ('empty -> <empty>','empty',0,'p_empty','LL1_sin.py',137),
+  ('Grammar -> States TokensBoiler NonTerminalList','Grammar',3,'p_Grammar','LL1_sin.py',19),
+  ('States -> state : NEW_LINE StatesList','States',4,'p_States','LL1_sin.py',50),
+  ('StatesList -> <empty>','StatesList',0,'p_StatesList_empty','LL1_sin.py',54),
+  ('StatesList -> StatesList State NEW_LINE','StatesList',3,'p_StatesList_elems','LL1_sin.py',58),
+  ('State -> name Type','State',2,'p_State','LL1_sin.py',63),
+  ('Type -> incl','Type',1,'p_Type_incl','LL1_sin.py',67),
+  ('Type -> excl','Type',1,'p_Type_excl','LL1_sin.py',71),
+  ('TokensBoiler -> empty','TokensBoiler',1,'p_Tokens_boilerplate_empty','LL1_sin.py',75),
+  ('TokensBoiler -> TOKENS : NEW_LINE Tokens','TokensBoiler',4,'p_Tokens_boilerplate','LL1_sin.py',79),
+  ('Tokens -> Tokens token','Tokens',2,'p_Tokens_list','LL1_sin.py',83),
+  ('Tokens -> Tokens token NEW_LINE','Tokens',3,'p_Tokens_list','LL1_sin.py',84),
+  ('Tokens -> empty','Tokens',1,'p_Tokens','LL1_sin.py',89),
+  ('NonTerminalList -> NonTerminalList NTerminal','NonTerminalList',2,'p_NonTerminalList','LL1_sin.py',93),
+  ('NonTerminalList -> empty','NonTerminalList',1,'p_NonTerminal','LL1_sin.py',101),
+  ('NTerminal -> - NT : NEW_LINE Productions','NTerminal',5,'p_NTerminal','LL1_sin.py',105),
+  ('Productions -> Production','Productions',1,'p_Productions','LL1_sin.py',109),
+  ('Productions -> Production NEW_LINE','Productions',2,'p_Productions','LL1_sin.py',110),
+  ('Productions -> Productions Production','Productions',2,'p_Productions_list','LL1_sin.py',114),
+  ('Productions -> Productions Production NEW_LINE','Productions',3,'p_Productions_list','LL1_sin.py',115),
+  ('Production -> Production Simb','Production',2,'p_Production_list','LL1_sin.py',119),
+  ('Production -> Simb','Production',1,'p_Production_simb','LL1_sin.py',123),
+  ('Simb -> EMPTY','Simb',1,'p_Simb_empty','LL1_sin.py',127),
+  ('Simb -> literal','Simb',1,'p_Simb_literal','LL1_sin.py',131),
+  ('Simb -> NT','Simb',1,'p_Simb_NT','LL1_sin.py',136),
+  ('Simb -> token','Simb',1,'p_Simb_token','LL1_sin.py',140),
+  ('empty -> <empty>','empty',0,'p_empty','LL1_sin.py',145),
 ]

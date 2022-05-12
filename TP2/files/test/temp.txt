@@ -1,6 +1,7 @@
 states:
 a incl
 b incl
+c excl
 Tokens:
 num \d+
 numi@ola \d+

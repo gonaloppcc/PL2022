@@ -18,6 +18,8 @@ if __name__ == '__main__':
     # Dictionaries that store the two types of data.
     #try:
     if True:
+        file_reader.read_file(input)
+        '''
         (estados, terminals, nterminals, literals) = file_reader.read_file(input)
         print("Estados: ", estados)
         print("Terminais:")
@@ -40,3 +42,4 @@ if __name__ == '__main__':
     #except:
     #    print("Error")
     #    pass
+    '''
