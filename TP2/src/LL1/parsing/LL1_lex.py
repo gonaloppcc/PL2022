@@ -41,7 +41,7 @@ tokens = [
 # ------------------------- 'Tokens' state tokens
 def t_tokens_token(t):
     r'[a-z]\w*\s+.+'  # num \d+
-    name, rexpr, *rest = t.value.split(' ')  # TODO: Change this
+    name, rexpr, *rest = t.value.split(' ', maxsplit=1)  # TODO: Change this
     t.value = (name, rexpr)
     return t
 

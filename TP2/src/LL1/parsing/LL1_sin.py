@@ -184,3 +184,31 @@ class LL1_parser(object):
 if __name__ == '__main__':
     p = LL1_parser()
     p.recon(sys.stdin.read())
+
+# ----------------------- Analyzing the input
+def ast_to_json(file_name: str, data):
+    import json
+    with open(file_name, 'w') as f:
+        f.write(json.dumps(data))
+'''
+content = sys.stdin.read()
+(ast1, ast2) = parser.parse(content)
+# TODO: Add arbitary new lines to the sintaxe
+if parser.success:
+    print('Correct sentence!')
+    print('AST1:', ast1)
+    print('AST1:', ast2)
+    # ast_to_json('ast.json', ast)
+    print('Literals:', parser.literals)  # Join this into the ast ?
+else:
+    print('Invalid sentence!')
+'''
+def read_file(input : str):
+    file = open(input, 'r')
+    Lines = file.read()
+    try:
+        (coisa1, coisa2)= parser.parse(Lines)
+        return (coisa1, coisa2, parser.literals)
+    except:
+        print("Input file not weel written :) ")
+        return None

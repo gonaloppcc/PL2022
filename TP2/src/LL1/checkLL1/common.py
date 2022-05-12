@@ -1,7 +1,7 @@
 terminal_dic = {}
 nterminal_dic = {}
 
-debug = True
+debug = False
 
 
 # Verifica se a expressão é terminal.
