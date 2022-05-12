@@ -14,16 +14,13 @@ empty
 
 - Termo:
 Fator Termo2
-# Fator
 
 - Termo2:
 empty
 '*' Termo
 '/' Termo
-/*Okay*/
 
 - Fator:
 num
 id
 '(' Exp ')'
-

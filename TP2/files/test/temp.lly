@@ -1,7 +1,11 @@
+import 'std.lly'
+
+
 Tokens:
 fIM s
 empty s
 
 - Programa:
 Comandos fIM
-;
+'l'
+

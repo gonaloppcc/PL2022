@@ -7,6 +7,10 @@ logging.basicConfig(level=20)
 states = (
     # ('productions', 'exclusive') INITIAL STATE
     ('tokens', 'exclusive'),
+
+    ('commentsLine', 'exclusive'),
+    ('commentsMultiline', 'exclusive'),
+
     ('imports', 'exclusive'),  # Import state
 )
 
@@ -16,6 +20,13 @@ tokens = [
     # Import state tokens
     'IMPORT',
     'path',  # TODO: Maybe add a *ALIAS* option
+
+    # Comment state related tokens
+    'BCOMLINE',  # Begin one line comment
+    'ECOMLINE',  # End one line comment
+    'txt',  # Ignore everything inside a comment
+    'BCOM',  # Begin multi line comment
+    'ECOM',  # End multi line comment
     #
     'NEW_LINE',
     'TOKENS',
@@ -27,22 +38,6 @@ tokens = [
 
 
 # TODO: Check order of tokens
-
-# --------------- Comments
-def t_ANY_COMMENT_MULTILINE(t):
-    r'\/\*(.|\n)*\*\/(\n*)'
-    logging.debug('Comment:' + f'\'{t.value}\'')  # TODO: Debug purposes
-    t.lexer.lineno += t.value.count('\n')
-    pass
-
-
-def t_ANY_COMMENT(t):
-    r'\#.*\n*'
-    logging.debug('Comment:' + f'\'{t.value}\'')  # TODO: Debug purposes
-    t.lexer.lineno += t.value.count('\n')
-    pass
-
-
 # ------------------------- 'Tokens' state tokens
 def t_tokens_token(t):
     r'[a-z]\w*\s+.+'  # num \d+
@@ -120,7 +115,7 @@ def t_ANY_error(t):
 
 # --------- End Token definition
 
-lexer = lex.lex()
+lexer = lex.lex(debug=False)
 
 # ------------ Lexer state definition
 lexer.lineno = 1
