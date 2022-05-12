@@ -37,7 +37,17 @@ Termo Exp2
 # Grammar definition
 
 ```
-Grammar -> TOKENS ':' NEW_LINE Tokens NonTerminalList
+Grammar -> STATES TOKENS ':' NEW_LINE Tokens NonTerminalList
+
+STATES -> state ':'NEW_LINE  StatesList 
+      | 
+
+StatesList -> StatesList name Type NEW_LINE 
+              | name Type NEW_LINE 
+
+Type -> incl
+      | excl
+
 
 Imports -> Imports Import NEW_LINE
 
@@ -73,6 +83,8 @@ Tokens : {token : rexpr} # TODO: Do we need to separate de literals from the tok
 Literals : [str]
 
 Non-terminal : {non-terminal : [Production]}
+
+States : {Name : InOrOut}
 
 Production : [Simb]
 

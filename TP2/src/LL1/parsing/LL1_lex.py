@@ -4,6 +4,7 @@ import ply.lex as lex
 states = (
     # ('productions', 'exclusive') INITIAL STATE
     ('tokens', 'exclusive'),
+    #('states1', 'inclusive'),
 )
 
 literals = [':', '-']
@@ -12,11 +13,36 @@ tokens = [
     'NEW_LINE',
     'TOKENS',
     'EMPTY',
-    'token',
+    'token1',
     'NT',
     'literal',
-    'import'
+    #'import',
+    'state',
+    'incl',
+    'excl',
+    'name',
+    'tokenState',
+    'expRegex'
 ]
+# ------------------- State tokens
+
+def t_state(t):
+    r'states'
+    return t
+
+def t_incl(t):
+    r'incl'
+    return t
+
+def t_excl(t):
+    r'excl'
+    return t
+
+def t_name(t):
+    r'[a-z]\w*'
+    return t
+# --------- End State definition
+
 
 
 # TODO: Check order of tokens
@@ -37,10 +63,26 @@ def t_ANY_COMMENT(t):
 
 
 # ------------------------- 'Tokens' state tokens
-def t_tokens_token(t):
+
+
+
+'''
+def t_tokens_token2(t):
     r'[a-z]\w*\s+.+'  # num \d+
     name, rexpr, *rest = t.value.split(' ', maxsplit=1)  # TODO: Change this
     t.value = (name, rexpr)
+    return t
+'''
+def t_tokens_tokenState (t):
+    r'[a-z]\w*@[a-z]\w*'
+    print("Leu tokenState: ", t.value)
+    if t.lexer.regex:
+        t.lexer.regex = True
+    return t
+
+def t_tokens_token1(t):
+    r'[a-z]\w*'
+    print("Leu token: ", t.value)
     return t
 
 
@@ -52,6 +94,9 @@ def t_EMPTY(t):
 
 def t_TOKENS(t: lex.Token):
     r'Tokens'  # TODO: Convert to case insensitive
+    #if t.lexer.states:
+    #    t.lexer.pop_state()
+     #   t.lexer.states = False
     t.lexer.begin('tokens')
     return t
 
@@ -75,9 +120,11 @@ def t_ANY_token(t):
 
 def t_ANY_NT(t):
     r'[A-Z]\w*'
+    if t.lexer.regex:
+        t.lexer.regex = False
+        t.lexer.pop_state()
     t.lexer.begin('INITIAL')
     return t
-
 
 def t_ANY_NEW_LINE(t):
     r'\n+'
@@ -90,11 +137,22 @@ t_ANY_ignore = ' \t'
 
 def t_ANY_error(t):
     print("Illegal character,", f'{t.value[0]}', f'in line {t.lineno}.')
+    print(t)
+    print(t.lexer.states)
     print('Input is invalid!!!')
     exit(1)  # Exit code of an invalid recognition
 
+    # A expressão regex não pode ter ' '?
+def t_tokens_expRegex(t):
+    r'[^\-@\n]+'
+    print("Leu expRegex: ", t.value)
+    return t
+
+
+
 
 # --------- End Token definition
+
 
 lexer = lex.lex()
 
@@ -102,6 +160,10 @@ lexer = lex.lex()
 lexer.lineno = 1
 
 lexer.collumn = 1  # TODO: Is this need?
+
+# Necessary to know if there is need for a pop state after states.
+lexer.states = False  
+lexer.regex = False  
 
 # ----------------------- Testing
 

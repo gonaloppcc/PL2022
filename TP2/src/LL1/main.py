@@ -5,7 +5,7 @@ import checkLL1.checkLL1 as checkLL1
 from generator.generator import make
 
 if __name__ == '__main__':
-    input = "input.txt"
+    input = "/home/banderas/Desktop/add_state_lexer/PL2022/TP2/files/test/temp.txt"
     if len(argv) >= 2:
         input = argv[1]
         print("Path to input file: ", input)
@@ -16,8 +16,10 @@ if __name__ == '__main__':
         print("Path to output file: ", output)
 
     # Dictionaries that store the two types of data.
-    try:
-        (terminals, nterminals, literals) = file_reader.read_file(input)
+    #try:
+    if True:
+        (estados, terminals, nterminals, literals) = file_reader.read_file(input)
+        print("Estados: ", estados)
         print("Terminais:")
         for key, value in terminals.items():
             print(f"Key: {key} | Value: {value}")
@@ -29,11 +31,12 @@ if __name__ == '__main__':
             print("---------")
             for rule in value:
                 print(f"Key: {key} | One rule: {rule}")
-
+        print("######")
         # Check if the file describes correctly an LL(1) language.
         checkLL1.main_check_LL1(terminals, nterminals)
         print("Literals simbols: ", literals)
 
         make(terminals, nterminals, literals, output)
-    except:
-        pass
+    #except:
+    #    print("Error")
+    #    pass

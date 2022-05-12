@@ -1,29 +1,17 @@
+states:
+a incl
+b incl
 Tokens:
 num \d+
-id [a-zA-Z_]\w*
-fIM s
-empty s
-
-- Programa:
-Comandos fIM
-
-- Comandos:
-empty
-Comando Comandos
-
-- Comando:
-Atrib
-Print
-Read
-
-- Atrib:
-id '=' Exp
-
-- Print:
-'!' Exp
-
-- Read:
-'?' id
+numi@ola \d+
+numo \d+
+numii@ola \d+
 
 - Exp:
 Termo Exp2
+
+-Termo:
+'!'
+
+-Exp2:
+'?'
