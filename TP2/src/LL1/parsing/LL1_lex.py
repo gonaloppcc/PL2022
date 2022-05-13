@@ -20,9 +20,9 @@ tokens = [
     'state',
     'incl',
     'excl',
-    'name'
-    #'tokenState',
-    #'expRegex'
+    'name',
+    'tokenState',
+    'expRegex'
 ]
 # ------------------- State tokens
 
@@ -75,10 +75,12 @@ def t_tokens_token2(t):
 '''
 def t_tokens_tokenState (t):
     r'[a-z]\w*@[a-z]\w*'
-    print("Leu tokenState: ", t.value)
     if t.lexer.regex:
         t.lexer.regex = True
-    return t
+    name, rexpr, *rest = t.value.split('@', maxsplit=1)  # TODO: Change this
+    t.value = (name, rexpr)
+    print("Leu tokenState: ", t.value)
+    return 
 
 def t_tokens_token(t):
     r'[a-z]\w*'
@@ -143,12 +145,11 @@ def t_ANY_error(t):
     exit(1)  # Exit code of an invalid recognition
 
     # A expressão regex não pode ter ' '?
-'''   
+
 def t_tokens_expRegex(t):
     r'[^\-@\n]+'
     print("Leu expRegex: ", t.value)
     return t
-'''
 
 
 

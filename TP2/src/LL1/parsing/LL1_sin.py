@@ -11,7 +11,8 @@ class LL1_parser(object):
 
     def __init__(self):
         self.tokens = tokens
-        self.parser = yacc.yacc(module=self, write_tables=1, start='Grammar', debug=False, optimize=0)
+        #self.parser = yacc.yacc(module=self, write_tables=1, start='Grammar', debug=False, optimize=0)
+        self.parser = yacc.yacc(module=self,start='Grammar')
         self.parser.success = True
         self.parser.literals = set()  # Set of all the literals found TODO: Change this to be in the ast?
 
@@ -83,18 +84,32 @@ class LL1_parser(object):
         "TokensBoiler : TOKENS ':' NEW_LINE Tokens"
         p[0] = p[4]
 
-    def p_Tokens_list(self, p):
-        '''Tokens : Tokens token
-                  | Tokens token NEW_LINE'''
-        p[1][p[2][0]] = p[2][1]
-        p[0] = p[1]
+    #def p_Tokens_list(self, p):
+    #    '''Tokens : Tokens Token NEW_LINE'''
+        #p[1][p[2][0]] = p[2][1]
+        #p[0] = p[1]
 
-    def p_Tokens(self, p):
+    def p_Tokens_list(self, p):
+        "Tokens : Tokens Token"
+    
+    def p_Tokens_empty(self, p):
         "Tokens : empty"
-        p[0] = {}
+#        p[0] = {}
+
+    def p_Token(self, p):
+        "Token : PossibelName expRegex NEW_LINE"
+
+    def p_PossibelName_noState(self, p):
+        "PossibelName : name "
+    
+    def p_PossibelName_State(self, p):
+        "PossibelName : tokenState "
+
+    # --------------- N Terminals ----------
 
     def p_NonTerminalList(self, p):  # Change this name to be not confused with *p_Tokens_list*
         "NonTerminalList : NonTerminalList NTerminal"
+        print("Chegou ao NT")
         p[1][p[2][0]] = p[2][1]
         # Creating an entry in the dictionary, p[1] is the dictionary,
         # p[2][0] the non-terminal simbol name and p[2][1] the definition the non-terminal
@@ -103,6 +118,7 @@ class LL1_parser(object):
 
     def p_NonTerminal(self, p):
         "NonTerminalList : empty"
+        print("Chegou ao NT")
         p[0] = {}  # TODO: Change this to be more efficient
 
     def p_NTerminal(self, p):
@@ -180,40 +196,40 @@ class LL1_parser(object):
         """
 
         ast = self.parser.parse(text)
+'''
         # TODO: Add arbitary new lines to the sintaxe
-        if self.parser.success:
-            for imp in ast['imports']:
-                with open(imp['path'], 'r') as f:
-                    p = LL1_parser()
-                    import_ast = p.recon(f.read())
+        #if self.parser.success:
+        for imp in ast['imports']:
+            with open(imp['path'], 'r') as f:
+                p = LL1_parser()
+                import_ast = p.recon(f.read())
 
-                self.join_ast(ast, import_ast)
+            self.join_ast(ast, import_ast)
+        # Print pretty stuff
+        # from tabulate import tabulate
+        # print('\t\t\t\t\tAST:\n', tabulate(ast, headers="keys"))
+        print('\tImports:', end=' ')
+        for imp in ast['imports']:
+            print(f'path: {imp}', end=' ')
 
-            # Print pretty stuff
-            # from tabulate import tabulate
-            # print('\t\t\t\t\tAST:\n', tabulate(ast, headers="keys"))
-            print('\tImports:', end=' ')
-            for imp in ast['imports']:
-                print(f'path: {imp}', end=' ')
+        print('\n\tTokens:', end=' ')
+        for tok in ast['tokens']:
+            print(f'{tok}:', ast['tokens'][tok], end=' ')
 
-            print('\n\tTokens:', end=' ')
-            for tok in ast['tokens']:
-                print(f'{tok}:', ast['tokens'][tok], end=' ')
-
-            print('\n\tLiterals:', end=' ')
-            for lit in ast['literals']:
+        print('\n\tLiterals:', end=' ')
+        for lit in ast['literals']:
                 print(f'{lit}', end=' ')
 
-            print('\n\tNon-terminals:', end=' ')
-            for n_term, prod in ast['non_terminals'].items():
-                print(f'{n_term} -> ', prod, end=' ')
+        print('\n\tNon-terminals:', end=' ')
+        for n_term, prod in ast['non_terminals'].items():
+            print(f'{n_term} -> ', prod, end=' ')
 
-            print('\n\n')
-        else:
-            print('!!! Invalid input text !!!')
+        print('\n\n')
+        #else:
+        #    print('!!! Invalid input text !!!')
 
         return ast
-
+'''
 
 if __name__ == '__main__':
     p = LL1_parser()
