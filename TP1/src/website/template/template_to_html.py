@@ -171,7 +171,7 @@ def parse_html(path, out_path, statistics):
     # Converting the html template into html
     with open(path, mode='r') as template:
         for line in template:
-            lexer.input(line)
+            lexer.input_file_name(line)
             for tok in lexer:
                 pass
 

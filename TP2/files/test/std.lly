@@ -12,8 +12,9 @@ empty
 '+' Exp
 '-' Exp
 
+# Defines a Term
 - Termo:
-Fator Termo2
+Fator Termo2 # Sim
 
 - Termo2:
 empty

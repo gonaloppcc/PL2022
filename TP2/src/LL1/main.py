@@ -5,10 +5,10 @@ import checkLL1.checkLL1 as checkLL1
 from generator.generator import make
 
 if __name__ == '__main__':
-    input = "input.txt"
+    input_file_name = "input.txt"
     if len(argv) >= 2:
-        input = argv[1]
-        print("Path to input file: ", input)
+        input_file_name = argv[1]
+        print("Path to input file: ", input_file_name)
 
     output = "output"
     if len(argv) >= 3:
@@ -17,15 +17,15 @@ if __name__ == '__main__':
 
     # Dictionaries that store the two types of data.
     try:
-        (terminals, nterminals, literals) = file_reader.read_file(input)
+        (terminals, nterminals, literals) = file_reader.read_file(input_file_name)
         print("Terminais:")
         for key, value in terminals.items():
             print(f"Key: {key} | Value: {value}")
 
         print("Não Terminais:")
         for key, value in nterminals.items():
-            #print(key)
-            #print(value)
+            # print(key)
+            # print(value)
             print("---------")
             for rule in value:
                 print(f"Key: {key} | One rule: {rule}")

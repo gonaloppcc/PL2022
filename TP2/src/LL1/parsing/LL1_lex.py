@@ -8,9 +8,6 @@ states = (
     # ('productions', 'exclusive') INITIAL STATE
     ('tokens', 'exclusive'),
 
-    ('commentsLine', 'exclusive'),
-    ('commentsMultiline', 'exclusive'),
-
     ('imports', 'exclusive'),  # Import state
 )
 
@@ -19,14 +16,11 @@ literals = [':', '-']
 tokens = [
     # Import state tokens
     'IMPORT',
-    'path',  # TODO: Maybe add a *ALIAS* option
+    'path',
 
     # Comment state related tokens
-    'BCOMLINE',  # Begin one line comment
-    'ECOMLINE',  # End one line comment
-    'txt',  # Ignore everything inside a comment
-    'BCOM',  # Begin multi line comment
-    'ECOM',  # End multi line comment
+    'COMMENT',
+    'MULTICOMMENT',  # Multiline comment
     #
     'NEW_LINE',
     'TOKENS',
@@ -35,6 +29,21 @@ tokens = [
     'NT',
     'literal',
 ]
+
+
+# Ignores the multiline comments
+def t_MULTICOMMENT(t):
+    r'\/\*(.|\n)*\*\/'
+    t.lineno += t.value.count('\n')
+    pass
+    # No return value. Token discarded
+
+
+# Ignores the one line comments
+def t_ANY_COMMENT(t):
+    r'\#.*'
+    pass
+    # No return value. Token discarded
 
 
 # TODO: Check order of tokens
@@ -128,7 +137,7 @@ if __name__ == '__main__':
     import sys
 
     content = sys.stdin.read()
-    lexer.input(content)
+    lexer.input_file_name(content)
 
     for tok in lexer:
         # print(tok.value, '', end='')

@@ -9,7 +9,8 @@ from LL1_lex import tokens, literals
 # noinspection PyMethodMayBeStatic,PyShadowingNames
 class LL1_parser(object):
 
-    def __init__(self):
+    def __init__(self, file_name):
+        self.file_name = file_name
         self.tokens = tokens
         self.parser = yacc.yacc(module=self, write_tables=1, start='Grammar', debug=False, optimize=0)
         self.parser.success = True
@@ -116,7 +117,10 @@ class LL1_parser(object):
 
     # ---------------------- Handle Error function
     def p_error(self, p):
-        if not p:
+        if p.type == 'NEW_LINE':  # Havoc solution of the NEW_LINE tokens that are interrupted with the comments.
+            self.parser.errok()
+            return
+        elif not p:
             print('Unexpected end of input!')
         else:
             print('Syntax Error:', f'{repr(p.value)}', f'in line {p.lineno}.')
@@ -145,69 +149,48 @@ class LL1_parser(object):
         Using the defined lang, this function recons a given text, returning the ast (Abstract Syntax Tree).
         """
 
+        # ----------------------- Analyzing the input
         ast = self.parser.parse(text)
-        # TODO: Add arbitary new lines to the sintaxe
         if self.parser.success:
             for imp in ast['imports']:
                 with open(imp['path'], 'r') as f:
-                    p = LL1_parser()
+                    p = LL1_parser(imp['path'])
                     import_ast = p.recon(f.read())
 
                 self.join_ast(ast, import_ast)
 
-            # Print pretty stuff
-            # from tabulate import tabulate
-            # print('\t\t\t\t\tAST:\n', tabulate(ast, headers="keys"))
+            print(f'Input text of {self.file_name} is correct...')
+            # Prints to visualize the structures (debug)
             print('\tImports:', end=' ')
-            for imp in ast['imports']:
-                print(f'path: {imp}', end=' ')
+            print(*(ast['imports']), sep=', ')
 
-            print('\n\tTokens:', end=' ')
-            for tok in ast['tokens']:
-                print(f'{tok}:', ast['tokens'][tok], end=' ')
+            print('\tTokens:', end=' ')
+            print(*(ast['tokens'].items()), sep=', ')
 
-            print('\n\tLiterals:', end=' ')
-            for lit in ast['literals']:
-                print(f'{lit}', end=' ')
+            print('\tLiterals:', end=' ')
+            print(*(ast['imports']), sep=', ')
 
-            print('\n\tNon-terminals:', end=' ')
+            print('\tNon-terminals:', end=' ')
             for n_term, prod in ast['non_terminals'].items():
                 print(f'{n_term} -> ', prod, end=' ')
 
             print('\n\n')
         else:
-            print('!!! Invalid input text !!!')
+            print(f'Input text of {self.file_name} is incorrect!!!')
 
         return ast
 
 
 if __name__ == '__main__':
-    p = LL1_parser()
+    p = LL1_parser('input.lly')
     p.recon(sys.stdin.read())
 
-# ----------------------- Analyzing the input
-def ast_to_json(file_name: str, data):
-    import json
-    with open(file_name, 'w') as f:
-        f.write(json.dumps(data))
-'''
-content = sys.stdin.read()
-(ast1, ast2) = parser.parse(content)
-# TODO: Add arbitary new lines to the sintaxe
-if parser.success:
-    print('Correct sentence!')
-    print('AST1:', ast1)
-    print('AST1:', ast2)
-    # ast_to_json('ast.json', ast)
-    print('Literals:', parser.literals)  # Join this into the ast ?
-else:
-    print('Invalid sentence!')
-'''
-def read_file(input : str):
-    file = open(input, 'r')
-    Lines = file.read()
+
+def read_file(input_file_name: str):
+    file = open(input_file_name, 'r')
+    content = file.read()
     try:
-        (coisa1, coisa2)= parser.parse(Lines)
+        (coisa1, coisa2) = parser.parse(content)
         return (coisa1, coisa2, parser.literals)
     except:
         print("Input file not weel written :) ")
