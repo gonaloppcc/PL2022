@@ -1,5 +1,8 @@
 # TODO: Define the tokens and the stuff
 import ply.lex as lex
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 states = (
     # ('productions', 'exclusive') INITIAL STATE
@@ -13,7 +16,7 @@ tokens = [
     'NEW_LINE',
     'TOKENS',
     'EMPTY',
-    'token',
+    'TWO_POINTS',
     'NT',
     'literal',
     #'import',
@@ -22,6 +25,7 @@ tokens = [
     'excl',
     'name',
     'tokenState',
+    'token',
     'expRegex'
 ]
 # ------------------- State tokens
@@ -64,7 +68,13 @@ def t_ANY_COMMENT(t):
 
 # ------------------------- 'Tokens' state tokens
 
-
+def t_TOKENS(t: lex.Token):
+    r'Tokens'  # TODO: Convert to case insensitive
+    if t.lexer.states:
+        t.lexer.pop_state()
+        t.lexer.states = False
+    t.lexer.begin('tokens')
+    return t
 
 '''
 def t_tokens_token2(t):
@@ -79,43 +89,47 @@ def t_tokens_tokenState (t):
         t.lexer.regex = True
     name, rexpr, *rest = t.value.split('@', maxsplit=1)  # TODO: Change this
     t.value = (name, rexpr)
-    print("Leu tokenState: ", t.value)
-    return 
+    return t
 
 def t_tokens_token(t):
     r'[a-z]\w*'
-    print("Leu token: ", t.value)
+    t.value = (None, t.value)
     return t
 
+def t_tokens_TWO_POINTS(t: lex.Token):
+    r':'  
+    return t
 
+    # A expressão regex não pode ter ' '?
+def t_tokens_expRegex(t):
+  #  r'[^\-@\n]+'
+    r'\".+\"'
+    #r'[\w\+]+'
+    t.value = t.value[1:]
+    t.value = t.value[:-1]
+    print("Regex: ", t.value)
+    return t
 # ----------------- 'Production'/ 'INITIAL' state tokens
 def t_EMPTY(t):
     r'empty'  # TODO: Convert to case insensitive
     return t
 
 
-def t_TOKENS(t: lex.Token):
-    r'Tokens'  # TODO: Convert to case insensitive
-    #if t.lexer.states:
-    #    t.lexer.pop_state()
-     #   t.lexer.states = False
-    t.lexer.begin('tokens')
-    return t
-
 
 def t_literal(t):
     r'\'.\''
     t.value = t.value[1]  # Removing the quotation marks
+
     return t
 
 
 # ------------------- Common tokens
-def t_ANY_import(t):
+def t_import(t):
     r'import'
     return t
 
 
-def t_ANY_token(t):
+def t_token(t):
     r'[a-z]\w*'
     return t
 
@@ -126,6 +140,7 @@ def t_ANY_NT(t):
         t.lexer.regex = False
         t.lexer.pop_state()
     t.lexer.begin('INITIAL')
+    #logging.debug(f"LEU NT, {t.value}")
     return t
 
 def t_ANY_NEW_LINE(t):
@@ -139,17 +154,9 @@ t_ANY_ignore = ' \t'
 
 def t_ANY_error(t):
     print("Illegal character,", f'{t.value[0]}', f'in line {t.lineno}.')
-    print(t)
-    print(t.lexer.states)
     print('Input is invalid!!!')
     exit(1)  # Exit code of an invalid recognition
 
-    # A expressão regex não pode ter ' '?
-
-def t_tokens_expRegex(t):
-    r'[^\-@\n]+'
-    print("Leu expRegex: ", t.value)
-    return t
 
 
 
@@ -177,5 +184,5 @@ if __name__ == '__main__':
     lexer.input(content)
 
     for tok in lexer:
-        # print(tok.value, '', end='')
         print(tok)
+

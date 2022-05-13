@@ -4,10 +4,10 @@ b incl
 c excl
 
 Tokens:
-num \d+
-numi@ola \d+
-numo \d+
-numii@ola \d+final
+num@a  "\d+"
+ola "\d+"
+numo@a "\d+"
+ola2 "\d+final"
 
 - Exp:
 Termo Exp2

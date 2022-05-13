@@ -17,7 +17,7 @@ class LL1_parser(object):
         self.parser.literals = set()  # Set of all the literals found TODO: Change this to be in the ast?
 
     def p_Grammar(self, p):
-        "Grammar : States TokensBoiler NonTerminalList"
+        "Grammar : States Tokens NonTerminalList"
         p[0] = {
            # 'imports': p[1],
             'states': p[1],
@@ -51,10 +51,6 @@ class LL1_parser(object):
             print("States: ", p[4])
             p[0] = p[4]
 
-    def p_StatesList_empty(self, p):
-            "StatesList : "
-            if p[0] is None:
-                p[0] = {}
 
     def p_StatesList_elems(self, p):
             "StatesList : StatesList State NEW_LINE"
@@ -63,6 +59,11 @@ class LL1_parser(object):
                 p[0] = {}
             p[1][state] = incl
             p[0] = p[1]
+
+    def p_StatesList_empty(self, p):
+            "StatesList : "
+            if p[0] is None:
+                p[0] = {}
 
     def p_State(self, p):
         "State : name Type"
@@ -76,40 +77,38 @@ class LL1_parser(object):
         "Type : excl"
         p[0] = p[1]
 # -------------- Tokens -----------------
-    def p_Tokens_boilerplate_empty(self, p):
-        "TokensBoiler : empty"
-        p[0] = {}
-
-    def p_Tokens_boilerplate(self, p):
-        "TokensBoiler : TOKENS ':' NEW_LINE Tokens"
+    # Depois meter o caso em que não existem tokens.
+    def p_Tokens_exist(self, p):
+        "Tokens : TOKENS TWO_POINTS NEW_LINE ListaTokens"
         p[0] = p[4]
-
-    #def p_Tokens_list(self, p):
-    #    '''Tokens : Tokens Token NEW_LINE'''
-        #p[1][p[2][0]] = p[2][1]
-        #p[0] = p[1]
-
-    def p_Tokens_list(self, p):
-        "Tokens : Tokens Token"
+        print("TOKENS: ", p[4])
     
     def p_Tokens_empty(self, p):
-        "Tokens : empty"
-#        p[0] = {}
+        "Tokens : "
+        p[0] = {}
 
-    def p_Token(self, p):
-        "Token : PossibelName expRegex NEW_LINE"
+    def p_ListaTokens_exist(self, p):
+        "ListaTokens : ListaTokens Token"
+        (nome, expr) = p[2]
+        p[1][nome] = expr
+        p[0] = p[1]
 
-    def p_PossibelName_noState(self, p):
-        "PossibelName : name "
-    
-    def p_PossibelName_State(self, p):
-        "PossibelName : tokenState "
+    def p_ListaTokens_empty(self, p):
+        "ListaTokens : Token"
+        p[0] = {p[1][0] : p[1][1]}
 
+
+    def p_Token_State(self, p):
+        "Token : tokenState expRegex NEW_LINE "
+        p[0] = (p[1], p[2])
+
+    def p_Token_NoState(self, p):
+        "Token : token expRegex NEW_LINE "
+        p[0] = (p[1], p[2])
     # --------------- N Terminals ----------
 
     def p_NonTerminalList(self, p):  # Change this name to be not confused with *p_Tokens_list*
         "NonTerminalList : NonTerminalList NTerminal"
-        print("Chegou ao NT")
         p[1][p[2][0]] = p[2][1]
         # Creating an entry in the dictionary, p[1] is the dictionary,
         # p[2][0] the non-terminal simbol name and p[2][1] the definition the non-terminal
@@ -118,7 +117,6 @@ class LL1_parser(object):
 
     def p_NonTerminal(self, p):
         "NonTerminalList : empty"
-        print("Chegou ao NT")
         p[0] = {}  # TODO: Change this to be more efficient
 
     def p_NTerminal(self, p):
@@ -166,6 +164,7 @@ class LL1_parser(object):
 
     # ---------------------- Handle Error function
     def p_error(self, p):
+        print("ERRO: ", p)
         if not p:
             print('Unexpected end of input!')
         else:
