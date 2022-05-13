@@ -49,9 +49,9 @@ def t_ANY_COMMENT(t):
 # TODO: Check order of tokens
 # ------------------------- 'Tokens' state tokens
 def t_tokens_token(t):
-    r'[a-z]\w*\s+.+'  # num \d+
-    name, rexpr, *rest = t.value.split(' ', maxsplit=1)  # TODO: Change this
-    t.value = (name, rexpr)
+    r'([a-z]\w*)\s+(.+)'  # num \d+
+    g = lexer.lexmatch.groups()
+    t.value = (g[2], g[3])  # name, rexp
     return t
 
 
@@ -94,7 +94,6 @@ def t_imports_NEW_LINE(t):
 
 
 # ------------------- Common tokens
-
 
 def t_ANY_token(t):
     r'[a-z]\w*'

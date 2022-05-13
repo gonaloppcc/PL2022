@@ -168,7 +168,7 @@ class LL1_parser(object):
             print(*(ast['tokens'].items()), sep=', ')
 
             print('\tLiterals:', end=' ')
-            print(*(ast['imports']), sep=', ')
+            print(*(ast['literals']), sep=', ')
 
             print('\tNon-terminals:', end=' ')
             for n_term, prod in ast['non_terminals'].items():
