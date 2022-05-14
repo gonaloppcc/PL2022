@@ -1,18 +1,23 @@
-states:
+import '/home/banderas/Desktop/add_state_lexer/PL2022/TP2/files/test/std.lly'
+
+States:
 a incl
 b incl
 c excl
 
 Tokens:
-num@a  "\d+" 
+ptp@tokens  "\d+" push(i)
 ola "\d+" push(sad)
-pip1@a "\d+" pop
-push1@a "\d+" 
+pip1@a "\d+ \d+" pop
+push@a "\d+" 
 ola2 "\d+final" push(asd)
 
+- S:
+Exp '$'
+
 - Exp:
-Termo Exp2
-num
+Termo Exp2 Exp3
+num 
 
 -Termo:
 '!'

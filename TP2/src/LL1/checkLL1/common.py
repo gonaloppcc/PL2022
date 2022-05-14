@@ -7,11 +7,12 @@ debug = False
 # Verifica se a expressão é terminal.
 # Para isso, verifica se tem o símbolo ' ou é uma palavra associada a um símbolo terminal.
 def is_terminal(expression):
+    
+    print("PRocura expression: ", expression)
+    print("IN: ", terminal_dic)
     if "'" in expression or expression in terminal_dic.keys():
         return True
-        # print("É terminal: ", expression)
     else:
-        # print("Não é terminal: ", expression)
         return False
 
 

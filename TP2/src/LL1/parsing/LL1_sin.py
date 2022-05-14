@@ -240,9 +240,9 @@ class LL1_parser(object):
         #    print(f' {state} ', end=' ')
         print(ast['states'])
         print('\n\tTokens:', end=' ')
-        for tok in ast['tokens']:
-            print(f'{tok}:', ast['tokens'][tok])
-
+        #for tok in ast['tokens']:
+        #    print(f'{tok}:', ast['tokens'][tok])
+        print(ast['tokens'])
         print('\n\tLiterals:', end=' ')
         for lit in ast['literals']:
                 print(f'{lit}', end=' ')
