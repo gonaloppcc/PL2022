@@ -1,5 +1,3 @@
-import '/home/banderas/Desktop/add_state_lexer/PL2022/TP2/files/test/std.lly'
-
 States:
 a incl
 b incl
