@@ -115,7 +115,7 @@ def t_tokens_tokenState (t):
 
 def t_tokens_token(t):
     r'[a-z]\w*'
-    t.value = (None, t.value)
+    t.value = ("Initial", t.value)
     return t
 
 def t_tokens_TWO_POINTS(t: lex.Token):
