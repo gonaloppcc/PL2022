@@ -95,7 +95,9 @@ class LL1_parser(object):
 
     def p_ListaTokens_empty(self, p):
         "ListaTokens : Token"
-        p[0] = p[1]
+        nome = p[1]["name"]
+        p[0] = {}
+        p[0][nome] = p[1]
 
 
     def p_Token_State(self, p):

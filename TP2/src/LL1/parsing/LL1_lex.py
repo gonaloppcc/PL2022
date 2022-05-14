@@ -7,8 +7,7 @@ logging.basicConfig(level=logging.DEBUG)
 states = (
     # ('productions', 'exclusive') INITIAL STATE
     ('tokens', 'exclusive'),
-    #('states1', 'inclusive'),
-
+    ('states', 'inclusive'),
     ('imports', 'exclusive'),  # Import state
 )
 
@@ -39,18 +38,20 @@ tokens = [
 # ------------------- State tokens
 
 def t_state(t):
-    r'states'
+    r'[Ss][Tt][Aa][Tt][Ee][Ss]'
+    t.lexer.begin('states')
+    t.lexer.states = True
     return t
 
-def t_incl(t):
+def t_states_incl(t):
     r'incl'
     return t
 
-def t_excl(t):
+def t_states_excl(t):
     r'excl'
     return t
 
-def t_name(t):
+def t_states_name(t):
     r'[a-z]\w*'
     return t
 # --------- End State definition
@@ -90,11 +91,11 @@ def t_tokens_pop(t):
     return t
 
 
-def t_TOKENS(t: lex.Token):
+def t_states_TOKENS(t: lex.Token):
     r'Tokens'  # TODO: Convert to case insensitive
-    if t.lexer.states:
-        t.lexer.pop_state()
-        t.lexer.states = False
+    #if t.lexer.states:
+    #    t.lexer.pop_state()
+    #    t.lexer.states = False
     t.lexer.begin('tokens')
     return t
 
@@ -115,7 +116,7 @@ def t_tokens_tokenState (t):
 
 def t_tokens_token(t):
     r'[a-z]\w*'
-    t.value = ("Initial", t.value)
+    t.value = (t.value, "Initial")
     return t
 
 def t_tokens_TWO_POINTS(t: lex.Token):
