@@ -4,16 +4,19 @@ b incl
 c excl
 
 Tokens:
-num@a  "\d+"
-ola "\d+"
-numo@a "\d+"
-ola2 "\d+final"
+num@a  "\d+" 
+ola "\d+" push(sad)
+pip1@a "\d+" pop
+push1@a "\d+" 
+ola2 "\d+final" push(asd)
 
 - Exp:
 Termo Exp2
+num
 
 -Termo:
 '!'
+Exp2
 
 -Exp2:
 '?'

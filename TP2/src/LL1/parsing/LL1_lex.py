@@ -8,18 +8,23 @@ states = (
     # ('productions', 'exclusive') INITIAL STATE
     ('tokens', 'exclusive'),
     #('states1', 'inclusive'),
+
+    ('imports', 'exclusive'),  # Import state
 )
 
 literals = [':', '-']
 
 tokens = [
+    'pop',
+    'push',
     'NEW_LINE',
     'TOKENS',
     'EMPTY',
     'TWO_POINTS',
     'NT',
     'literal',
-    #'import',
+    'IMPORT',
+    'path',  # TODO: Maybe add a *ALIAS* option
     'state',
     'incl',
     'excl',
@@ -28,6 +33,9 @@ tokens = [
     'token',
     'expRegex'
 ]
+
+
+
 # ------------------- State tokens
 
 def t_state(t):
@@ -65,8 +73,22 @@ def t_ANY_COMMENT(t):
     t.lexer.lineno += t.value.count('\n')
     pass
 
+def t_IMPORT(t):
+    r'[iI][mM][pP][oO][rR][tT]'
+    t.lexer.begin('imports')
+    return t
+
+
 
 # ------------------------- 'Tokens' state tokens
+def t_tokens_push(t):
+    r'push\s*\(\w+\)'
+    return t
+
+def t_tokens_pop(t):
+    r'pop'
+    return t
+
 
 def t_TOKENS(t: lex.Token):
     r'Tokens'  # TODO: Convert to case insensitive
@@ -100,6 +122,8 @@ def t_tokens_TWO_POINTS(t: lex.Token):
     r':'  
     return t
 
+
+
     # A expressão regex não pode ter ' '?
 def t_tokens_expRegex(t):
   #  r'[^\-@\n]+'
@@ -107,8 +131,10 @@ def t_tokens_expRegex(t):
     #r'[\w\+]+'
     t.value = t.value[1:]
     t.value = t.value[:-1]
-    print("Regex: ", t.value)
     return t
+
+
+    
 # ----------------- 'Production'/ 'INITIAL' state tokens
 def t_EMPTY(t):
     r'empty'  # TODO: Convert to case insensitive
@@ -118,14 +144,21 @@ def t_EMPTY(t):
 
 def t_literal(t):
     r'\'.\''
-    t.value = t.value[1]  # Removing the quotation marks
+    #t.value = t.value[1]  # Removing the quotation marks
 
     return t
 
+# -------------------------------- Import state tokens
+def t_imports_path(t):
+    r'\'[\w\.]+\''
+    t.value = t.value[1:-1]
+    return t
 
-# ------------------- Common tokens
-def t_import(t):
-    r'import'
+
+def t_imports_NEW_LINE(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)  # TODO: Fix Line number count
+    t.lexer.begin('INITIAL')
     return t
 
 
@@ -133,12 +166,11 @@ def t_token(t):
     r'[a-z]\w*'
     return t
 
-
 def t_ANY_NT(t):
     r'[A-Z]\w*'
-    if t.lexer.regex:
-        t.lexer.regex = False
-        t.lexer.pop_state()
+    #if t.lexer.regex:
+    #    t.lexer.regex = False
+    #    t.lexer.pop_state()
     t.lexer.begin('INITIAL')
     #logging.debug(f"LEU NT, {t.value}")
     return t

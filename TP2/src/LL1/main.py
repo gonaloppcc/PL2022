@@ -19,27 +19,14 @@ if __name__ == '__main__':
     #try:
     if True:
         file_reader.read_file(input)
-        '''
-        (estados, terminals, nterminals, literals) = file_reader.read_file(input)
-        print("Estados: ", estados)
-        print("Terminais:")
-        for key, value in terminals.items():
-            print(f"Key: {key} | Value: {value}")
+        p = file_reader.read_file(input)
+        print("-------------")
+        print(p['states'])
+        #checkLL1.main_check_LL1(terminals, nterminals)
+        checkLL1.main_check_LL1(p['tokens'], p['non_terminals'] )
+        #print("Literals simbols: ", literals)
 
-        print("Não Terminais:")
-        for key, value in nterminals.items():
-            #print(key)
-            #print(value)
-            print("---------")
-            for rule in value:
-                print(f"Key: {key} | One rule: {rule}")
-        print("######")
-        # Check if the file describes correctly an LL(1) language.
-        checkLL1.main_check_LL1(terminals, nterminals)
-        print("Literals simbols: ", literals)
-
-        make(terminals, nterminals, literals, output)
+        make(p, output)
     #except:
     #    print("Error")
     #    pass
-    '''

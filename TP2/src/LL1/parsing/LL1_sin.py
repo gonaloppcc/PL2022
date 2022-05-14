@@ -17,23 +17,22 @@ class LL1_parser(object):
         self.parser.literals = set()  # Set of all the literals found TODO: Change this to be in the ast?
 
     def p_Grammar(self, p):
-        "Grammar : States Tokens NonTerminalList"
+        "Grammar : Imports States Tokens NonTerminalList"
         p[0] = {
-           # 'imports': p[1],
-            'states': p[1],
-            'tokens': p[2],
+            'imports': p[1],
+            'states': p[2],
+            'tokens': p[3],
             'literals': self.parser.literals,
-            'non_terminals': p[3]
+            'non_terminals': p[4]
         }
-        '''
 # -------------- Imports -----------------
     def p_Imports(self, p):
         "Imports : empty"
         p[0] = []
 
     def p_Imports_list(self, p):
-        #Imports : Imports Import
-        #           | Imports Import NEW_LINE
+        '''Imports : Imports Import
+                   | Imports Import NEW_LINE'''
         p[0] = p[1] + [p[2]]
 
     def p_Import(self, p):
@@ -43,12 +42,11 @@ class LL1_parser(object):
         }
 
         # TODO: Add semantic action to import action
-'''
 # -------------- States -----------------
     def p_States(self, p):
             "States : state ':' NEW_LINE StatesList"
             #DEBUG
-            print("States: ", p[4])
+           # print("States: ", p[4])
             p[0] = p[4]
 
 
@@ -66,7 +64,7 @@ class LL1_parser(object):
                 p[0] = {}
 
     def p_State(self, p):
-        "State : name Type"
+        "State : name Type "
         p[0] = (p[1], p[2])
     
     def p_Type_incl(self, p):
@@ -76,12 +74,14 @@ class LL1_parser(object):
     def p_Type_excl(self, p):
         "Type : excl"
         p[0] = p[1]
+
+        
 # -------------- Tokens -----------------
     # Depois meter o caso em que não existem tokens.
     def p_Tokens_exist(self, p):
         "Tokens : TOKENS TWO_POINTS NEW_LINE ListaTokens"
         p[0] = p[4]
-        print("TOKENS: ", p[4])
+    #    print("TOKENS: ", p[4])
     
     def p_Tokens_empty(self, p):
         "Tokens : "
@@ -89,22 +89,46 @@ class LL1_parser(object):
 
     def p_ListaTokens_exist(self, p):
         "ListaTokens : ListaTokens Token"
-        (nome, expr) = p[2]
-        p[1][nome] = expr
+        nome = p[2]["name"]
+        p[1][nome] = p[2]
         p[0] = p[1]
 
     def p_ListaTokens_empty(self, p):
         "ListaTokens : Token"
-        p[0] = {p[1][0] : p[1][1]}
+        p[0] = p[1]
 
 
     def p_Token_State(self, p):
-        "Token : tokenState expRegex NEW_LINE "
-        p[0] = (p[1], p[2])
+        "Token : tokenState expRegex MaybeFunc NEW_LINE "
+        p[0] = {
+            "name" : p[1],
+            "regex" : p[2],
+            "func" : p[3]
+
+        }
 
     def p_Token_NoState(self, p):
-        "Token : token expRegex NEW_LINE "
-        p[0] = (p[1], p[2])
+        "Token : token expRegex MaybeFunc NEW_LINE "
+        p[0] = {
+            "name" : p[1],
+            "regex" : p[2],
+            "func" : p[3]
+        }
+
+    
+    def p_MaybeFunc_pop(self, p):
+        "MaybeFunc : pop "
+        p[0] = p[1]
+
+    def p_MaybeFunc_push(self, p):
+        "MaybeFunc : push "
+        p[0] = p[1]
+
+    def p_MaybeFunc_empty(self, p):
+        "MaybeFunc : "
+        p[0] = None
+
+
     # --------------- N Terminals ----------
 
     def p_NonTerminalList(self, p):  # Change this name to be not confused with *p_Tokens_list*
@@ -188,6 +212,7 @@ class LL1_parser(object):
         main['literals'] = main['literals'].union(imported['literals'])
 
         main['non_terminals'].update(imported['non_terminals'])
+        main['states'].update(imported['states'])
 
     def recon(self, text: str) -> dict:
         """
@@ -195,7 +220,6 @@ class LL1_parser(object):
         """
 
         ast = self.parser.parse(text)
-'''
         # TODO: Add arbitary new lines to the sintaxe
         #if self.parser.success:
         for imp in ast['imports']:
@@ -211,9 +235,13 @@ class LL1_parser(object):
         for imp in ast['imports']:
             print(f'path: {imp}', end=' ')
 
+        print('\tStates:', end=' ')
+        #for state in ast['states']:
+        #    print(f' {state} ', end=' ')
+        print(ast['states'])
         print('\n\tTokens:', end=' ')
         for tok in ast['tokens']:
-            print(f'{tok}:', ast['tokens'][tok], end=' ')
+            print(f'{tok}:', ast['tokens'][tok])
 
         print('\n\tLiterals:', end=' ')
         for lit in ast['literals']:
@@ -228,7 +256,6 @@ class LL1_parser(object):
         #    print('!!! Invalid input text !!!')
 
         return ast
-'''
 
 if __name__ == '__main__':
     p = LL1_parser()
@@ -258,10 +285,13 @@ def read_file(input : str):
     #parser.parse(Lines)
    
     p = LL1_parser()
-    p.recon(Lines)
-    #try:
-    #(states, coisa1, coisa2)= parser.parse(Lines)
-    #return (states, coisa1, coisa2, parser.literals)
-    #except:
-    #    print("Input file not weel written :) ")
-    #    return None
+    p1 = p.recon(Lines)
+    return p1
+    '''
+    try:
+        (states, coisa1, coisa2)= parser.parse(Lines)
+        return (states, coisa1, coisa2, parser.literals)
+    except:
+        print("Input file not weel written :) ")
+        return None
+    '''
