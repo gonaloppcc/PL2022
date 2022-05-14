@@ -189,9 +189,3 @@ if __name__ == '__main__':
 def read_file(input_file_name: str):
     file = open(input_file_name, 'r')
     content = file.read()
-    try:
-        (coisa1, coisa2) = parser.parse(content)
-        return (coisa1, coisa2, parser.literals)
-    except:
-        print("Input file not weel written :) ")
-        return None
