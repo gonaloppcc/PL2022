@@ -10,10 +10,6 @@ def is_terminal(expression):
     pairs_name_state = terminal_dic.keys()
     terminals = [pair[0] for pair in pairs_name_state]
  #   print("---------------")
-    print("PRocura expression: ", expression)
-    print("---------------")
-    print("IN: ", terminals)
-    print("---------------")
     if "'" in expression or expression in terminals:
         return True
     else:
