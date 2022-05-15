@@ -25,7 +25,7 @@ def check_rule(rule_name, rules_list):
         for exp in thing:
             is_terminal(exp)
 
-
+# Check if all non terminal elements have a description.
 def check_NT_Exists():
     #for pair in common.nterminal_dic:
     for rules in common.nterminal_dic.values():
@@ -35,16 +35,28 @@ def check_NT_Exists():
                 is_terminal =  common.is_terminal(element) 
                 # Then, we check if it non-terminal.
                 if not is_terminal:
+                    # If it's not terminal, it should be described in non-terminal dictionary. 
                     if element not in common.nterminal_dic.keys():
                         print(f"Simbol {element} has no rules associated.")
                         return False
+    return True
+
+# Check if all states described in tokens exist.
+def check_states(states_with_types : dict):
+    state_names = states_with_types.keys()# [x[0] for x in states_with_types]
+    n_terminal_elements = common.terminal_dic.keys()
+    state_n_terminals = [x[1] for x in n_terminal_elements]
+    for verify_state in state_n_terminals:
+        if verify_state not in state_names and verify_state !=  "Initial":
+            print(f"State {verify_state} not described")
+            return False
     return True
 
 # Função principal que verifica se a liguagem descrita nos dois dicionários é LL(1)
 # Recebe dois dicionários, no primeiro aparece o nome do símbolo terminal associado à expressão regex que o descreve.
 # No segundo estão associados nomes de regras com as respetivas especificações.
 # Por exemplo, "Exp -> Termo '+' num" é decrito como (Exp, [ [Termo, '+', num] ]).
-def main_check_LL1(terminal_dic_rec, nterminal_dic_rec):
+def main_check_LL1(terminal_dic_rec, nterminal_dic_rec, states):
     common.terminal_dic = terminal_dic_rec
     common.nterminal_dic = nterminal_dic_rec
 
@@ -59,6 +71,7 @@ def main_check_LL1(terminal_dic_rec, nterminal_dic_rec):
             exit(1)
     #:w
     is_LL1 = check_NT_Exists()
-    if not is_LL1:
+    states_valid = check_states(states)
+    if not is_LL1 and not states_valid:
         exit(1)
 
