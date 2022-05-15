@@ -1,7 +1,7 @@
 terminal_dic = {}
 nterminal_dic = {}
 
-debug = False
+debug = True
 
 
 # Verifica se a expressão é terminal.
@@ -9,7 +9,6 @@ debug = False
 def is_terminal(expression):
     pairs_name_state = terminal_dic.keys()
     terminals = [pair[0] for pair in pairs_name_state]
- #   print("---------------")
     if "'" in expression or expression in terminals:
         return True
     else:
