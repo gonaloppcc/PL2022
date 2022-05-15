@@ -43,7 +43,7 @@ def print_nterm(nterminal, terminals, literals, file):
             func += f'        rec_{first_simb}()\n'
 
         for i in range(1, len(prop)):
-            if prop[i] in literals or prop[i] in terminals.keys():
+            if prop[i] in literals or prop[i] in tokens:
                 func += f"        rec_term('{prop[i]}')\n"
             else:
                 func += f'        rec_{prop[i]}()\n'
