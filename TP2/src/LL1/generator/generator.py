@@ -1,5 +1,5 @@
-import gen_lex as lex
-import gen_top_down as td
+import generator.gen_lex as lex
+import generator.gen_top_down as td
 
 
 def make(terminals, nterminals, literals, file_path):

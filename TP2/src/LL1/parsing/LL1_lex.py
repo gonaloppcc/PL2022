@@ -43,6 +43,15 @@ tokens = [
 
 # --- TODO: Add all keywords in the beginning of the file
 
+# ---------------------------------------------- KEYWORDS --------------------------------------------------------------
+
+# --------------------------------- State imports keywords
+def t_IMPORT(t):
+    r'[iI][mM][pP][oO][rR][tT]'
+    t.lexer.begin('imports')
+    return t
+
+
 # --------------------------------- State state keywords
 def t_STATES(t):
     r'[Ss][Tt][Aa][Tt][Ee][Ss]'
@@ -60,19 +69,35 @@ def t_states_excl(t):
     return t
 
 
-def t_tokens_push(t):
-    r'push\s*\(\w+\)'
-    return t
-
-
 def t_tokens_pop(t):
     r'pop'
     return t
 
 
+# --------------------------------- State Initial keywords
+def t_EMPTY(t):
+    r'[Ee][Mm][Pp][Tt][Yy]'
+    return t
+
+
+# --------------------------------- keywords of ANY state
+def t_ANY_TOKENS(t: lex.Token):
+    r'[Tt][Oo][Kk][Ee][Nn][Ss]'
+    t.lexer.begin('tokens')
+    return t
+
+
+# ------------------------- Variable tokens -------------------------
+
+
+def t_tokens_push(t):
+    r'push\s*\(\w+\)'
+    return t
+
+
 # --------------------------------- End State state keywords
 
-
+# --------------------------------- comments variable tokens
 # Ignores the multiline comments
 def t_MULTICOMMENT(t):
     r'\/\*(.|\n)*\*\/'
@@ -82,6 +107,7 @@ def t_MULTICOMMENT(t):
 
 
 # Ignores the one line comments
+# noinspection PyUnusedLocal
 def t_ANY_COMMENT(t):
     r'\#.*'
     pass
@@ -111,15 +137,6 @@ def t_tokens_token(t):
 
 
 # ----------------- 'Production'/ 'INITIAL' state tokens
-def t_EMPTY(t):
-    r'[Ee][Mm][Pp][Tt][Yy]'
-    return t
-
-
-def t_ANY_TOKENS(t: lex.Token):
-    r'[Tt][Oo][Kk][Ee][Nn][Ss]'
-    t.lexer.begin('tokens')
-    return t
 
 
 def t_literal(t):
@@ -128,13 +145,7 @@ def t_literal(t):
     return t
 
 
-def t_IMPORT(t):
-    r'[iI][mM][pP][oO][rR][tT]'
-    t.lexer.begin('imports')
-    return t
-
-
-# -------------------------------- Import state tokens
+# -------------------------------- Import state variable tokens
 def t_imports_path(t):
     r'\'[\w\.]+\''
     t.value = t.value[1:-1]

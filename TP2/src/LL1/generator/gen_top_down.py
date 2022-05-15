@@ -1,4 +1,4 @@
-from ..checkLL1 import follow, look_ahead
+from checkLL1 import follow, look_ahead
 
 
 # Prints the imports required to run the top down parser

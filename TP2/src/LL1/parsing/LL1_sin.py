@@ -3,7 +3,8 @@ import sys
 
 from typing import Dict
 
-from LL1_lex import tokens, literals
+# noinspection PyUnresolvedReferences
+from parsing.LL1_lex import tokens, literals
 
 
 # noinspection PyMethodMayBeStatic,PyShadowingNames,PyPep8Naming
@@ -264,6 +265,6 @@ def read_file(input_file_name: str):
     file = open(input_file_name, 'r')
     content = file.read()
 
-    p = LL1_parser(input_file_name)
+    parser = LL1_parser(input_file_name)
 
-    return p.recon(content)
+    return parser.recon(content)
