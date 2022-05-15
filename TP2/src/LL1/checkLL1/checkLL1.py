@@ -2,18 +2,6 @@ from .look_ahead import look_ahead_main
 # from checkLL1.common import terminal_dic, nterminal_dic, is_terminal
 import checkLL1.common as common
 
-'''
-Notas para testes
-Meter palavras que não existem.
-Meter nomes de símbolos terminais que não são descritos a seguir
-Meter S: A \n A: S
-Com o mesmo símbolo terminal
-
-Notas:
-Quando à frente de uma expressão tem um espaço, ele não lê, do tipo:
-"Termo2: "
-Também não lê a última linha?
-'''
 
 
 # Aqui verificamos se uma entrada do dicionário de símbolos não terminais é válida ou não.
@@ -34,9 +22,9 @@ def check_NT_Exists():
                 # First we check if it is terminal
                 is_terminal = common.is_terminal(element)
                 # Then, we check if it non-terminal.
-                if not is_terminal:
+                if not is_terminal :
                     # If it's not terminal, it should be described in non-terminal dictionary.
-                    if element not in common.nterminal_dic.keys():
+                    if element not in common.nterminal_dic.keys() :
                         print(f"[Error] Simbol {element} has no rules associated.")
                         return False
     return True
@@ -48,9 +36,12 @@ def check_states(states_with_types: dict):
     n_terminal_elements = common.terminal_dic.keys()
     state_n_terminals = [x[1] for x in n_terminal_elements]
     for verify_state in state_n_terminals:
-        if verify_state not in state_names and verify_state != "Initial":
-            print(f"[Error] State {verify_state} not described.")
-            return False
+        if verify_state is "INITIAL":
+            pass
+        else:
+            if verify_state not in state_names and verify_state != "Initial":
+                print(f"[Error] State {verify_state} not described.")
+                return False
     return True
 
 

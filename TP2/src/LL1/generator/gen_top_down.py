@@ -1,4 +1,4 @@
-from checkLL1 import follow, look_ahead
+from checkLL1.look_ahead import look_ahead_main
 
 
 # Prints the imports required to run the top down parser
@@ -14,8 +14,11 @@ def print_imports(lex_file, file):
 def print_nterm(nterminal, terminals, literals, file):
     func = f'def rec_{nterminal[0]}():\n'
     func += f'    global next_simb\n'
+    print("TEMP: ", list(terminals.keys()))
 
     first = True
+    list_pairs = terminals.keys()
+    n_terminals = [pair[0] for pair in list_pairs]
     for prop in nterminal[1]:
         first_simb = prop[0]
 
@@ -29,7 +32,7 @@ def print_nterm(nterminal, terminals, literals, file):
             simbs = follow(nterminal[0], [])
             func += f'if next_simb.type in {simbs}:\n'
             func += '         pass\n'
-        elif first_simb in literals or first_simb in terminals.keys():
+        elif first_simb in literals or first_simb in n_terminals:
             func += f"if next_simb.type == '{first_simb}':\n"
             func += f"        rec_term('{first_simb}')\n"
         else:
