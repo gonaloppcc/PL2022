@@ -22,7 +22,7 @@ def check_NT_Exists():
                 # First we check if it is terminal
                 is_terminal = common.is_terminal(element)
                 # Then, we check if it non-terminal.
-                if not is_terminal :
+                if not (is_terminal or common.is_empty(element)):
                     # If it's not terminal, it should be described in non-terminal dictionary.
                     if element not in common.nterminal_dic.keys() :
                         print(f"[Error] Simbol {element} has no rules associated.")
