@@ -1,5 +1,6 @@
 terminal_dic = {}
 nterminal_dic = {}
+literals = []
 
 debug = False
 
@@ -7,11 +8,11 @@ debug = False
 # Verifica se a expressão é terminal.
 # Para isso, verifica se tem o símbolo ' ou é uma palavra associada a um símbolo terminal.
 def is_terminal(expression):
-    if "'" in expression or expression in terminal_dic.keys():
+    pairs_name_state = terminal_dic.keys()
+    terminals = [pair[0] for pair in pairs_name_state]
+    if expression in literals or expression in terminals:
         return True
-        # print("É terminal: ", expression)
     else:
-        # print("Não é terminal: ", expression)
         return False
 
 

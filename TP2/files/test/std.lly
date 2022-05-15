@@ -1,7 +1,7 @@
 Tokens:
-num \d+
-id [a-zA-Z_]\w*
-name \w+
+num "\d+"
+id "[a-zA-Z_]\w*"
+name "\w+"
 
 
 - Exp:

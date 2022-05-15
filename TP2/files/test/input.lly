@@ -1,9 +1,15 @@
 import 'std.lly'
+
+States:
+a incl
+b incl
+c excl
+
 Tokens:
-num \d+
-id [a-zA-Z_]\w*
-fIM s
-empty s
+num "\d+"
+id "[a-zA-Z_]\w*"
+fIM "s"
+empty "s"
 
 - Programa:
 Comandos fIM

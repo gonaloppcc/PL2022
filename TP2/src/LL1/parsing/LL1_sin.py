@@ -3,28 +3,31 @@ import sys
 
 from typing import Dict
 
-from LL1_lex import tokens, literals
+from parsing.LL1_lex import tokens, literals
 
 
-# noinspection PyMethodMayBeStatic,PyShadowingNames
+# noinspection PyMethodMayBeStatic,PyShadowingNames,PyPep8Naming
 class LL1_parser(object):
 
     def __init__(self, file_name):
         self.file_name = file_name
         self.tokens = tokens
-        self.parser = yacc.yacc(module=self, write_tables=1, start='Grammar', debug=False, optimize=0)
+        self.parser = yacc.yacc(module=self, start='Grammar', debug=False, optimize=0)
         self.parser.success = True
         self.parser.literals = set()  # Set of all the literals found TODO: Change this to be in the ast?
 
     def p_Grammar(self, p):
-        "Grammar : Imports TokensBoiler NonTerminalList"
+        "Grammar : Imports States TokensBoiler NonTerminalList"
         p[0] = {
             'imports': p[1],
-            'tokens': p[2],
+            'states': p[2],
+            'tokens': p[3],
             'literals': self.parser.literals,
-            'non_terminals': p[3]
+            'non_terminals': p[4]
         }
+        print(p[1])
 
+    # -------------------------------- Begin Imports productions
     def p_Imports(self, p):
         "Imports : empty"
         p[0] = []
@@ -40,8 +43,43 @@ class LL1_parser(object):
             'path': p[2]
         }
 
-        # TODO: Add semantic action to import action
+    # ---------------------------------- End Imports productions
 
+    # -------------------------------- Begin State productions
+    def p_States_empty(self, p):
+        "States : empty"
+        p[0] = {}
+
+    def p_States(self, p):
+        "States : STATES ':' NEW_LINE StatesList"
+        p[0] = p[4]
+
+    def p_StatesList_elems(self, p):
+        '''StatesList : StatesList State
+                      | StatesList State NEW_LINE'''
+        (state, incl) = p[2]
+        p[1][state] = incl
+        p[0] = p[1]
+
+    def p_StatesList_empty(self, p):
+        "StatesList : empty"
+        p[0] = {}
+
+    def p_State(self, p):
+        "State : name Type"
+        p[0] = (p[1], p[2])
+
+    def p_Type_incl(self, p):
+        "Type : incl"
+        p[0] = p[1]
+
+    def p_Type_excl(self, p):
+        "Type : excl"
+        p[0] = p[1]
+
+    # -------------------------------- End State productions
+
+    # -------------------------------- Begin Tokens productions
     def p_Tokens_boilerplate_empty(self, p):
         "TokensBoiler : empty"
         p[0] = {}
@@ -51,14 +89,48 @@ class LL1_parser(object):
         p[0] = p[4]
 
     def p_Tokens_list(self, p):
-        '''Tokens : Tokens token
-                  | Tokens token NEW_LINE'''
-        p[1][p[2][0]] = p[2][1]
+        '''Tokens : Tokens Token
+                  | Tokens Token NEW_LINE'''
+        nome = p[2]["name"]
+        p[1][nome] = p[2]
         p[0] = p[1]
 
     def p_Tokens(self, p):
         "Tokens : empty"
         p[0] = {}
+
+    def p_Token_State(self, p):
+        "Token : tokenState expRegex Func NEW_LINE"
+        p[0] = {
+            "name": p[1],
+            "regex": p[2],
+            "func": p[3]
+
+        }
+
+    def p_Token_NoState(self, p):
+        "Token : token expRegex Func NEW_LINE"
+        p[0] = {
+            "name": p[1],
+            "regex": p[2],
+            "func": p[3]
+        }
+
+    def p_Func_pop(self, p):
+        "Func : pop"
+        p[0] = p[1]
+
+    def p_Func_push(self, p):
+        "Func : push"
+        p[0] = p[1]
+
+    def p_Func_empty(self, p):
+        "Func : empty"
+        p[0] = None
+
+    # -------------------------------- End Tokens productions
+
+    # -------------------------------- Begin NonTerminal productions
 
     def p_NonTerminalList(self, p):  # Change this name to be not confused with *p_Tokens_list*
         "NonTerminalList : NonTerminalList NTerminal"
@@ -111,17 +183,19 @@ class LL1_parser(object):
         "Simb : token"
         p[0] = p[1]
 
+    # -------------------------------- End NonTerminal productions
+
     # ------------------- Empty rule
     def p_empty(self, p):
         'empty :'
 
     # ---------------------- Handle Error function
     def p_error(self, p):
-        if p.type == 'NEW_LINE':  # Havoc solution of the NEW_LINE tokens that are interrupted with the comments.
+        if not p:
+            print('Unexpected end of input!')
+        elif p.type == 'NEW_LINE':  # Havoc solution of the NEW_LINE tokens that are interrupted with the comments.
             self.parser.errok()
             return
-        elif not p:
-            print('Unexpected end of input!')
         else:
             print('Syntax Error:', f'{repr(p.value)}', f'in line {p.lineno}.')
         self.parser.success = False
@@ -134,8 +208,8 @@ class LL1_parser(object):
 
     def join_ast(self, main: Dict, imported: Dict):
         # dict.update() # TODO: Change to static method
-        # main.update(imported)
 
+        print(imported)
         main['imports'] = main['imports'] + imported['imports']
 
         main['tokens'].update(imported['tokens'])
@@ -189,3 +263,7 @@ if __name__ == '__main__':
 def read_file(input_file_name: str):
     file = open(input_file_name, 'r')
     content = file.read()
+
+    p = LL1_parser(input_file_name)
+
+    return p.recon(content)

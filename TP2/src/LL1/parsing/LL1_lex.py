@@ -7,6 +7,7 @@ logging.basicConfig(level=20)
 states = (
     # ('productions', 'exclusive') INITIAL STATE
     ('tokens', 'exclusive'),
+    ('states', 'inclusive'),
 
     ('imports', 'exclusive'),  # Import state
 )
@@ -18,6 +19,10 @@ tokens = [
     'IMPORT',
     'path',
 
+    # States
+    'STATES',
+    'incl',
+    'excl',
     # Comment state related tokens
     'COMMENT',
     'MULTICOMMENT',  # Multiline comment
@@ -26,9 +31,46 @@ tokens = [
     'TOKENS',
     'EMPTY',
     'token',
+    'name',
+    'tokenState',
+    'pop',
+    'push',
+    'expRegex',
     'NT',
     'literal',
 ]
+
+
+# --- TODO: Add all keywords in the beginning of the file
+
+# --------------------------------- State state keywords
+def t_STATES(t):
+    r'[Ss][Tt][Aa][Tt][Ee][Ss]'
+    t.lexer.begin('states')
+    return t
+
+
+def t_states_incl(t):
+    r'incl'
+    return t
+
+
+def t_states_excl(t):
+    r'excl'
+    return t
+
+
+def t_tokens_push(t):
+    r'push\s*\(\w+\)'
+    return t
+
+
+def t_tokens_pop(t):
+    r'pop'
+    return t
+
+
+# --------------------------------- End State state keywords
 
 
 # Ignores the multiline comments
@@ -48,10 +90,23 @@ def t_ANY_COMMENT(t):
 
 # TODO: Check order of tokens
 # ------------------------- 'Tokens' state tokens
+def t_tokens_tokenState(t):
+    r'[a-z]\w*@[a-z]\w*'
+    name, rexpr, *rest = t.value.split('@', maxsplit=1)  # TODO: Change this
+    t.value = (name, rexpr)
+    return t
+
+
+def t_tokens_expRegex(t):
+    r'\".+"'
+    t.value = t.value[1:]
+    t.value = t.value[:-1]
+    return t
+
+
 def t_tokens_token(t):
-    r'([a-z]\w*)\s+(.+)'  # num \d+
-    g = lexer.lexmatch.groups()
-    t.value = (g[2], g[3])  # name, rexp
+    r'[a-z]\w*'
+    t.value = (t.value, "Initial")
     return t
 
 
@@ -61,7 +116,7 @@ def t_EMPTY(t):
     return t
 
 
-def t_TOKENS(t: lex.Token):
+def t_ANY_TOKENS(t: lex.Token):
     r'[Tt][Oo][Kk][Ee][Nn][Ss]'
     t.lexer.begin('tokens')
     return t
@@ -94,6 +149,12 @@ def t_imports_NEW_LINE(t):
 
 
 # ------------------- Common tokens
+
+
+def t_states_name(t):
+    r'[a-z]\w*'
+    return t
+
 
 def t_ANY_token(t):
     r'[a-z]\w*'
@@ -136,7 +197,7 @@ if __name__ == '__main__':
     import sys
 
     content = sys.stdin.read()
-    lexer.input_file_name(content)
+    lexer.input(content)
 
     for tok in lexer:
         # print(tok.value, '', end='')
