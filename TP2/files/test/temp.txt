@@ -4,22 +4,23 @@ b incl
 c excl
 
 Tokens:
-ptp@tokens  "\d+" push(i)
-ola "\d+" push(sad)
-pip1@a "\d+ \d+" pop
-push@a "\d+" 
+token1@state1  "\d+" push(i)
+token2 "d+" push(sad)
+pip1@state2 "\d+ \d+" pop
+push@state3 "\d+" 
 ola2 "\d+final" push(asd)
+num@state_nums "\d+ numero" 
 
 - S:
 Exp '$'
 
 - Exp:
-Termo Exp2 Exp3
-num 
+Termo Exp2 
+num
 
 -Termo:
 '!'
-Exp2
+Exp2 Termo Termo 
 
 -Exp2:
 '?'

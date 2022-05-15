@@ -21,12 +21,11 @@ if __name__ == '__main__':
         file_reader.read_file(input)
         p = file_reader.read_file(input)
         print("-------------")
-        print(p['states'])
         #checkLL1.main_check_LL1(terminals, nterminals)
         checkLL1.main_check_LL1(p['tokens'], p['non_terminals'] )
         #print("Literals simbols: ", literals)
 
-        make(p, output)
+        #make(p, output)
     #except:
     #    print("Error")
     #    pass
