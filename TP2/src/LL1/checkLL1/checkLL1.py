@@ -26,6 +26,20 @@ def check_rule(rule_name, rules_list):
             is_terminal(exp)
 
 
+def check_NT_Exists():
+    #for pair in common.nterminal_dic:
+    for rules in common.nterminal_dic.values():
+        for rule in rules:
+            for element in rule:
+                # First we check if it is terminal
+                is_terminal =  common.is_terminal(element) 
+                # Then, we check if it non-terminal.
+                if not is_terminal:
+                    if element not in common.nterminal_dic.keys():
+                        print(f"Simbol {element} has no rules associated.")
+                        return False
+    return True
+
 # Função principal que verifica se a liguagem descrita nos dois dicionários é LL(1)
 # Recebe dois dicionários, no primeiro aparece o nome do símbolo terminal associado à expressão regex que o descreve.
 # No segundo estão associados nomes de regras com as respetivas especificações.
@@ -39,7 +53,12 @@ def main_check_LL1(terminal_dic_rec, nterminal_dic_rec):
         # follow('Exp', True )
         # expressao = 'Exp2'
         lista = look_ahead_main(expressao, [])
-        print(f"Resultado de LA de {expressao} : {lista} ")
+        print(f"[CheckLL1] Resultado de LA de {expressao} : {lista} ")
         if lista is None:
             print("Not LL(1), goodbye...")
             exit(1)
+    #:w
+    is_LL1 = check_NT_Exists()
+    if not is_LL1:
+        exit(1)
+
