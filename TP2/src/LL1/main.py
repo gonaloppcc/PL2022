@@ -35,7 +35,9 @@ if __name__ == '__main__':
                 print(f"Key: {key} | One rule: {rule}")
 
         # Check if the file describes correctly an LL(1) language.
-        checkLL1.main_check_LL1(terminals, nterminals, states, literals)
+        is_valid = checkLL1.main_check_LL1(terminals, nterminals, states, literals)
+        if not is_valid:
+            exit(1)
         print("Literals simbols: ", literals)
 
         make(states, terminals, nterminals, literals, output)

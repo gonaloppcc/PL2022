@@ -1,0 +1,27 @@
+states:
+numState incl
+
+Tokens:
+num@numState "\d+" 
+fim@numState  "\)" pop
+palavra "\w+"
+iniNumState "\(" push(numState)
+ignore "\t \n"
+
+- S:
+Coisas '$'
+
+- Coisas: 
+ListaPalavra ListaNumState
+
+- ListaPalavra:
+palavra ListaPalavra
+empty
+
+- ListaNumState:
+iniNumState ListaNum fim
+empty
+
+- ListaNum:
+num ListaNum
+empty

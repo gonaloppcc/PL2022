@@ -1,0 +1,11 @@
+Tokens:
+pA "\(" 
+pF "\)" 
+ignore "\t \n"
+
+- S:
+S1 '$'
+
+- S1:
+pA S1 pF S1
+empty

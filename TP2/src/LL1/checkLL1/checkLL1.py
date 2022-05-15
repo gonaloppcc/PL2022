@@ -57,9 +57,10 @@ def main_check_LL1(terminal_dic_rec, nterminal_dic_rec, states, literals):
         print(f"[CheckLL1] Resultado de LA de {expr} : {la} ")
         if la is None:
             print("Not LL(1), goodbye...")
-            exit(1)
+            return False
 
     nt_valid = check_NT_Exists()
     states_valid = check_states(states)
     if not (nt_valid and states_valid):
-        exit(1)
+        return False
+    return True

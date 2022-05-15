@@ -84,10 +84,13 @@ next_simb = ('Error', '', 0, 0)
     file.write(simb)
 
 def print_read_input(file):
-    func = '''
-import output_top_down as td
+    name_file = file.name.split("_")
+    func = f'import {name_file[0]}_top_down as td\n'
+    func += f'import sys\nfor line in sys.stdin:\n'
+    func += f'\tlexer.input(line)\n\ttd.next_simb = lexer.token()\n'
+    func += f'\ttd.rec_S()\n'
+    func1 = '''
 
-import sys
 for line in sys.stdin:
     lexer.input(line)
     td.next_simb = lexer.token()

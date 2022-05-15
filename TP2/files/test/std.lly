@@ -2,8 +2,14 @@ Tokens:
 num "\d+"
 id "[a-zA-Z_]\w*"
 name "\w+"
+pA "\("
+pF "\)"
 
 
+ignore "\t \n"
+
+- S:
+Exp '$'
 - Exp:
 Termo Exp2
 
@@ -24,4 +30,4 @@ empty
 - Fator:
 num
 id
-'(' Exp ')'
+pA Exp pF
