@@ -26,18 +26,19 @@ def print_tokens(terminals, file):
 def print_states(states, file):
     file.write('states = [ ')
     items = list(states.items())
-    for i in range(0, len(items) - 1):
-        file.write(f"('{items[i][0]}',")
-        if items[i][1] == 'incl':
-            file.write("'inclusive'), ")
+    if len(items) > 0:
+        for i in range(0, len(items) - 1):
+            file.write(f"('{items[i][0]}',")
+            if items[i][1] == 'incl':
+                file.write("'inclusive'), ")
+            else:
+                file.write("'exclusive'), ")
+        file.write(f"('{items[len(items) - 1][0]}',")
+        if items[len(items) - 1][1] == 'incl':
+            file.write("'inclusive')")
         else:
-            file.write("'exclusive'), ")
-    file.write(f"('{items[len(items) - 1][0]}',")
-    if items[len(items) - 1][1] == 'incl':
-        file.write(f"'inclusive') ]\n\n")
-    else:
-        file.write(f"'exclusive') ]\n\n")
-
+            file.write("'exclusive')")
+    file.write(' ]\n\n')
 
 # Prints the terminals list to the lex file
 def print_literals(literals, file):
