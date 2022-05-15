@@ -1,4 +1,3 @@
-from . import follow
 from .look_ahead import look_ahead_main
 # from checkLL1.common import terminal_dic, nterminal_dic, is_terminal
 import checkLL1.common as common

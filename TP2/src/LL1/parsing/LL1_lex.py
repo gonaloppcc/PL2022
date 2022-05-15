@@ -132,7 +132,7 @@ def t_tokens_expRegex(t):
 
 def t_tokens_token(t):
     r'[a-z]\w*'
-    t.value = (t.value, "Initial")
+    t.value = (t.value, "INITIAL")  # If no state is provided
     return t
 
 
