@@ -1,6 +1,6 @@
 from sys import argv
 
-import parsing.LL1_sin as Parser
+from parsing.LL1_sin import read_file
 import checkLL1.checkLL1 as checkLL1
 from generator.generator import make
 
@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
     # Dictionaries that store the two types of data.
     try:
-        ast = Parser.read_file(input_file_name)
+        ast = read_file(input_file_name)
 
         terminals = ast['tokens']
         nterminals = ast['non_terminals']
@@ -38,6 +38,6 @@ if __name__ == '__main__':
         checkLL1.main_check_LL1(terminals, nterminals, states, literals)
         print("Literals simbols: ", literals)
 
-        # make(terminals, nterminals, literals, output)
+        make(terminals, nterminals, literals, output)
     except FileNotFoundError:
         print('Invalid file path!')

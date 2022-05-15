@@ -1,5 +1,5 @@
-from checkLL1.look_ahead import look_ahead_main
-from checkLL1.follow import follow
+from ..checkLL1 import follow, look_ahead
+
 
 # Prints the imports required to run the top down parser
 def print_imports(lex_file, file):
@@ -12,7 +12,7 @@ def print_imports(lex_file, file):
 # Prints the function that recognizes the non terminal simbol
 # TODO: Improve code
 def print_nterm(nterminal, terminals, literals, file):
-    func =  f'def rec_{nterminal[0]}():\n'
+    func = f'def rec_{nterminal[0]}():\n'
     func += f'    global next_simb\n'
 
     first = True
@@ -20,9 +20,9 @@ def print_nterm(nterminal, terminals, literals, file):
         first_simb = prop[0]
 
         if not first:
-            func += '    el' # If it's not the first proposition write elif
+            func += '    el'  # If it's not the first proposition write elif
         else:
-            func += '    '   # If it's the first proposition write if and set first to False
+            func += '    '  # If it's the first proposition write if and set first to False
             first = False
 
         if first_simb == 'empty':
@@ -41,7 +41,7 @@ def print_nterm(nterminal, terminals, literals, file):
             if prop[i] in literals or prop[i] in terminals.keys():
                 func += f"        rec_term('{prop[i]}')\n"
             else:
-                func += f'        rec_{prop[i]}()\n' 
+                func += f'        rec_{prop[i]}()\n'
 
     func += '    else:\n'
     func += '        parse_error(next_simb)\n\n'

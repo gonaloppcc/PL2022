@@ -3,7 +3,7 @@ import sys
 
 from typing import Dict
 
-from parsing.LL1_lex import tokens, literals
+from LL1_lex import tokens, literals
 
 
 # noinspection PyMethodMayBeStatic,PyShadowingNames,PyPep8Naming

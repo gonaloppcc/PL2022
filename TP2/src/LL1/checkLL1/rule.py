@@ -8,8 +8,6 @@ class Rule:
 
     def getRule(self):
         return self.elements
-    
+
     def addElement(self, element):
         self.elements.append(element)
-
-    

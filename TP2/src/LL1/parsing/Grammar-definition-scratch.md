@@ -82,17 +82,21 @@ Production : [Simb]
 1. Import
 
 #### Lexer
+
 ```
 NEW_STATE CALLED IMPORT
 NT -> {IMPORT, path}
 ```
+
 #### Yacc
 
 We need to change a bit the grammar defined above.
+
 ```
 Grammar -> Imports NEW_LINE TOKENS ':' NEW_LINE Tokens NonTerminalList
 
 Imports -> Imports NEW_LINE Import 
          | empty
 ```
+
 2. 
