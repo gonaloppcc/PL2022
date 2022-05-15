@@ -1,5 +1,5 @@
-from checkLL1.follow import follow
 from checkLL1.look_ahead import look_ahead_main
+from checkLL1.follow import follow
 
 
 # Prints the imports required to run the top down parser
@@ -15,6 +15,7 @@ def print_imports(lex_file, file):
 def print_nterm(nterminal, terminals, literals, file):
     func = f'def rec_{nterminal[0]}():\n'
     func += f'    global next_simb\n'
+    print("TEMP: ", list(terminals.keys()))
 
     first = True
     tokens = list(map(lambda tok: tok[0], terminals.keys())) # Get token from each (token,state) tuple in terminals.keys()
@@ -82,6 +83,17 @@ next_simb = ('Error', '', 0, 0)
 '''
     file.write(simb)
 
+def print_read_input(file):
+    func = '''
+import output_top_down as td
+
+import sys
+for line in sys.stdin:
+    lexer.input(line)
+    td.next_simb = lexer.token()
+    td.rec_S()
+    '''
+    file.write(func)
 
 # Main function of this module
 # Prints the top down Python parser to a file
@@ -92,3 +104,4 @@ def make_top_down(nterminals, terminals, literals, lex_file, file):
     print_parse_error(file)
     for nterminal in nterminals.items():
         print_nterm(nterminal, terminals, literals, file)
+    print_read_input(file)

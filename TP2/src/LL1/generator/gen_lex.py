@@ -3,11 +3,13 @@
 #
 # TODO: Add functions
 def print_tokens(terminals, file):
-    file.write('tokens = [ ')
+    file.write('tokens = [')
     keys = list(terminals.keys())
-    for i in range(0, len(keys) - 1):
-        file.write(f"'{keys[i][0]}', ")
-    file.write(f"'{keys[len(keys) - 1][0]}' ]\n\n")
+    if len(keys) > 0:
+        for i in range(0, len(keys) - 1):
+            file.write(f"'{keys[i][0]}', ")
+        file.write(f"'{keys[len(keys) - 1][0]}'")
+    file.write(']\n\n')
 
     for simb in terminals.items():
         if simb[0][0] == 'ignore':
@@ -24,7 +26,7 @@ def print_tokens(terminals, file):
 
 
 def print_states(states, file):
-    file.write('states = [ ')
+    file.write('states = [')
     items = list(states.items())
     if len(items) > 0:
         for i in range(0, len(items) - 1):
@@ -35,10 +37,11 @@ def print_states(states, file):
                 file.write("'exclusive'), ")
         file.write(f"('{items[len(items) - 1][0]}',")
         if items[len(items) - 1][1] == 'incl':
-            file.write("'inclusive')")
+            file.write("'inclusive') ")
         else:
-            file.write("'exclusive')")
-    file.write(' ]\n\n')
+            file.write("'exclusive') ")
+    file.write(']\n\n')
+
 
 # Prints the terminals list to the lex file
 def print_literals(literals, file):
@@ -46,8 +49,9 @@ def print_literals(literals, file):
     list_l = list(literals)
     if len(literals) != 0:
         for i in range(0, len(list_l) - 1):
-            file.write(f" '{list_l[i]}',")
-        file.write(f" '{list_l[len(list_l) - 1]}' ]\n")
+            file.write(f"'{list_l[i]}',")
+        file.write(f" '{list_l[len(list_l) - 1]}'")
+    file.write(f"]\n\n")
 
 
 # Prints the t_error function. Right now it just tells lex to
