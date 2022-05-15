@@ -39,9 +39,7 @@ Termo Exp2
 ```
 Grammar -> TOKENS ':' NEW_LINE Tokens NonTerminalList
 
-Imports -> Imports Import NEW_LINE
-
-Tokens -> Tokens token NEW_LINE 
+Tokens -> Tokens token NEW_LINE
         | empty
 
 NonTerminalList -> NonTerminalList NTerminal
@@ -78,3 +76,27 @@ Production : [Simb]
 
 [Simb] -> token | literal | NT | EMPTY
 ```
+
+## Added funcionalities
+
+1. Import
+
+#### Lexer
+
+```
+NEW_STATE CALLED IMPORT
+NT -> {IMPORT, path}
+```
+
+#### Yacc
+
+We need to change a bit the grammar defined above.
+
+```
+Grammar -> Imports NEW_LINE TOKENS ':' NEW_LINE Tokens NonTerminalList
+
+Imports -> Imports NEW_LINE Import 
+         | empty
+```
+
+2. 

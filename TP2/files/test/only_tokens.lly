@@ -1,0 +1,8 @@
+import 'std'
+import 'gui'
+
+Tokens:
+num \d+
+id [a-zA-Z_]\w*
+fIM s
+empty s

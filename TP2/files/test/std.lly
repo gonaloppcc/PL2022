@@ -1,0 +1,27 @@
+Tokens:
+num "\d+"
+id "[a-zA-Z_]\w*"
+name "\w+"
+
+
+- Exp:
+Termo Exp2
+
+- Exp2:
+empty
+'+' Exp
+'-' Exp
+
+# Defines a Term
+- Termo:
+Fator Termo2 # Sim
+
+- Termo2:
+empty
+'*' Termo
+'/' Termo
+
+- Fator:
+num
+id
+'(' Exp ')'

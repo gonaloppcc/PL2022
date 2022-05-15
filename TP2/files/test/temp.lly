@@ -1,0 +1,26 @@
+
+States:
+state1 incl
+state2 incl
+state3 excl
+state_num excl
+
+Tokens:
+token1@state1  "\d+" push(i)
+token2 "d+" push(sad)
+pip1@state2 "\d+ \d+" pop
+push@state3 "\d+"
+ola2 "\d+final" push(asd)
+num@state_nums "\d+ numero"
+
+- S:
+Exp '$'
+
+- Exp:
+Termo Exp2
+
+-Termo:
+'!'
+
+-Exp2:
+'?'
