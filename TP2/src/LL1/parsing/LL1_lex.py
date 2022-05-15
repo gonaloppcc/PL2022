@@ -34,7 +34,6 @@ tokens = [
 ]
 
 
-
 # ------------------- State tokens
 
 def t_state(t):
@@ -43,19 +42,23 @@ def t_state(t):
     t.lexer.states = True
     return t
 
+
 def t_states_incl(t):
     r'incl'
     return t
+
 
 def t_states_excl(t):
     r'excl'
     return t
 
+
 def t_states_name(t):
     r'[a-z]\w*'
     return t
-# --------- End State definition
 
+
+# --------- End State definition
 
 
 # TODO: Check order of tokens
@@ -74,17 +77,18 @@ def t_ANY_COMMENT(t):
     t.lexer.lineno += t.value.count('\n')
     pass
 
+
 def t_IMPORT(t):
     r'[iI][mM][pP][oO][rR][tT]'
     t.lexer.begin('imports')
     return t
 
 
-
 # ------------------------- 'Tokens' state tokens
 def t_tokens_push(t):
     r'push\s*\(\w+\)'
     return t
+
 
 def t_tokens_pop(t):
     r'pop'
@@ -93,11 +97,12 @@ def t_tokens_pop(t):
 
 def t_states_TOKENS(t: lex.Token):
     r'Tokens'  # TODO: Convert to case insensitive
-    #if t.lexer.states:
+    # if t.lexer.states:
     #    t.lexer.pop_state()
     #    t.lexer.states = False
     t.lexer.begin('tokens')
     return t
+
 
 '''
 def t_tokens_token2(t):
@@ -106,7 +111,9 @@ def t_tokens_token2(t):
     t.value = (name, rexpr)
     return t
 '''
-def t_tokens_tokenState (t):
+
+
+def t_tokens_tokenState(t):
     r'[a-z]\w*@[a-z]\w*'
     if t.lexer.regex:
         t.lexer.regex = True
@@ -114,40 +121,41 @@ def t_tokens_tokenState (t):
     t.value = (name, rexpr)
     return t
 
+
 def t_tokens_token(t):
     r'[a-z]\w*'
     t.value = (t.value, "Initial")
     return t
 
+
 def t_tokens_TWO_POINTS(t: lex.Token):
-    r':'  
+    r':'
     return t
 
-
-
     # A expressão regex não pode ter ' '?
+
+
 def t_tokens_expRegex(t):
-  #  r'[^\-@\n]+'
+    #  r'[^\-@\n]+'
     r'\".+\"'
-    #r'[\w\+]+'
+    # r'[\w\+]+'
     t.value = t.value[1:]
     t.value = t.value[:-1]
     return t
 
 
-    
 # ----------------- 'Production'/ 'INITIAL' state tokens
 def t_EMPTY(t):
     r'empty'  # TODO: Convert to case insensitive
     return t
 
 
-
 def t_literal(t):
     r'\'.\''
-    #t.value = t.value[1]  # Removing the quotation marks
+    # t.value = t.value[1]  # Removing the quotation marks
 
     return t
+
 
 # -------------------------------- Import state tokens
 def t_imports_path(t):
@@ -167,14 +175,16 @@ def t_token(t):
     r'[a-z]\w*'
     return t
 
+
 def t_ANY_NT(t):
     r'[A-Z]\w*'
-    #if t.lexer.regex:
+    # if t.lexer.regex:
     #    t.lexer.regex = False
     #    t.lexer.pop_state()
     t.lexer.begin('INITIAL')
-    #logging.debug(f"LEU NT, {t.value}")
+    # logging.debug(f"LEU NT, {t.value}")
     return t
+
 
 def t_ANY_NEW_LINE(t):
     r'\n+'
@@ -191,9 +201,6 @@ def t_ANY_error(t):
     exit(1)  # Exit code of an invalid recognition
 
 
-
-
-
 # --------- End Token definition
 
 
@@ -205,8 +212,8 @@ lexer.lineno = 1
 lexer.collumn = 1  # TODO: Is this need?
 
 # Necessary to know if there is need for a pop state after states.
-lexer.states = False  
-lexer.regex = False  
+lexer.states = False
+lexer.regex = False
 
 # ----------------------- Testing
 
@@ -218,4 +225,3 @@ if __name__ == '__main__':
 
     for tok in lexer:
         print(tok)
-

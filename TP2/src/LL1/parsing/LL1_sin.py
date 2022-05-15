@@ -11,8 +11,8 @@ class LL1_parser(object):
 
     def __init__(self):
         self.tokens = tokens
-        #self.parser = yacc.yacc(module=self, write_tables=1, start='Grammar', debug=False, optimize=0)
-        self.parser = yacc.yacc(module=self,start='Grammar')
+        # self.parser = yacc.yacc(module=self, write_tables=1, start='Grammar', debug=False, optimize=0)
+        self.parser = yacc.yacc(module=self, start='Grammar')
         self.parser.success = True
         self.parser.literals = set()  # Set of all the literals found TODO: Change this to be in the ast?
 
@@ -25,7 +25,8 @@ class LL1_parser(object):
             'literals': self.parser.literals,
             'non_terminals': p[4]
         }
-# -------------- Imports -----------------
+
+    # -------------- Imports -----------------
     def p_Imports(self, p):
         "Imports : empty"
         p[0] = []
@@ -42,31 +43,31 @@ class LL1_parser(object):
         }
 
         # TODO: Add semantic action to import action
-# -------------- States -----------------
-    def p_States(self, p):
-            "States : state ':' NEW_LINE StatesList"
-            #DEBUG
-           # print("States: ", p[4])
-            p[0] = p[4]
 
+    # -------------- States -----------------
+    def p_States(self, p):
+        "States : state ':' NEW_LINE StatesList"
+        # DEBUG
+        # print("States: ", p[4])
+        p[0] = p[4]
 
     def p_StatesList_elems(self, p):
-            "StatesList : StatesList State NEW_LINE"
-            (state, incl) = p[2]
-            if p[0] is None:
-                p[0] = {}
-            p[1][state] = incl
-            p[0] = p[1]
+        "StatesList : StatesList State NEW_LINE"
+        (state, incl) = p[2]
+        if p[0] is None:
+            p[0] = {}
+        p[1][state] = incl
+        p[0] = p[1]
 
     def p_StatesList_empty(self, p):
-            "StatesList : "
-            if p[0] is None:
-                p[0] = {}
+        "StatesList : "
+        if p[0] is None:
+            p[0] = {}
 
     def p_State(self, p):
         "State : name Type "
         p[0] = (p[1], p[2])
-    
+
     def p_Type_incl(self, p):
         "Type : incl"
         p[0] = p[1]
@@ -75,14 +76,14 @@ class LL1_parser(object):
         "Type : excl"
         p[0] = p[1]
 
-        
-# -------------- Tokens -----------------
+    # -------------- Tokens -----------------
     # Depois meter o caso em que não existem tokens.
     def p_Tokens_exist(self, p):
         "Tokens : TOKENS TWO_POINTS NEW_LINE ListaTokens"
         p[0] = p[4]
+
     #    print("TOKENS: ", p[4])
-    
+
     def p_Tokens_empty(self, p):
         "Tokens : "
         p[0] = {}
@@ -99,25 +100,23 @@ class LL1_parser(object):
         p[0] = {}
         p[0][nome] = p[1]
 
-
     def p_Token_State(self, p):
         "Token : tokenState expRegex MaybeFunc NEW_LINE "
         p[0] = {
-            "name" : p[1],
-            "regex" : p[2],
-            "func" : p[3]
+            "name": p[1],
+            "regex": p[2],
+            "func": p[3]
 
         }
 
     def p_Token_NoState(self, p):
         "Token : token expRegex MaybeFunc NEW_LINE "
         p[0] = {
-            "name" : p[1],
-            "regex" : p[2],
-            "func" : p[3]
+            "name": p[1],
+            "regex": p[2],
+            "func": p[3]
         }
 
-    
     def p_MaybeFunc_pop(self, p):
         "MaybeFunc : pop "
         p[0] = p[1]
@@ -129,7 +128,6 @@ class LL1_parser(object):
     def p_MaybeFunc_empty(self, p):
         "MaybeFunc : "
         p[0] = None
-
 
     # --------------- N Terminals ----------
 
@@ -223,7 +221,7 @@ class LL1_parser(object):
 
         ast = self.parser.parse(text)
         # TODO: Add arbitary new lines to the sintaxe
-        #if self.parser.success:
+        # if self.parser.success:
         for imp in ast['imports']:
             with open(imp['path'], 'r') as f:
                 p = LL1_parser()
@@ -238,36 +236,40 @@ class LL1_parser(object):
             print(f'path: {imp}', end=' ')
 
         print('\tStates:', end=' ')
-        #for state in ast['states']:
+        # for state in ast['states']:
         #    print(f' {state} ', end=' ')
         print(ast['states'])
         print('\n\tTokens:', end=' ')
-        #for tok in ast['tokens']:
+        # for tok in ast['tokens']:
         #    print(f'{tok}:', ast['tokens'][tok])
         print(ast['tokens'])
         print('\n\tLiterals:', end=' ')
         for lit in ast['literals']:
-                print(f'{lit}', end=' ')
+            print(f'{lit}', end=' ')
 
         print('\n\tNon-terminals:', end=' ')
         for n_term, prod in ast['non_terminals'].items():
             print(f'{n_term} -> ', prod, end=' ')
 
         print('\n\n')
-        #else:
+        # else:
         #    print('!!! Invalid input text !!!')
 
         return ast
 
+
 if __name__ == '__main__':
     p = LL1_parser()
     p.recon(sys.stdin.read())
+
 
 # ----------------------- Analyzing the input
 def ast_to_json(file_name: str, data):
     import json
     with open(file_name, 'w') as f:
         f.write(json.dumps(data))
+
+
 '''
 content = sys.stdin.read()
 (ast1, ast2) = parser.parse(content)
@@ -281,11 +283,13 @@ if parser.success:
 else:
     print('Invalid sentence!')
 '''
-def read_file(input : str):
+
+
+def read_file(input: str):
     file = open(input, 'r')
     Lines = file.read()
-    #parser.parse(Lines)
-   
+    # parser.parse(Lines)
+
     p = LL1_parser()
     p1 = p.recon(Lines)
     return p1

@@ -5,10 +5,9 @@ import checkLL1.checkLL1 as checkLL1
 from generator.generator import make
 
 if __name__ == '__main__':
-    input = "/home/banderas/Desktop/add_state_lexer/PL2022/TP2/files/test/temp.txt"
     if len(argv) >= 2:
         input = argv[1]
-        print("Path to input file: ", input)
+        print("Path to input file:", input)
 
     output = "output"
     if len(argv) >= 3:
@@ -16,17 +15,17 @@ if __name__ == '__main__':
         print("Path to output file: ", output)
 
     # Dictionaries that store the two types of data.
-    #try:
+    # try:
     if True:
         file_reader.read_file(input)
         p = file_reader.read_file(input)
         print("-------------")
         print(p['states'])
-        #checkLL1.main_check_LL1(terminals, nterminals)
-        checkLL1.main_check_LL1(p['tokens'], p['non_terminals'] )
-        #print("Literals simbols: ", literals)
+        # checkLL1.main_check_LL1(terminals, nterminals)
+        checkLL1.main_check_LL1(p['tokens'], p['non_terminals'])
+        # print("Literals simbols: ", literals)
 
         make(p, output)
-    #except:
+    # except:
     #    print("Error")
     #    pass
