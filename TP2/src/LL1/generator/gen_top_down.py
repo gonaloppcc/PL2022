@@ -18,8 +18,8 @@ def print_nterm(nterminal, terminals, literals, file):
     print("TEMP: ", list(terminals.keys()))
 
     first = True
-    list_pairs = terminals.keys()
-    n_terminals = [pair[0] for pair in list_pairs]
+    tokens = list(map(lambda tok: tok[0], terminals.keys())) # Get token from each (token,state) tuple in terminals.keys()
+
     for prop in nterminal[1]:
         first_simb = prop[0]
 
@@ -29,11 +29,12 @@ def print_nterm(nterminal, terminals, literals, file):
             func += '    '  # If it's the first proposition write if and set first to False
             first = False
 
+
         if first_simb == 'empty':
             simbs = follow(nterminal[0], [])
             func += f'if next_simb.type in {simbs}:\n'
             func += '         pass\n'
-        elif first_simb in literals or first_simb in n_terminals:
+        elif first_simb in literals or first_simb in tokens:
             func += f"if next_simb.type == '{first_simb}':\n"
             func += f"        rec_term('{first_simb}')\n"
         else:
