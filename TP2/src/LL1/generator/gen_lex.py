@@ -55,7 +55,8 @@ def print_literals(literals, file):
 # TODO: Add more functionality to errors
 def print_error(file):
     file.write('def t_error(t):\n')
-    file.write('    t.lexer.skip(1)\n\n')
+    file.write('    t.lexer.skip(1)\n')
+    file.write('    return t\n\n')
 
 
 # Prints the imports required to run the code

@@ -30,7 +30,7 @@ def print_nterm(nterminal, terminals, literals, file):
             simbs = follow(nterminal[0], [])
             func += f'if next_simb.type in {simbs}:\n'
             func += '         pass\n'
-        elif first_simb in literals or first_simb in terminals.keys():
+        elif first_simb in literals or first_simb in list(terminals.keys()):
             func += f"if next_simb.type == '{first_simb}':\n"
             func += f"        rec_term('{first_simb}')\n"
         else:

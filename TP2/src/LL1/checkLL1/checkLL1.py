@@ -1,5 +1,4 @@
-from checkLL1.follow import follow
-from checkLL1.look_ahead import look_ahead_main
+from .look_ahead import look_ahead_main
 # from checkLL1.common import terminal_dic, nterminal_dic, is_terminal
 import checkLL1.common as common
 
@@ -49,7 +48,7 @@ def check_states(states_with_types: dict):
     n_terminal_elements = common.terminal_dic.keys()
     state_n_terminals = [x[1] for x in n_terminal_elements]
     for verify_state in state_n_terminals:
-        if verify_state not in state_names and verify_state != "Initial":
+        if verify_state not in state_names and verify_state != "INITIAL":
             print(f"[Error] State {verify_state} not described.")
             return False
     return True
