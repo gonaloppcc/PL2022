@@ -148,7 +148,7 @@ def t_literal(t):
 
 # -------------------------------- Import state variable tokens
 def t_imports_path(t):
-    r'\'[\w\.]+\''
+    r'\'[\w\./]+\''
     t.value = t.value[1:-1]
     return t
 

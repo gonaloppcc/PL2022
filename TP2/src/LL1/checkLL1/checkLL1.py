@@ -3,7 +3,6 @@ from .look_ahead import look_ahead_main
 import checkLL1.common as common
 
 
-
 # Aqui verificamos se uma entrada do dicionário de símbolos não terminais é válida ou não.
 # Para começar, se só tiver uma entrada não é necessário verificar.
 def check_rule(rule_name, rules_list):
@@ -24,8 +23,8 @@ def check_NT_Exists():
                 # Then, we check if it non-terminal.
                 if not (is_terminal or common.is_empty(element)):
                     # If it's not terminal, it should be described in non-terminal dictionary.
-                    if element not in common.nterminal_dic.keys() :
-                        print(f"[Error] Simbol {element} has no rules associated.")
+                    if element not in common.nterminal_dic.keys():
+                        print(f"[Error] Simbol '{element}' is not defined.")
                         return False
     return True
 
@@ -37,7 +36,7 @@ def check_states(states_with_types: dict):
     state_n_terminals = [x[1] for x in n_terminal_elements]
     for verify_state in state_n_terminals:
         if verify_state not in state_names and verify_state != "INITIAL":
-            print(f"[Error] State {verify_state} not described.")
+            print(f"[Error] State {verify_state} is not defined.")
             return False
     return True
 
@@ -54,9 +53,9 @@ def main_check_LL1(terminal_dic_rec, nterminal_dic_rec, states, literals):
 
     for expr, rules_list in nterminal_dic_rec.items():
         la = look_ahead_main(expr, [])  # Lookahead of expr
-        print(f"[CheckLL1] Resultado de LA de {expr} : {la} ")
+        print(f"[CheckLL1] LA of {expr} : {la} ")
         if la is None:
-            print("Not LL(1), goodbye...")
+            print("The inputted grammar is not LL(1)!")
             return False
 
     nt_valid = check_NT_Exists()

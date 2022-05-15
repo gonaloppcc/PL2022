@@ -61,7 +61,7 @@ def look_ahead_main(expression: str, la_visited: [str]):
 
         # Check if this expression has rules associated.
         if expression not in common.nterminal_dic:
-            print(f"[LA of '{expression}'] Symbol '{expression}' has no description, and is necessary.")
+            print(f"[LA of '{expression}'] Symbol '{expression}' is not defined!")
             raise Not_LL1()
 
         # List of rules associated with the current expression

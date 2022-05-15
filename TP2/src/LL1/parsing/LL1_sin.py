@@ -26,7 +26,6 @@ class LL1_parser(object):
             'literals': self.parser.literals,
             'non_terminals': p[4]
         }
-        print(p[1])
 
     # -------------------------------- Begin Imports productions
     def p_Imports(self, p):
@@ -210,7 +209,6 @@ class LL1_parser(object):
     def join_ast(self, main: Dict, imported: Dict):
         # dict.update() # TODO: Change to static method
 
-        print(imported)
         main['imports'] = main['imports'] + imported['imports']
 
         main['tokens'].update(imported['tokens'])
@@ -235,21 +233,6 @@ class LL1_parser(object):
                 self.join_ast(ast, import_ast)
 
             print(f'Input text of {self.file_name} is correct...')
-            # Prints to visualize the structures (debug)
-            print('\tImports:', end=' ')
-            print(*(ast['imports']), sep=', ')
-
-            print('\tTokens:', end=' ')
-            print(*(ast['tokens'].items()), sep=', ')
-
-            print('\tLiterals:', end=' ')
-            print(*(ast['literals']), sep=', ')
-
-            print('\tNon-terminals:', end=' ')
-            for n_term, prod in ast['non_terminals'].items():
-                print(f'{n_term} -> ', prod, end=' ')
-
-            print('\n\n')
         else:
             print(f'Input text of {self.file_name} is incorrect!!!')
 

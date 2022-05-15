@@ -1,4 +1,4 @@
-import 'std.lly'
+import '../lib/std.lly'
 
 States:
 a incl

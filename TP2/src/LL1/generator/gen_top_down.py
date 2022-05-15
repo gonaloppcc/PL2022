@@ -15,10 +15,10 @@ def print_imports(lex_file, file):
 def print_nterm(nterminal, terminals, literals, file):
     func = f'def rec_{nterminal[0]}():\n'
     func += f'    global next_simb\n'
-    print("TEMP: ", list(terminals.keys()))
 
     first = True
-    tokens = list(map(lambda tok: tok[0], terminals.keys())) # Get token from each (token,state) tuple in terminals.keys()
+    tokens = list(
+        map(lambda tok: tok[0], terminals.keys()))  # Get token from each (token,state) tuple in terminals.keys()
 
     for prop in nterminal[1]:
         first_simb = prop[0]
@@ -28,7 +28,6 @@ def print_nterm(nterminal, terminals, literals, file):
         else:
             func += '    '  # If it's the first proposition write if and set first to False
             first = False
-
 
         if first_simb == 'empty':
             simbs = follow(nterminal[0], [])
@@ -83,6 +82,7 @@ next_simb = ('Error', '', 0, 0)
 '''
     file.write(simb)
 
+
 def print_read_input(file):
     name_file = file.name.split("_")
     func = f'import {name_file[0]}_top_down as td\n'
@@ -97,6 +97,7 @@ for line in sys.stdin:
     td.rec_S()
     '''
     file.write(func)
+
 
 # Main function of this module
 # Prints the top down Python parser to a file
