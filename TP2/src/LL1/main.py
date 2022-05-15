@@ -38,6 +38,6 @@ if __name__ == '__main__':
         checkLL1.main_check_LL1(terminals, nterminals, states, literals)
         print("Literals simbols: ", literals)
 
-        make(terminals, nterminals, literals, output)
+        make(states, terminals, nterminals, literals, output)
     except FileNotFoundError:
         print('Invalid file path!')

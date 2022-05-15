@@ -13,15 +13,19 @@ class Not_LL1(Error):
     pass
 
 
-# Não sei como é o follow de A em: C -> A b A d
 def analise_rule(expression, rule_name, rule, follows_done):
-    '''Structure.md'''
+    ''' Analises the expression in the rule. 
+        It has the rule name in case the expression is in the last position, and the follow to the rule_name is necessary.
+        Also, we need the follows already done to avoid infinite cycles.
+        '''
     res = []
     positions = indices = [index for index, element in enumerate(rule) if element == expression]
     if len(positions) > 0:
+        # In case the expression is present in the rule.
         for expression_position in positions:
             if common.debug:
                 print(f"Expression |{expression}| found in rule |{rule}|  ")
+            # In case it's in the end of the rule. 
             if expression_position + 1 == len(rule):
                 if rule_name not in (follows_done, expression):
                     if common.debug:
@@ -47,6 +51,7 @@ def analise_rule(expression, rule_name, rule, follows_done):
 
 
 def analise_list_rules(expression, rule_name, rule_list, follows_done):
+    '''Analise the follows of the expression in a group ou rules.'''
     simbols = []
     for rule in rule_list:
         res = analise_rule(expression, rule_name, rule, follows_done)
@@ -56,6 +61,9 @@ def analise_list_rules(expression, rule_name, rule_list, follows_done):
 
 
 def follow(expression, follows_done):
+    ''' Analises the follow of a given expression.
+        We need the follows already done to avoid infinite cycles.
+    '''
     try:
         if expression in follows_done:
             if common.debug:

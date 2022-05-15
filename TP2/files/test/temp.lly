@@ -1,7 +1,6 @@
-
 Tokens:
-pA "(" 
-pF ")" 
+pA "\(" 
+pF "\)" 
 
 - S:
 pA S pF

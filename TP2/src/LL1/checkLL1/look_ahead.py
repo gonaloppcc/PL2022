@@ -3,7 +3,7 @@ import checkLL1.common as common
 import checkLL1.follow as follow
 
 ''' 
-Here we check the follow of a expression.
+Here we check the Look Ahead of a expression.
 '''
 
 

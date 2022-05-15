@@ -69,6 +69,12 @@ def t_states_excl(t):
     return t
 
 
+def t_tokens_push(t):
+    r'push\s*\(\w+\)'
+    t.value = t.value.split('(', maxsplit=1)[1][:-1]
+    return t
+
+
 def t_tokens_pop(t):
     r'pop'
     return t
@@ -88,11 +94,6 @@ def t_ANY_TOKENS(t: lex.Token):
 
 
 # ------------------------- Variable tokens -------------------------
-
-
-def t_tokens_push(t):
-    r'push\s*\(\w+\)'
-    return t
 
 
 # --------------------------------- End State state keywords

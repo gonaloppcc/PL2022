@@ -36,12 +36,9 @@ def check_states(states_with_types: dict):
     n_terminal_elements = common.terminal_dic.keys()
     state_n_terminals = [x[1] for x in n_terminal_elements]
     for verify_state in state_n_terminals:
-        if verify_state is "INITIAL":
-            pass
-        else:
-            if verify_state not in state_names and verify_state != "Initial":
-                print(f"[Error] State {verify_state} not described.")
-                return False
+        if verify_state not in state_names and verify_state != "INITIAL":
+            print(f"[Error] State {verify_state} not described.")
+            return False
     return True
 
 
