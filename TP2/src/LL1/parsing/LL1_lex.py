@@ -62,6 +62,7 @@ def t_states_excl(t):
 
 def t_tokens_push(t):
     r'push\s*\(\w+\)'
+    t.value = t.value.split('(', maxsplit=1)[1][:-1]
     return t
 
 

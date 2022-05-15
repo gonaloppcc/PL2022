@@ -3,7 +3,7 @@ import sys
 
 from typing import Dict
 
-from LL1_lex import tokens, literals
+from parsing.LL1_lex import tokens, literals
 
 
 # noinspection PyMethodMayBeStatic,PyShadowingNames,PyPep8Naming
@@ -118,11 +118,11 @@ class LL1_parser(object):
 
     def p_Func_pop(self, p):
         "Func : pop"
-        p[0] = p[1]
+        p[0] = ('pop', None)
 
     def p_Func_push(self, p):
         "Func : push"
-        p[0] = p[1]
+        p[0] = ('push', p[1])
 
     def p_Func_empty(self, p):
         "Func : empty"

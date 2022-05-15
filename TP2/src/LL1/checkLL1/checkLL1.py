@@ -1,7 +1,7 @@
-from follow import follow
-from look_ahead import look_ahead_main
+from checkLL1.follow import follow
+from checkLL1.look_ahead import look_ahead_main
 # from checkLL1.common import terminal_dic, nterminal_dic, is_terminal
-import common as common
+import checkLL1.common as common
 
 '''
 Notas para testes
