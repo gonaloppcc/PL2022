@@ -1,28 +1,41 @@
+# Removes the ignore token from the terminals dictionary and returns it
+def pop_ignore(terminals):
+    for tok, state in terminals.keys():
+        if tok == 'ignore':
+            regex = terminals[(tok,state)]['regex']
+            del terminals[tok,state]
+            return (state,regex)
+
+    return None
+
 # Prints the tokens and their respective regex
 # expressions in a function
 #
 # TODO: Add functions
 def print_tokens(terminals, file):
+    ignore = pop_ignore(terminals)
+
     file.write('tokens = [')
     keys = list(terminals.keys())
     if len(keys) > 0:
         for i in range(0, len(keys) - 1):
             file.write(f"'{keys[i][0]}', ")
         file.write(f"'{keys[len(keys) - 1][0]}'")
+
     file.write(']\n\n')
 
     for simb in terminals.items():
-        if simb[0][0] == 'ignore':
-            file.write(f"t_{simb[0][1]}_ignore = '{simb[1]['regex']}'\n\n")
-        else:
-            file.write(f'def t_{simb[0][1]}_{simb[0][0]}(t):\n')
-            file.write(f"    r'{simb[1]['regex']}'\n")
-            if simb[1]['func'] is not None:
-                if simb[1]['func'][0] == 'push':
-                    print_push(simb[1]['func'][1], file)
-                elif simb[1]['func'][0] == 'pop':
-                    print_pop(file)
-            file.write(f"    return t\n\n")
+        file.write(f'def t_{simb[0][1]}_{simb[0][0]}(t):\n')
+        file.write(f"    r'{simb[1]['regex']}'\n")
+        if simb[1]['func'] is not None:
+            if simb[1]['func'][0] == 'push':
+                print_push(simb[1]['func'][1], file)
+            elif simb[1]['func'][0] == 'pop':
+                print_pop(file)
+        file.write(f"    return t\n\n")
+
+    if ignore:
+        file.write(f"t_{ignore[0]}_ignore = '{ignore[1]}'\n\n")
 
 
 def print_states(states, file):
