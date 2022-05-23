@@ -5,7 +5,6 @@ numState incl
 Tokens:
 num@numState "\d+" 
 fim@numState  "\)" pop
-palavra "\w+"
 iniNumState "\(" push(numState)
 ignore "\t \n"
 
@@ -26,3 +25,4 @@ empty
 - ListaNum:
 num ListaNum
 empty
+
